@@ -81,6 +81,59 @@ export async function filterExams(filters: {
   }));
 }
 
+export interface AdminExamDTO extends ExamDTO {
+  streamSlug: string;
+  language: "fr" | "ar" | "en";
+  durationMin: number;
+}
+
+const LANG_FROM_DB: Record<string, "fr" | "ar" | "en"> = { FR: "fr", AR: "ar", EN: "en" };
+
+export async function getAdminExams(): Promise<AdminExamDTO[]> {
+  const exams = await prisma.exam.findMany({
+    include: { level: true, subject: true, stream: true },
+    orderBy: [{ createdAt: "desc" }],
+  });
+  return exams.map((e) => ({
+    id: e.id,
+    title: e.title,
+    levelSlug: e.level.slug,
+    streamSlug: e.stream.slug,
+    subjectSlug: e.subject.slug,
+    type: TYPE_FROM_DB[e.type],
+    year: e.year,
+    session: SESSION_FROM_DB[e.session],
+    language: LANG_FROM_DB[e.language],
+    durationMin: e.durationMin,
+    hasCorrection: e.hasCorrection,
+    pdfUrl: e.pdfUrl ?? undefined,
+    correctionUrl: e.correctionUrl ?? undefined,
+  }));
+}
+
+export async function getAdminExamById(id: string): Promise<AdminExamDTO | null> {
+  const e = await prisma.exam.findUnique({
+    where: { id },
+    include: { level: true, subject: true, stream: true },
+  });
+  if (!e) return null;
+  return {
+    id: e.id,
+    title: e.title,
+    levelSlug: e.level.slug,
+    streamSlug: e.stream.slug,
+    subjectSlug: e.subject.slug,
+    type: TYPE_FROM_DB[e.type],
+    year: e.year,
+    session: SESSION_FROM_DB[e.session],
+    language: LANG_FROM_DB[e.language],
+    durationMin: e.durationMin,
+    hasCorrection: e.hasCorrection,
+    pdfUrl: e.pdfUrl ?? undefined,
+    correctionUrl: e.correctionUrl ?? undefined,
+  };
+}
+
 export async function getExamYears(): Promise<number[]> {
   const rows = await prisma.exam.findMany({
     distinct: ["year"],

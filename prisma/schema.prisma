@@ -29,6 +29,60 @@ enum ResourceLanguage {
   EN
 }
 
+enum Role {
+  ELEVE
+  ADMIN
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+/// Auth.js v5, sessions JWT + comptes credentials (cf. ARCHITECTURE.md §9).
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         Role       @default(ELEVE)
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+
+  @@map("users")
+}
+
+/// Traçabilité des actions admin (créer/modifier/supprimer du contenu) —
+/// permet de savoir qui a fait quoi et de revenir sur une erreur.
+model AuditLog {
+  id         String      @id @default(cuid())
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  action     AuditAction
+  entityType String // "Exam" | "Stream" | "Subject" | "Level" | "User"
+  entityId   String
+  entityLabel String // libellé lisible (titre de l'examen, etc.) pour l'affichage du journal
+  metadata   Json?
+  createdAt  DateTime    @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
+  @@map("audit_logs")
+}
+
+/// Compteur de limitation de débit sur les actions sensibles (connexion,
+/// téléchargements) — cf. ARCHITECTURE.md §9. Une ligne par (clé, fenêtre).
+model RateLimitBucket {
+  key         String   @id // ex: "login:ip:1.2.3.4" ou "login:email:x@y.com"
+  count       Int      @default(1)
+  windowStart DateTime @default(now())
+
+  @@map("rate_limit_buckets")
+}
+
 model Level {
   id          String   @id @default(cuid())
   slug        String   @unique
@@ -53,6 +107,7 @@ model Stream {
   nameFr   String
   nameAr   String
   nameEn   String
+  order    Int       @default(0) // position d'affichage au sein du niveau (admin: déplacer)
   level    Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
   levelId  String
   subjects Subject[] @relation("StreamSubjects")

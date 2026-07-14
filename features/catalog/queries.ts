@@ -19,8 +19,10 @@ export interface SubjectDTO {
 }
 
 export interface StreamDTO {
+  id: string;
   slug: string;
   name: LocalizedText;
+  order: number;
   subjects: SubjectDTO[];
 }
 
@@ -59,15 +61,19 @@ function toSubjectDTO(s: {
 }
 
 function toStreamDTO(s: {
+  id: string;
   slug: string;
   nameFr: string;
   nameAr: string;
   nameEn: string;
+  order: number;
   subjects: Parameters<typeof toSubjectDTO>[0][];
 }): StreamDTO {
   return {
+    id: s.id,
     slug: s.slug,
     name: { fr: s.nameFr, ar: s.nameAr, en: s.nameEn },
+    order: s.order,
     subjects: s.subjects.map(toSubjectDTO),
   };
 }
@@ -87,7 +93,9 @@ export async function getLevelsWithStreams(): Promise<
 > {
   const levels = await prisma.level.findMany({
     orderBy: { slug: "asc" },
-    include: { streams: { include: { subjects: true } } },
+    include: {
+      streams: { orderBy: { order: "asc" }, include: { subjects: true } },
+    },
   });
   return levels.map((l) => ({
     ...toLevelDTO(l),
@@ -98,6 +106,7 @@ export async function getLevelsWithStreams(): Promise<
 export async function getStreamsByLevel(levelSlug: string): Promise<StreamDTO[]> {
   const streams = await prisma.stream.findMany({
     where: { level: { slug: levelSlug } },
+    orderBy: { order: "asc" },
     include: { subjects: true },
   });
   return streams.map(toStreamDTO);
@@ -113,6 +122,14 @@ export async function getStream(
   });
   if (!stream) return null;
   return { level: toLevelDTO(stream.level), stream: toStreamDTO(stream) };
+}
+
+export async function getStreamById(streamId: string): Promise<StreamDTO | null> {
+  const stream = await prisma.stream.findUnique({
+    where: { id: streamId },
+    include: { subjects: true },
+  });
+  return stream ? toStreamDTO(stream) : null;
 }
 
 export async function getAllStreamParams(): Promise<

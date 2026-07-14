@@ -1,7 +1,8 @@
-// Peuple Neon à partir des données de référence du code (features/catalog/taxonomy.ts
-// et features/exams/demo-data.ts) — ces fichiers restent la source de vérité pour la
-// taxonomie tant que l'admin de contenu (ARCHITECTURE.md §3) n'existe pas ; ce script
-// ne fait que les copier en base pour que les pages puissent interroger Prisma.
+// Amorce Neon avec la taxonomie et les examens de référence (features/catalog/taxonomy.ts,
+// features/exams/demo-data.ts) et crée le compte admin initial. Les examens ne sont
+// réimportés que si la table est vide — une fois du contenu géré depuis /admin,
+// ce script ne l'écrase plus (cf. le check existingExamCount ci-dessous).
+import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
 import { LEVELS, STREAMS, SUBJECTS } from "../features/catalog/taxonomy";
 import { DEMO_EXAMS, type ExamType, type ExamSession } from "../features/exams/demo-data";
@@ -56,7 +57,11 @@ async function main() {
   }
 
   console.log("→ Streams…");
+  const streamsByLevel = new Map<string, number>();
   for (const stream of STREAMS) {
+    const order = streamsByLevel.get(stream.levelId) ?? 0;
+    streamsByLevel.set(stream.levelId, order + 1);
+
     const level = await prisma.level.findUniqueOrThrow({
       where: { slug: LEVELS.find((l) => l.id === stream.levelId)!.slug },
     });
@@ -71,17 +76,24 @@ async function main() {
         nameAr: stream.name.ar,
         nameEn: stream.name.en,
         levelId: level.id,
+        order,
         subjects: { connect: subjects.map((s) => ({ id: s.id })) },
       },
       update: {
+        order,
         subjects: { set: subjects.map((s) => ({ id: s.id })) },
       },
     });
   }
 
   console.log("→ Exams…");
-  await prisma.exam.deleteMany({}); // ré-importé en entier à chaque seed (pas encore de gestion d'édition)
-  for (const exam of DEMO_EXAMS) {
+  const existingExamCount = await prisma.exam.count();
+  if (existingExamCount > 0) {
+    console.log(
+      `  (${existingExamCount} examens déjà en base — probablement modifiés depuis l'admin, on ne touche pas)`,
+    );
+  }
+  for (const exam of existingExamCount > 0 ? [] : DEMO_EXAMS) {
     const streamMeta = STREAMS.find((s) => s.id === exam.streamId);
     if (!streamMeta) {
       console.warn(`  ✗ streamId inconnu: ${exam.streamId} (examen ${exam.id})`);
@@ -114,6 +126,22 @@ async function main() {
         correctionUrl: exam.correctionUrl,
       },
     });
+  }
+
+  console.log("→ Compte admin…");
+  const adminEmail = process.env.ADMIN_INITIAL_EMAIL;
+  const adminPassword = process.env.ADMIN_INITIAL_PASSWORD;
+  if (adminEmail && adminPassword) {
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      create: { email: adminEmail, name: "Admin", role: "ADMIN", passwordHash },
+      update: {}, // ne réinitialise pas le mot de passe s'il a déjà été changé
+    });
+  } else {
+    console.warn(
+      "  ✗ ADMIN_INITIAL_EMAIL / ADMIN_INITIAL_PASSWORD absents — aucun compte admin créé.",
+    );
   }
 
   const [levelCount, streamCount, subjectCount, examCount, verifiedCount] = await Promise.all([
