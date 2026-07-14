@@ -1,6 +1,6 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { LEVELS, getStreamsByLevel } from "@/features/catalog/taxonomy";
+import { getLevelsWithStreams } from "@/features/catalog/queries";
 import { CONCOURS } from "@/features/catalog/concours";
 import {
   IconLibrary,
@@ -42,6 +42,7 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const levels = await getLevelsWithStreams();
 
   return (
     <>
@@ -133,11 +134,11 @@ export default async function HomePage({
             {t("home.levels.subtitle")}
           </p>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {LEVELS.map((level) => {
-              const streams = getStreamsByLevel(level.id);
+            {levels.map((level) => {
+              const streams = level.streams;
               return (
                 <Link
-                  key={level.id}
+                  key={level.slug}
                   href={`/cours/${level.slug}`}
                   className="group rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg"
                 >
@@ -153,7 +154,7 @@ export default async function HomePage({
                   <div className="mt-5 flex flex-wrap gap-2">
                     {streams.slice(0, 4).map((s) => (
                       <span
-                        key={s.id}
+                        key={s.slug}
                         className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600"
                       >
                         {s.name[locale]}

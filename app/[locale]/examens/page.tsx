@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { LEVELS, SUBJECTS, getSubject } from "@/features/catalog/taxonomy";
+import { getLevels } from "@/features/catalog/queries";
+import { SUBJECTS } from "@/features/catalog/taxonomy";
 import {
   filterExams,
-  EXAM_YEARS,
+  getOfficialSourceUrl,
+  getExamYears,
   type ExamType,
-} from "@/features/exams/demo-data";
-import { IconCheck, IconChevronDown, IconDownload } from "@/components/icons";
+} from "@/features/exams/queries";
+import {
+  IconCheck,
+  IconChevronDown,
+  IconDownload,
+  IconExternalLink,
+} from "@/components/icons";
 import type { Locale } from "@/i18n/routing";
 
 const EXAM_TYPES: ExamType[] = ["national", "regional", "blanc", "cnc", "concours"];
@@ -40,12 +47,16 @@ export default async function ExamsPage({
   const t = await getTranslations("catalog");
   const tCommon = await getTranslations("common");
 
-  const exams = filterExams({
-    levelId: filters.level,
-    subjectId: filters.subject,
-    type: filters.type,
-    year: filters.year ? Number(filters.year) : undefined,
-  });
+  const [levels, examYears, exams] = await Promise.all([
+    getLevels(),
+    getExamYears(),
+    filterExams({
+      levelSlug: filters.level,
+      subjectSlug: filters.subject,
+      type: filters.type,
+      year: filters.year ? Number(filters.year) : undefined,
+    }),
+  ]);
 
   const selectClass =
     "w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100";
@@ -68,8 +79,8 @@ export default async function ExamsPage({
           <div className="relative">
             <select name="level" defaultValue={filters.level ?? ""} className={selectClass}>
               <option value="">{t("level")} — {tCommon("viewAll")}</option>
-              {LEVELS.map((level) => (
-                <option key={level.id} value={level.id}>
+              {levels.map((level) => (
+                <option key={level.slug} value={level.slug}>
                   {level.shortName[locale]}
                 </option>
               ))}
@@ -86,7 +97,7 @@ export default async function ExamsPage({
             <select name="subject" defaultValue={filters.subject ?? ""} className={selectClass}>
               <option value="">{t("allSubjects")}</option>
               {SUBJECTS.map((subject) => (
-                <option key={subject.id} value={subject.id}>
+                <option key={subject.slug} value={subject.slug}>
                   {subject.name[locale]}
                 </option>
               ))}
@@ -119,7 +130,7 @@ export default async function ExamsPage({
           <div className="relative">
             <select name="year" defaultValue={filters.year ?? ""} className={selectClass}>
               <option value="">{t("allYears")}</option>
-              {EXAM_YEARS.map((year) => (
+              {examYears.map((year) => (
                 <option key={year} value={year}>
                   {year}
                 </option>
@@ -151,8 +162,9 @@ export default async function ExamsPage({
 
       <ul className="mt-4 space-y-3">
         {exams.map((exam) => {
-          const level = LEVELS.find((l) => l.id === exam.levelId);
-          const subject = getSubject(exam.subjectId);
+          const level = levels.find((l) => l.slug === exam.levelSlug);
+          const subject = SUBJECTS.find((s) => s.slug === exam.subjectSlug);
+          const officialSourceUrl = getOfficialSourceUrl(exam.type);
           return (
             <li
               key={exam.id}
@@ -182,24 +194,42 @@ export default async function ExamsPage({
                 </div>
               </div>
               {exam.pdfUrl ? (
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={exam.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-brand-700 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+                  >
+                    <IconDownload className="h-4 w-4" />
+                    {tCommon("download")}
+                  </a>
+                  {exam.correctionUrl && (
+                    <a
+                      href={exam.correctionUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-700"
+                    >
+                      <IconDownload className="h-4 w-4" />
+                      {tCommon("correction")}
+                    </a>
+                  )}
+                </div>
+              ) : officialSourceUrl ? (
                 <a
-                  href={exam.pdfUrl}
+                  href={officialSourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-brand-700 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-700"
                 >
-                  <IconDownload className="h-4 w-4" />
-                  {tCommon("download")}
+                  <IconExternalLink className="h-4 w-4" />
+                  {t("viewOnCnee")}
                 </a>
               ) : (
-                <button
-                  type="button"
-                  disabled
-                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400 cursor-not-allowed"
-                >
-                  <IconDownload className="h-4 w-4" />
-                  {tCommon("download")}
-                </button>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-200 px-4 py-2 text-sm font-medium text-slate-400">
+                  {t("notYetAvailable")}
+                </span>
               )}
             </li>
           );

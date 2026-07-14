@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { LEVELS, getStreamsByLevel } from "@/features/catalog/taxonomy";
+import { getLevelsWithStreams } from "@/features/catalog/queries";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -22,6 +22,7 @@ export default async function CoursesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("catalog");
+  const levels = await getLevelsWithStreams();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
@@ -31,10 +32,10 @@ export default async function CoursesPage({
       <p className="mt-3 max-w-2xl text-slate-600">{t("coursesSubtitle")}</p>
 
       <div className="mt-12 space-y-14">
-        {LEVELS.map((level) => {
-          const streams = getStreamsByLevel(level.id);
+        {levels.map((level) => {
+          const streams = level.streams;
           return (
-            <section key={level.id}>
+            <section key={level.slug}>
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="text-2xl font-bold text-slate-900">
                   {level.name[locale]}
@@ -44,7 +45,8 @@ export default async function CoursesPage({
                   className="text-sm font-semibold text-brand-700 hover:text-brand-800"
                 >
                   {t("subjectsCount", {
-                    count: new Set(streams.flatMap((s) => s.subjectIds)).size,
+                    count: new Set(streams.flatMap((s) => s.subjects.map((sub) => sub.slug)))
+                      .size,
                   })}{" "}
                   →
                 </Link>
@@ -52,7 +54,7 @@ export default async function CoursesPage({
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {streams.map((stream) => (
                   <Link
-                    key={stream.id}
+                    key={stream.slug}
                     href={`/cours/${level.slug}/${stream.slug}`}
                     className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:border-brand-300 hover:shadow-md"
                   >
@@ -60,7 +62,7 @@ export default async function CoursesPage({
                       {stream.name[locale]}
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      {t("subjectsCount", { count: stream.subjectIds.length })}
+                      {t("subjectsCount", { count: stream.subjects.length })}
                     </p>
                   </Link>
                 ))}

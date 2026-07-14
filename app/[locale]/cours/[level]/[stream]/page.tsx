@@ -2,20 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import {
-  STREAMS,
-  LEVELS,
-  getLevel,
-  getSubject,
-} from "@/features/catalog/taxonomy";
+import { getAllStreamParams, getStream } from "@/features/catalog/queries";
 import { SUBJECT_ICONS } from "@/components/icons";
 import type { Locale } from "@/i18n/routing";
 
-export function generateStaticParams() {
-  return STREAMS.map((stream) => {
-    const level = LEVELS.find((l) => l.id === stream.levelId)!;
-    return { level: level.slug, stream: stream.slug };
-  });
+export async function generateStaticParams() {
+  return getAllStreamParams();
 }
 
 export async function generateMetadata({
@@ -24,12 +16,9 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; level: string; stream: string }>;
 }): Promise<Metadata> {
   const { locale, level: levelSlug, stream: streamSlug } = await params;
-  const level = getLevel(levelSlug);
-  const stream = STREAMS.find(
-    (s) => s.slug === streamSlug && s.levelId === level?.id,
-  );
-  if (!level || !stream) return {};
-  return { title: `${stream.name[locale]} — ${level.shortName[locale]}` };
+  const result = await getStream(levelSlug, streamSlug);
+  if (!result) return {};
+  return { title: `${result.stream.name[locale]} — ${result.level.shortName[locale]}` };
 }
 
 export default async function StreamPage({
@@ -39,11 +28,9 @@ export default async function StreamPage({
 }) {
   const { locale, level: levelSlug, stream: streamSlug } = await params;
   setRequestLocale(locale);
-  const level = getLevel(levelSlug);
-  const stream = STREAMS.find(
-    (s) => s.slug === streamSlug && s.levelId === level?.id,
-  );
-  if (!level || !stream) notFound();
+  const result = await getStream(levelSlug, streamSlug);
+  if (!result) notFound();
+  const { level, stream } = result;
   const t = await getTranslations("catalog");
 
   return (
@@ -64,13 +51,11 @@ export default async function StreamPage({
 
       <h2 className="mt-12 text-xl font-bold text-slate-900">{t("subject")}</h2>
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stream.subjectIds.map((subjectId) => {
-          const subject = getSubject(subjectId);
-          if (!subject) return null;
-          const Icon = SUBJECT_ICONS[subject.id];
+        {stream.subjects.map((subject) => {
+          const Icon = SUBJECT_ICONS[subject.iconKey];
           return (
             <div
-              key={subject.id}
+              key={subject.slug}
               className="rounded-xl border border-slate-200 bg-white p-5"
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
@@ -82,7 +67,7 @@ export default async function StreamPage({
               <Link
                 href={{
                   pathname: "/examens",
-                  query: { level: level.slug, subject: subject.id },
+                  query: { level: level.slug, subject: subject.slug },
                 }}
                 className="mt-2 inline-block text-sm font-medium text-brand-700 hover:text-brand-800"
               >

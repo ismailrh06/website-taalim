@@ -1,0 +1,103 @@
+// Schéma Prisma — cf. docs/ARCHITECTURE.md §6 (modèle de données).
+// Taxonomie centrale : Level × Stream × Subject — épine dorsale du catalogue et du SEO.
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ExamType {
+  NATIONAL
+  REGIONAL
+  BLANC
+  CNC
+  CONCOURS
+}
+
+enum ExamSession {
+  NORMALE
+  RATTRAPAGE
+}
+
+enum ResourceLanguage {
+  FR
+  AR
+  EN
+}
+
+model Level {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  nameFr      String
+  nameAr      String
+  nameEn      String
+  shortNameFr String
+  shortNameAr String
+  shortNameEn String
+  descFr      String
+  descAr      String
+  descEn      String
+  streams     Stream[]
+  exams       Exam[]
+
+  @@map("levels")
+}
+
+model Stream {
+  id       String    @id @default(cuid())
+  slug     String
+  nameFr   String
+  nameAr   String
+  nameEn   String
+  level    Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  levelId  String
+  subjects Subject[] @relation("StreamSubjects")
+  exams    Exam[]
+
+  @@unique([levelId, slug])
+  @@map("streams")
+}
+
+model Subject {
+  id      String   @id @default(cuid())
+  slug    String   @unique
+  nameFr  String
+  nameAr  String
+  nameEn  String
+  icon    String // clé vers components/icons.tsx (SUBJECT_ICONS)
+  streams Stream[] @relation("StreamSubjects")
+  exams   Exam[]
+
+  @@map("subjects")
+}
+
+/// Un examen = une unité pédagogique (cf. ARCHITECTURE.md §6). Le champ
+/// `language` porte la langue de la ressource elle-même (un examen en arabe
+/// n'est pas une traduction).
+model Exam {
+  id             String            @id @default(cuid())
+  title          String
+  level          Level             @relation(fields: [levelId], references: [id])
+  levelId        String
+  stream         Stream            @relation(fields: [streamId], references: [id])
+  streamId       String
+  subject        Subject           @relation(fields: [subjectId], references: [id])
+  subjectId      String
+  type           ExamType
+  year           Int
+  session        ExamSession
+  language       ResourceLanguage
+  durationMin    Int
+  hasCorrection  Boolean           @default(false)
+  pdfUrl         String? // sujet officiel vérifié (CNEE ou autre)
+  correctionUrl  String? // corrigé officiel vérifié
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([levelId, subjectId, type, year])
+  @@map("exams")
+}

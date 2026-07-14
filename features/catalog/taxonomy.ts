@@ -1,3 +1,7 @@
+// Source de vérité de la taxonomie pour prisma/seed.ts. Les pages lisent
+// désormais Neon via features/catalog/queries.ts — ce fichier reste utilisé
+// pour SUBJECTS (liste stable, sert aussi de clé vers components/icons.tsx)
+// et par le footer (niveaux, statiques et peu nombreux).
 import type { Locale } from "@/i18n/routing";
 
 export type LocalizedText = Record<Locale, string>;
@@ -112,14 +116,3 @@ export const STREAMS: Stream[] = [
   { id: "cpge-ect", levelId: "cpge", slug: "ect", name: { fr: "ECT (Économique et Commerciale, option Technologique)", ar: "ECT", en: "ECT" }, subjectIds: ["math", "eco", "fr", "en", "philo"] },
 ];
 
-export function getLevel(slug: string): Level | undefined {
-  return LEVELS.find((l) => l.slug === slug);
-}
-
-export function getStreamsByLevel(levelId: string): Stream[] {
-  return STREAMS.filter((s) => s.levelId === levelId);
-}
-
-export function getSubject(id: string): Subject | undefined {
-  return SUBJECTS.find((s) => s.id === id);
-}

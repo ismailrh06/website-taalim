@@ -109,7 +109,9 @@
     },
     "sessions": { "normale": "Main session", "rattrapage": "Resit session" },
     "subjectsCount": "{count} subjects",
-    "comingSoon": "Full content coming soon — the platform is under construction."
+    "comingSoon": "Full content coming soon — the platform is under construction.",
+    "viewOnCnee": "View on CNEE",
+    "notYetAvailable": "PDF coming soon"
   },
   "concours": {
     "title": "Entrance exams & admissions",

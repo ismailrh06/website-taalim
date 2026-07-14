@@ -1,6 +1,6 @@
-// Données de démonstration en attendant la base de données (Prisma/Neon, Étape 4).
-// Chaque ressource porte un champ `language` : un examen en arabe est une ressource
-// arabe, pas une traduction (cf. ARCHITECTURE.md §4).
+// Source de vérité pour prisma/seed.ts — les pages lisent désormais Neon via
+// features/exams/queries.ts. Chaque ressource porte un champ `language` : un
+// examen en arabe est une ressource arabe, pas une traduction (cf. ARCHITECTURE.md §4).
 // Examens nationaux du baccalauréat récupérés depuis cnee.men.gov.ma
 
 export type ExamType = "national" | "regional" | "blanc" | "cnc" | "concours";
@@ -18,60 +18,46 @@ export interface Exam {
   language: "fr" | "ar";
   durationMin: number;
   hasCorrection: boolean;
-  pdfUrl?: string; // URL vers le PDF officiel (CNEE ou autre)
+  pdfUrl?: string; // URL vérifiée du sujet officiel (CNEE ou autre)
+  correctionUrl?: string; // URL vérifiée du corrigé officiel
 }
 
 export const DEMO_EXAMS: Exam[] = [
-  // ===== EXAMENS OFFICIELS CNEE 2025 (Session Normale) =====
-  // Source: https://cnee.men.gov.ma/WebNational.aspx
-  // Note: Les codes des examens sont basés sur le système du CNEE (RS = Réponses/Sujets)
-  
-  // SMA - Sciences Mathématiques A
+  // ===== EXAMENS NATIONAUX CNEE — URLs vérifiées (téléchargement direct) =====
+  // Obtenues en automatisant le formulaire officiel cnee.men.gov.ma/WebNational.aspx
+  // (voir scripts/scrape-cnee.mjs). Chaque pdfUrl/correctionUrl ci-dessous a été
+  // testée en HTTP et confirmée comme un vrai fichier PDF avant intégration.
+
+  // PC — Sciences Physiques (2022, session normale)
+  { id: "cnee-2022-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2022.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2022.pdf" },
+  { id: "cnee-2022-pc-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2028.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2028.pdf" },
+  { id: "cnee-2022-pc-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-pc", subjectId: "svt", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2034.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2034.pdf" },
+
+  // SVT — Sciences de la Vie et de la Terre
+  { id: "cnee-2022-svt-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-svt", subjectId: "math", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2022.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2022.pdf" },
+  { id: "cnee-2020-svt-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-svt", subjectId: "pc", type: "national", year: 2020, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2020/NS%2027.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2020/NR%2027.pdf" },
+  { id: "cnee-2022-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2032.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2032.pdf" },
+
+  // ECO — Sciences Économiques et Gestion
+  { id: "cnee-2022-eco-eco-n", title: "Examen national — Économie-Gestion", levelId: "2bac", streamId: "2bac-eco", subjectId: "eco", type: "national", year: 2022, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2052.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2052.pdf" },
+  { id: "cnee-2025-eco-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-eco", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+
+  // Lettres — Littérature et Sciences Humaines
+  { id: "cnee-2022-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2022, session: "normale", language: "ar", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2004.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2004.pdf" },
+  { id: "cnee-2022-lettres-hg-n", title: "الامتحان الوطني — التاريخ والجغرافيا", levelId: "2bac", streamId: "2bac-lettres", subjectId: "hg", type: "national", year: 2022, session: "normale", language: "ar", durationMin: 120, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2007.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2007.pdf" },
+  { id: "cnee-2022-lettres-ar-n", title: "الامتحان الوطني — اللغة العربية", levelId: "2bac", streamId: "2bac-lettres", subjectId: "ar", type: "national", year: 2022, session: "normale", language: "ar", durationMin: 120, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NS%2002.pdf", correctionUrl: "https://cnee.men.gov.ma/NATIONAL/2022/NR%2002.pdf" },
+
+  // ===== EXAMENS NATIONAUX SANS PDF DIRECT VÉRIFIÉ =====
+  // Ces combinaisons existent bien chez CNEE mais sont publiées en archive .rar
+  // groupée (pas un PDF par matière) ou n'ont pas encore été explorées par
+  // scripts/scrape-cnee.mjs. Sans pdfUrl, la page /examens affiche
+  // automatiquement « Voir sur le CNEE » plutôt qu'un faux bouton.
   { id: "cnee-2025-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
   { id: "cnee-2025-sma-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-sma", subjectId: "pc", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  { id: "cnee-2025-sma-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-sma", subjectId: "svt", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  
-  // SMB - Sciences Mathématiques B
   { id: "cnee-2025-smb-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-smb", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2025-smb-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-smb", subjectId: "pc", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
   { id: "cnee-2025-smb-si-n", title: "Examen national — Sciences de l'Ingénieur", levelId: "2bac", streamId: "2bac-smb", subjectId: "si", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  
-  // PC - Sciences Physiques
-  { id: "cnee-2025-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2025-pc-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  
-  // SVT - Sciences de la Vie et de la Terre
-  { id: "cnee-2025-svt-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-svt", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2025-svt-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-svt", subjectId: "pc", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  { id: "cnee-2025-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  
-  // ECO - Sciences Économiques
-  { id: "cnee-2025-eco-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-eco", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2025-eco-eco-n", title: "Examen national — Économie-Gestion", levelId: "2bac", streamId: "2bac-eco", subjectId: "eco", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  
-  // Lettres - Littérature et Sciences Humaines
-  { id: "cnee-2025-lettres-ar-n", title: "الامتحان الوطني — اللغة العربية", levelId: "2bac", streamId: "2bac-lettres", subjectId: "ar", type: "national", year: 2025, session: "normale", language: "ar", durationMin: 120, hasCorrection: true },
-  { id: "cnee-2025-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2025, session: "normale", language: "ar", durationMin: 180, hasCorrection: true },
-  
-  // ===== EXAMENS OFFICIELS CNEE 2024 =====
-  // Pour télécharger, veuillez consulter: https://cnee.men.gov.ma/WebNational.aspx
-  { id: "cnee-2024-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2024-sma-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-sma", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  { id: "cnee-2024-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2024-pc-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  { id: "cnee-2024-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-  { id: "cnee-2024-lettres-ar-n", title: "الامتحان الوطني — اللغة العربية", levelId: "2bac", streamId: "2bac-lettres", subjectId: "ar", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 120, hasCorrection: true },
-  { id: "cnee-2024-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 180, hasCorrection: true },
-  
-  // ===== EXAMENS OFFICIELS CNEE 2023 =====
-  // Note: Les URLs individuelles ne sont pas accessibles, consulter CNEE directement
-  { id: "cnee-2023-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2023-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
-  { id: "cnee-2023-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
-
-  // ===== EXAMENS ANTÉRIEURS CNEE 2019 (Exemple pour référence) =====
-  // Source connue: https://cnee.men.gov.ma/NATIONAL/2019/RS191.pdf
-  { id: "cnee-2019-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2019, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2019/RS191.pdf" },
+  { id: "cnee-2025-ste-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-ste", subjectId: "math", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+  { id: "cnee-2025-ste-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-ste", subjectId: "pc", type: "national", year: 2025, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
 
   // ===== EXAMENS RÉGIONAUX 1BAC =====
   { id: "ex-6", title: "Examen régional — Français", levelId: "1bac", streamId: "1bac-se", subjectId: "fr", type: "regional", year: 2025, session: "normale", language: "fr", durationMin: 120, hasCorrection: true },
@@ -91,21 +77,3 @@ export const DEMO_EXAMS: Exam[] = [
   { id: "ex-16", title: "Concours ENSAM — Épreuve 2024", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "concours", year: 2024, session: "normale", language: "fr", durationMin: 120, hasCorrection: false },
 ];
 
-export function filterExams(filters: {
-  levelId?: string;
-  subjectId?: string;
-  type?: string;
-  year?: number;
-}): Exam[] {
-  return DEMO_EXAMS.filter(
-    (e) =>
-      (!filters.levelId || e.levelId === filters.levelId) &&
-      (!filters.subjectId || e.subjectId === filters.subjectId) &&
-      (!filters.type || e.type === filters.type) &&
-      (!filters.year || e.year === filters.year),
-  );
-}
-
-export const EXAM_YEARS = [...new Set(DEMO_EXAMS.map((e) => e.year))].sort(
-  (a, b) => b - a,
-);

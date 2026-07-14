@@ -109,7 +109,9 @@
     },
     "sessions": { "normale": "Session normale", "rattrapage": "Session de rattrapage" },
     "subjectsCount": "{count} matières",
-    "comingSoon": "Le contenu complet arrive bientôt — la plateforme est en construction."
+    "comingSoon": "Le contenu complet arrive bientôt — la plateforme est en construction.",
+    "viewOnCnee": "Voir sur le CNEE",
+    "notYetAvailable": "PDF à venir"
   },
   "concours": {
     "title": "Concours & admissions",

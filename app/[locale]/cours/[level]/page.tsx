@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { LEVELS, getLevel, getStreamsByLevel } from "@/features/catalog/taxonomy";
+import { getLevel, getLevels, getStreamsByLevel } from "@/features/catalog/queries";
 import type { Locale } from "@/i18n/routing";
 
-export function generateStaticParams() {
-  return LEVELS.map((level) => ({ level: level.slug }));
+export async function generateStaticParams() {
+  const levels = await getLevels();
+  return levels.map((level) => ({ level: level.slug }));
 }
 
 export async function generateMetadata({
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; level: string }>;
 }): Promise<Metadata> {
   const { locale, level: levelSlug } = await params;
-  const level = getLevel(levelSlug);
+  const level = await getLevel(levelSlug);
   if (!level) return {};
   return { title: level.name[locale] };
 }
@@ -27,10 +28,10 @@ export default async function LevelPage({
 }) {
   const { locale, level: levelSlug } = await params;
   setRequestLocale(locale);
-  const level = getLevel(levelSlug);
+  const level = await getLevel(levelSlug);
   if (!level) notFound();
   const t = await getTranslations("catalog");
-  const streams = getStreamsByLevel(level.id);
+  const streams = await getStreamsByLevel(levelSlug);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
@@ -48,7 +49,7 @@ export default async function LevelPage({
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {streams.map((stream) => (
           <Link
-            key={stream.id}
+            key={stream.slug}
             href={`/cours/${level.slug}/${stream.slug}`}
             className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:border-brand-300 hover:shadow-md"
           >
@@ -56,7 +57,7 @@ export default async function LevelPage({
               {stream.name[locale]}
             </h3>
             <p className="mt-1 text-sm text-slate-500">
-              {t("subjectsCount", { count: stream.subjectIds.length })}
+              {t("subjectsCount", { count: stream.subjects.length })}
             </p>
           </Link>
         ))}

@@ -109,7 +109,9 @@
     },
     "sessions": { "normale": "الدورة العادية", "rattrapage": "الدورة الاستدراكية" },
     "subjectsCount": "{count} مواد",
-    "comingSoon": "المحتوى الكامل قادم قريباً — المنصة قيد الإنشاء."
+    "comingSoon": "المحتوى الكامل قادم قريباً — المنصة قيد الإنشاء.",
+    "viewOnCnee": "عرض على موقع CNEE",
+    "notYetAvailable": "PDF قريباً"
   },
   "concours": {
     "title": "المباريات والولوج",
