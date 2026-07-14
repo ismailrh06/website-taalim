@@ -24,7 +24,7 @@ export function DeleteButton({
           router.refresh();
         });
       }}
-      className="text-sm font-medium text-red-600 hover:text-red-800 disabled:opacity-50"
+      className="rounded-lg px-2 py-1 text-sm font-semibold text-red-500 transition-colors hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
     >
       {pending ? "…" : "Supprimer"}
     </button>

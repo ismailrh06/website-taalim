@@ -1,23 +1,21 @@
-import Link from "next/link";
+import { Inter } from "next/font/google";
 import { requireAdmin } from "@/lib/authz";
 import { signOut } from "@/auth";
 import { Logo } from "@/components/logo";
-import {
-  IconFileCheck,
-  IconLibrary,
-  IconUsers,
-  IconProgress,
-  IconPencil,
-} from "@/components/icons";
+import { IconLogOut } from "@/components/icons";
+import { AdminNav } from "@/components/admin/admin-nav";
 import "../../globals.css";
 
-const NAV = [
-  { href: "/admin", label: "Tableau de bord", icon: IconProgress },
-  { href: "/admin/examens", label: "Examens", icon: IconFileCheck },
-  { href: "/admin/cours", label: "Cours & filières", icon: IconLibrary },
-  { href: "/admin/utilisateurs", label: "Utilisateurs", icon: IconUsers },
-  { href: "/admin/journal", label: "Journal d'audit", icon: IconPencil },
-] as const;
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+export const metadata = {
+  title: { default: "Qimma Admin", template: "%s | Qimma Admin" },
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({
   children,
@@ -25,46 +23,67 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = await requireAdmin();
+  const initials = (user.name ?? user.email ?? "A")
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
-    <html lang="fr">
-      <body className="flex min-h-screen bg-slate-100 text-slate-900">
-        <aside className="flex w-64 shrink-0 flex-col border-r border-slate-200 bg-slate-950 text-slate-300">
-          <div className="flex items-center gap-2 px-5 py-5">
-            <Logo className="h-8 w-8" />
-            <span className="font-bold text-white">Qimma Admin</span>
+    <html lang="fr" className={inter.variable}>
+      <body className="flex min-h-screen bg-slate-100 text-slate-900 antialiased">
+        {/* Sidebar */}
+        <aside className="sticky top-0 flex h-screen w-72 shrink-0 flex-col bg-gradient-to-b from-slate-950 via-slate-950 to-brand-950">
+          <div className="flex items-center gap-3 px-6 pb-6 pt-7">
+            <Logo className="h-9 w-9" />
+            <div>
+              <p className="text-[15px] font-bold leading-tight text-white">Qimma</p>
+              <span className="mt-0.5 inline-block rounded-full bg-accent-500/15 px-2 py-px text-[10px] font-bold uppercase tracking-widest text-accent-400">
+                Admin
+              </span>
+            </div>
           </div>
-          <nav className="mt-4 flex-1 space-y-1 px-3">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-slate-900 hover:text-white"
+
+          <div className="mx-6 mb-4 h-px bg-gradient-to-r from-white/10 to-transparent" />
+
+          <div className="flex-1 overflow-y-auto px-4">
+            <p className="mb-2 px-3.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">
+              Gestion
+            </p>
+            <AdminNav />
+          </div>
+
+          <div className="m-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-bold text-white">
+                {initials}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-white">{user.name}</p>
+                <p className="truncate text-xs text-slate-500">{user.email}</p>
+              </div>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/admin/connexion" });
+                }}
               >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="border-t border-slate-800 p-4">
-            <p className="truncate text-xs text-slate-500">{user.email}</p>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/admin/connexion" });
-              }}
-            >
-              <button
-                type="submit"
-                className="mt-2 text-xs font-semibold text-slate-400 hover:text-white"
-              >
-                Se déconnecter
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  title="Se déconnecter"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <IconLogOut className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
           </div>
         </aside>
+
+        {/* Contenu */}
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-6xl px-8 py-10">{children}</div>
+          <div className="mx-auto max-w-6xl px-10 py-10">{children}</div>
         </main>
       </body>
     </html>

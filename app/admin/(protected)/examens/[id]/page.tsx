@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLevelsWithStreams } from "@/features/catalog/queries";
 import { getAdminExamById } from "@/features/exams/queries";
@@ -20,8 +21,17 @@ export default async function EditExamPage({
 
   return (
     <div className="max-w-3xl">
-      <h1 className="text-2xl font-bold text-slate-900">Modifier l&apos;examen</h1>
-      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
+      <nav className="text-sm font-medium text-slate-400">
+        <Link href="/admin/examens" className="hover:text-brand-700">
+          Examens
+        </Link>{" "}
+        <span className="mx-1">/</span>
+        <span className="text-slate-600">Modifier</span>
+      </nav>
+      <h1 className="mt-2 truncate text-3xl font-bold tracking-tight text-slate-900" dir="auto">
+        {exam.title}
+      </h1>
+      <div className="mt-6">
         <ExamForm levels={levels} initialData={exam} action={action} />
       </div>
     </div>

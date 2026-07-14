@@ -19,7 +19,7 @@ export function UserRowControls({
   const router = useRouter();
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2.5">
       <select
         defaultValue={role}
         disabled={pending || isSelf}
@@ -29,7 +29,7 @@ export function UserRowControls({
             router.refresh();
           });
         }}
-        className="rounded-lg border border-slate-300 px-2 py-1 text-xs disabled:opacity-50"
+        className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 focus:border-brand-500 focus:outline-none disabled:opacity-40"
       >
         <option value="ELEVE">Élève</option>
         <option value="ADMIN">Admin</option>
@@ -43,8 +43,10 @@ export function UserRowControls({
             router.refresh();
           });
         }}
-        className={`text-xs font-semibold disabled:opacity-50 ${
-          isActive ? "text-red-600 hover:text-red-800" : "text-emerald-600 hover:text-emerald-800"
+        className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-colors disabled:opacity-40 ${
+          isActive
+            ? "text-red-500 hover:bg-red-50 hover:text-red-700"
+            : "text-emerald-600 hover:bg-emerald-50 hover:text-emerald-800"
         }`}
       >
         {isActive ? "Désactiver" : "Réactiver"}

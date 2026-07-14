@@ -31,3 +31,7 @@ components/            UI partagée (header, footer, sélecteur de langue)
 features/              Modules métier (catalog, exams, …) — cf. ARCHITECTURE.md §3
 i18n/ + messages/      Routage next-intl et traductions
 ```
+
+
+Email : admin@qimma.ma
+Mot de passe : klwltgdlyrfwr4pZXY0f
