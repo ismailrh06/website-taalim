@@ -116,3 +116,8 @@ export const STREAMS: Stream[] = [
   { id: "cpge-ect", levelId: "cpge", slug: "ect", name: { fr: "ECT (Économique et Commerciale, option Technologique)", ar: "ECT", en: "ECT" }, subjectIds: ["math", "eco", "fr", "en", "philo"] },
 ];
 
+// Utilisé par features/exercises (contenu statique, pas encore en base).
+export function getSubject(id: string): Subject | undefined {
+  return SUBJECTS.find((s) => s.id === id);
+}
+
