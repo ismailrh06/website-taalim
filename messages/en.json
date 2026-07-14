@@ -1,0 +1,136 @@
+{
+  "common": {
+    "appName": "Qimma",
+    "tagline": "Reach your summit — Bac & Prépa",
+    "search": "Search a course or exam…",
+    "viewAll": "View all",
+    "free": "Free",
+    "new": "New",
+    "download": "Download",
+    "correction": "Correction",
+    "resources": "{count} resources"
+  },
+  "nav": {
+    "courses": "Courses",
+    "exams": "Exams",
+    "mockExams": "Mock exams",
+    "cpge": "Prépa / CNC",
+    "concours": "Entrance exams",
+    "login": "Log in",
+    "signup": "Start for free"
+  },
+  "home": {
+    "hero": {
+      "badge": "Bac 2026 · CNC 2026 — start preparing now",
+      "title": "Everything you need to ace your <highlight>Bac</highlight> and <highlight>Prépa</highlight>",
+      "subtitle": "Courses, summaries, corrected exercises, past national and regional exams, and timed mock exams — for 1st and 2nd year Baccalaureate and preparatory classes in Morocco.",
+      "ctaPrimary": "Explore courses",
+      "ctaSecondary": "Browse exams"
+    },
+    "stats": {
+      "exams": "Corrected exams",
+      "courses": "Courses & summaries",
+      "exercises": "Corrected exercises",
+      "students": "Students supported"
+    },
+    "levels": {
+      "title": "Pick your level",
+      "subtitle": "Content 100% aligned with the official Moroccan curriculum, organized by stream and subject.",
+      "explore": "Explore"
+    },
+    "features": {
+      "title": "Much more than a PDF library",
+      "subtitle": "Qimma turns passive revision into active learning.",
+      "items": {
+        "library": {
+          "title": "Complete library",
+          "desc": "Courses, summaries, exercises and past national and regional exams with corrections, filterable by stream, subject, year and session."
+        },
+        "mock": {
+          "title": "Timed mock exams",
+          "desc": "Train under real exam conditions: official duration, detailed grading scale and self-assessment."
+        },
+        "hints": {
+          "title": "Progressive hints",
+          "desc": "Stuck on an exercise? Unlock hints level by level before seeing the correction — learn to search, not to copy."
+        },
+        "tutor": {
+          "title": "Socratic AI tutor",
+          "desc": "A smart tutor that guides you with questions without ever giving away the answer, available 24/7."
+        },
+        "progress": {
+          "title": "Progress tracking",
+          "desc": "See your strengths and gaps per chapter, with an autonomy score and a personalized revision plan."
+        },
+        "offline": {
+          "title": "Fast, even on 3G",
+          "desc": "An ultra-light site built for mobile, in French, Arabic and English. No intrusive ads."
+        }
+      }
+    },
+    "how": {
+      "title": "How it works",
+      "steps": {
+        "one": { "title": "Pick your stream", "desc": "1BAC, 2BAC or CPGE — select your stream and subjects." },
+        "two": { "title": "Revise actively", "desc": "Courses, exercises with progressive hints, quizzes and timed mock exams." },
+        "three": { "title": "Track your progress", "desc": "Spot your gaps, earn XP and walk in confident on exam day." }
+      }
+    },
+    "cta": {
+      "title": "Ready to aim for honors?",
+      "subtitle": "Join thousands of students preparing the Bac and CNC with Qimma. Signing up is free.",
+      "button": "Create my free account"
+    }
+  },
+  "catalog": {
+    "coursesTitle": "Courses, summaries and exercises",
+    "coursesSubtitle": "Pick your level, then your stream to access every subject.",
+    "examsTitle": "Past exams & mock exams",
+    "examsSubtitle": "National, regional and mock exams with detailed corrections.",
+    "level": "Level",
+    "stream": "Stream",
+    "subject": "Subject",
+    "year": "Year",
+    "type": "Type",
+    "session": "Session",
+    "allYears": "All years",
+    "allSubjects": "All subjects",
+    "allTypes": "All types",
+    "filter": "Filter",
+    "reset": "Reset",
+    "results": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "withCorrection": "With correction",
+    "examTypes": {
+      "national": "National exam",
+      "regional": "Regional exam",
+      "blanc": "Mock exam",
+      "cnc": "CNC competitive exam",
+      "concours": "Entrance exam"
+    },
+    "sessions": { "normale": "Main session", "rattrapage": "Resit session" },
+    "subjectsCount": "{count} subjects",
+    "comingSoon": "Full content coming soon — the platform is under construction."
+  },
+  "concours": {
+    "title": "Entrance exams & admissions",
+    "subtitle": "UM6P, ENSA, ENSAM, TAFEM, medicine, Lydex, CNC… prepare every entrance exam with past papers, mock exams and targeted quizzes.",
+    "annales": "Past papers & preparation",
+    "homeTitle": "Prepare your entrance exams too",
+    "homeSubtitle": "Selective universities, excellence high schools and grandes écoles: past papers and method for every admission.",
+    "homeCta": "Discover the exams"
+  },
+  "footer": {
+    "description": "The Moroccan learning platform for the Baccalaureate and preparatory classes: courses, corrected exams, mock exams and an AI tutor.",
+    "sections": {
+      "platform": "Platform",
+      "levels": "Levels",
+      "about": "About"
+    },
+    "links": {
+      "contact": "Contact",
+      "terms": "Terms of use",
+      "privacy": "Privacy"
+    },
+    "rights": "All rights reserved."
+  }
+}

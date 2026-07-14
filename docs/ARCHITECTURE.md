@@ -1,11 +1,11 @@
-# 🏗️ Taalim — Architecture Technique
+# 🏗️ Qimma — Architecture Technique
 
 > Document de référence (Étape 2). Toute décision structurante du projet est consignée ici.
 > Dernière mise à jour : 13/07/2026
 
 ## 1. Vue d'ensemble
 
-Taalim est un **monolithe modulaire** construit sur Next.js 15 (App Router), déployé sur Vercel.
+Qimma est un **monolithe modulaire** construit sur Next.js 15 (App Router), déployé sur Vercel.
 Un monolithe bien découpé est le meilleur choix pour une startup : une seule base de code, un seul
 déploiement, une vélocité maximale — tout en gardant des frontières de modules nettes qui
 permettront d'extraire des services plus tard si la croissance l'exige.

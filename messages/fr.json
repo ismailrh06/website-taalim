@@ -1,0 +1,136 @@
+{
+  "common": {
+    "appName": "Qimma",
+    "tagline": "Atteins ton sommet — Bac & Prépa",
+    "search": "Rechercher un cours, un examen…",
+    "viewAll": "Tout voir",
+    "free": "Gratuit",
+    "new": "Nouveau",
+    "download": "Télécharger",
+    "correction": "Correction",
+    "resources": "{count} ressources"
+  },
+  "nav": {
+    "courses": "Cours",
+    "exams": "Examens",
+    "mockExams": "Examens blancs",
+    "cpge": "Prépa / CNC",
+    "concours": "Concours",
+    "login": "Se connecter",
+    "signup": "Commencer gratuitement"
+  },
+  "home": {
+    "hero": {
+      "badge": "Bac 2026 · CNC 2026 — prépare-toi dès maintenant",
+      "title": "Tout pour réussir ton <highlight>Bac</highlight> et ta <highlight>Prépa</highlight>",
+      "subtitle": "Cours, résumés, exercices corrigés, anciens examens nationaux et régionaux, examens blancs chronométrés — pour la 1ère et 2ème année Bac et les classes préparatoires au Maroc.",
+      "ctaPrimary": "Explorer les cours",
+      "ctaSecondary": "Voir les examens"
+    },
+    "stats": {
+      "exams": "Examens corrigés",
+      "courses": "Cours & résumés",
+      "exercises": "Exercices corrigés",
+      "students": "Élèves accompagnés"
+    },
+    "levels": {
+      "title": "Choisis ton niveau",
+      "subtitle": "Un contenu 100% conforme au programme officiel marocain, organisé par filière et par matière.",
+      "explore": "Explorer"
+    },
+    "features": {
+      "title": "Bien plus qu'une bibliothèque de PDFs",
+      "subtitle": "Qimma transforme la révision passive en apprentissage actif.",
+      "items": {
+        "library": {
+          "title": "Bibliothèque complète",
+          "desc": "Cours, résumés, exercices et anciens examens nationaux et régionaux avec corrections, filtrables par filière, matière, année et session."
+        },
+        "mock": {
+          "title": "Examens blancs chronométrés",
+          "desc": "Entraîne-toi dans les conditions réelles de l'examen : durée officielle, barème détaillé et auto-évaluation."
+        },
+        "hints": {
+          "title": "Indices progressifs",
+          "desc": "Bloqué sur un exercice ? Débloque des indices niveau par niveau avant de voir la correction — apprends à chercher, pas à recopier."
+        },
+        "tutor": {
+          "title": "Tuteur IA socratique",
+          "desc": "Un tuteur intelligent qui te guide par des questions sans jamais donner la réponse directement, disponible 24h/24."
+        },
+        "progress": {
+          "title": "Suivi de progression",
+          "desc": "Visualise tes points forts et tes lacunes par chapitre, avec un score d'autonomie et un planning de révision personnalisé."
+        },
+        "offline": {
+          "title": "Rapide, même en 3G",
+          "desc": "Un site ultra-léger pensé pour le mobile, en français, arabe et anglais. Sans publicité intrusive."
+        }
+      }
+    },
+    "how": {
+      "title": "Comment ça marche ?",
+      "steps": {
+        "one": { "title": "Choisis ta filière", "desc": "1BAC, 2BAC ou CPGE — sélectionne ta filière et tes matières." },
+        "two": { "title": "Révise activement", "desc": "Cours, exercices avec indices progressifs, quiz et examens blancs chronométrés." },
+        "three": { "title": "Suis ta progression", "desc": "Identifie tes lacunes, gagne des XP et arrive confiant le jour J." }
+      }
+    },
+    "cta": {
+      "title": "Prêt à viser la mention ?",
+      "subtitle": "Rejoins des milliers d'élèves qui préparent le Bac et le CNC avec Qimma. L'inscription est gratuite.",
+      "button": "Créer mon compte gratuit"
+    }
+  },
+  "catalog": {
+    "coursesTitle": "Cours, résumés et exercices",
+    "coursesSubtitle": "Sélectionne ton niveau puis ta filière pour accéder à toutes les matières.",
+    "examsTitle": "Anciens examens & examens blancs",
+    "examsSubtitle": "Examens nationaux, régionaux et blancs avec corrections détaillées.",
+    "level": "Niveau",
+    "stream": "Filière",
+    "subject": "Matière",
+    "year": "Année",
+    "type": "Type",
+    "session": "Session",
+    "allYears": "Toutes les années",
+    "allSubjects": "Toutes les matières",
+    "allTypes": "Tous les types",
+    "filter": "Filtrer",
+    "reset": "Réinitialiser",
+    "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}",
+    "withCorrection": "Avec correction",
+    "examTypes": {
+      "national": "Examen national",
+      "regional": "Examen régional",
+      "blanc": "Examen blanc",
+      "cnc": "Concours CNC",
+      "concours": "Concours d'accès"
+    },
+    "sessions": { "normale": "Session normale", "rattrapage": "Session de rattrapage" },
+    "subjectsCount": "{count} matières",
+    "comingSoon": "Le contenu complet arrive bientôt — la plateforme est en construction."
+  },
+  "concours": {
+    "title": "Concours & admissions",
+    "subtitle": "UM6P, ENSA, ENSAM, TAFEM, médecine, Lydex, CNC… prépare chaque concours avec les annales, des examens blancs et des quiz ciblés.",
+    "annales": "Annales & préparation",
+    "homeTitle": "Prépare aussi tes concours",
+    "homeSubtitle": "Universités sélectives, lycées d'excellence et grandes écoles : les annales et la méthode pour chaque admission.",
+    "homeCta": "Découvrir les concours"
+  },
+  "footer": {
+    "description": "La plateforme marocaine d'apprentissage pour le Bac et les classes préparatoires : cours, examens corrigés, examens blancs et tuteur IA.",
+    "sections": {
+      "platform": "Plateforme",
+      "levels": "Niveaux",
+      "about": "À propos"
+    },
+    "links": {
+      "contact": "Contact",
+      "terms": "Conditions d'utilisation",
+      "privacy": "Confidentialité"
+    },
+    "rights": "Tous droits réservés."
+  }
+}
