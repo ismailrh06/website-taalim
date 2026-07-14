@@ -16,6 +16,7 @@
     "mockExams": "Examens blancs",
     "cpge": "Prépa / CNC",
     "concours": "Concours",
+    "practice": "S'entraîner",
     "login": "Se connecter",
     "signup": "Commencer gratuitement"
   },
@@ -132,5 +133,67 @@
       "privacy": "Confidentialité"
     },
     "rights": "Tous droits réservés."
+  },
+  "exercise": {
+    "listTitle": "S'entraîner activement",
+    "listSubtitle": "Des exercices où tu apprends à chercher, pas à recopier : indices débloqués un par un, tuteur qui te guide par des questions, et un score d'autonomie qui mesure tes progrès.",
+    "badgeHints": "Indices progressifs",
+    "badgeTutor": "Tuteur socratique",
+    "difficultyLabel": "Difficulté",
+    "allDifficulties": "Toutes les difficultés",
+    "allLevels": "Tous les niveaux",
+    "difficulty": { "facile": "Facile", "moyen": "Moyen", "difficile": "Difficile" },
+    "estimated": "≈ {min} min",
+    "hintsCount": "{count} indices",
+    "breadcrumb": "S'entraîner",
+    "metaDescription": "Exercice corrigé avec indices progressifs et tuteur socratique.",
+    "statement": "Énoncé",
+    "philosophy": "Essaie d'abord par toi-même. Débloque un indice seulement quand tu bloques — ton score d'autonomie n'en sera que plus élevé.",
+    "listBadge": "Nouveau",
+    "tabs": { "hints": "Indices", "tutor": "Tuteur socratique" },
+    "autonomy": {
+      "title": "Score d'autonomie",
+      "hint": "Il diminue à chaque aide utilisée. Plus tu résous seul, plus il est élevé.",
+      "levels": {
+        "excellente": "Autonomie excellente",
+        "bonne": "Bonne autonomie",
+        "moyenne": "Autonomie moyenne",
+        "a-renforcer": "Autonomie à renforcer"
+      }
+    }
+  },
+  "hints": {
+    "title": "Indices progressifs",
+    "subtitle": "Débloque les indices un par un. Chaque niveau t'en dit un peu plus, sans jamais tout donner d'un coup.",
+    "kinds": {
+      "comprendre": "Niveau 1 — Comprendre l'énoncé",
+      "chapitre": "Niveau 2 — Identifier le chapitre",
+      "piste": "Niveau 3 — Une piste",
+      "formule": "Niveau 4 — La formule utile",
+      "premiere-etape": "Niveau 5 — La première étape"
+    },
+    "unlock": "Débloquer cet indice",
+    "locked": "Indice verrouillé",
+    "correctionTitle": "Correction complète",
+    "showCorrection": "Afficher la correction complète",
+    "showCorrectionLocked": "Débloque d'abord tous les indices",
+    "confirmCorrection": "Sûr ? Tu apprends beaucoup plus en cherchant encore un peu.",
+    "confirmYes": "Voir la correction",
+    "confirmNo": "Je continue à chercher"
+  },
+  "tutor": {
+    "title": "Tuteur socratique",
+    "subtitle": "Il ne donne jamais la réponse : il te guide par des questions. Réponds avec tes mots.",
+    "progress": "Étape {current}/{total}",
+    "placeholder": "Écris ta réponse…",
+    "finishedPlaceholder": "Dialogue terminé",
+    "send": "Envoyer",
+    "restart": "Recommencer",
+    "finishedBadge": "Raisonnement complété ✓"
+  },
+  "reflection": {
+    "title": "Après l'exercice — réfléchis",
+    "subtitle": "Ces questions fixent la compréhension. Réponds mentalement, puis compare.",
+    "modelAnswer": "Réponse-modèle"
   }
 }
