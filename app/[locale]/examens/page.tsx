@@ -181,13 +181,26 @@ export default async function ExamsPage({
                   )}
                 </div>
               </div>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 rounded-full border border-brand-700 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
-              >
-                <IconDownload className="h-4 w-4" />
-                {tCommon("download")}
-              </button>
+              {exam.pdfUrl ? (
+                <a
+                  href={exam.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-brand-700 px-4 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white"
+                >
+                  <IconDownload className="h-4 w-4" />
+                  {tCommon("download")}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400 cursor-not-allowed"
+                >
+                  <IconDownload className="h-4 w-4" />
+                  {tCommon("download")}
+                </button>
+              )}
             </li>
           );
         })}
