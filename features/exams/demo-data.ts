@@ -54,18 +54,20 @@ export const DEMO_EXAMS: Exam[] = [
   { id: "cnee-2025-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2025, session: "normale", language: "ar", durationMin: 180, hasCorrection: true },
   
   // ===== EXAMENS OFFICIELS CNEE 2024 =====
-  { id: "cnee-2024-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS241.pdf" },
-  { id: "cnee-2024-sma-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-sma", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS242.pdf" },
-  { id: "cnee-2024-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS243.pdf" },
-  { id: "cnee-2024-pc-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS244.pdf" },
-  { id: "cnee-2024-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS245.pdf" },
-  { id: "cnee-2024-lettres-ar-n", title: "الامتحان الوطني — اللغة العربية", levelId: "2bac", streamId: "2bac-lettres", subjectId: "ar", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 120, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS246.pdf" },
-  { id: "cnee-2024-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2024/RS247.pdf" },
+  // Pour télécharger, veuillez consulter: https://cnee.men.gov.ma/WebNational.aspx
+  { id: "cnee-2024-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+  { id: "cnee-2024-sma-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-sma", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
+  { id: "cnee-2024-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+  { id: "cnee-2024-pc-pc-n", title: "Examen national — Physique-Chimie", levelId: "2bac", streamId: "2bac-pc", subjectId: "pc", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
+  { id: "cnee-2024-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2024, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
+  { id: "cnee-2024-lettres-ar-n", title: "الامتحان الوطني — اللغة العربية", levelId: "2bac", streamId: "2bac-lettres", subjectId: "ar", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 120, hasCorrection: true },
+  { id: "cnee-2024-lettres-philo-n", title: "الامتحان الوطني — الفلسفة", levelId: "2bac", streamId: "2bac-lettres", subjectId: "philo", type: "national", year: 2024, session: "normale", language: "ar", durationMin: 180, hasCorrection: true },
   
   // ===== EXAMENS OFFICIELS CNEE 2023 =====
-  { id: "cnee-2023-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2023/RS231.pdf" },
-  { id: "cnee-2023-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2023/RS232.pdf" },
-  { id: "cnee-2023-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 180, hasCorrection: true, pdfUrl: "https://cnee.men.gov.ma/NATIONAL/2023/RS233.pdf" },
+  // Note: Les URLs individuelles ne sont pas accessibles, consulter CNEE directement
+  { id: "cnee-2023-sma-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-sma", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+  { id: "cnee-2023-pc-math-n", title: "Examen national — Mathématiques", levelId: "2bac", streamId: "2bac-pc", subjectId: "math", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 240, hasCorrection: true },
+  { id: "cnee-2023-svt-svt-n", title: "Examen national — SVT", levelId: "2bac", streamId: "2bac-svt", subjectId: "svt", type: "national", year: 2023, session: "normale", language: "fr", durationMin: 180, hasCorrection: true },
 
   // ===== EXAMENS ANTÉRIEURS CNEE 2019 (Exemple pour référence) =====
   // Source connue: https://cnee.men.gov.ma/NATIONAL/2019/RS191.pdf
