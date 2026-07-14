@@ -151,6 +151,7 @@
     "metaDescription": "Solved exercise with progressive hints and a Socratic tutor.",
     "statement": "Problem",
     "philosophy": "Try on your own first. Unlock a hint only when you're stuck — your autonomy score will be higher for it.",
+    "reviewCourse": "Review the lesson",
     "listBadge": "New",
     "tabs": { "hints": "Hints", "tutor": "Socratic tutor" },
     "autonomy": {
@@ -197,5 +198,28 @@
     "title": "After the exercise — reflect",
     "subtitle": "These questions lock in understanding. Answer in your head, then compare.",
     "modelAnswer": "Model answer"
+  },
+  "course": {
+    "breadcrumb": "Courses",
+    "objectives": "Learning objectives",
+    "toc": "Contents",
+    "readingMin": "{min} min read",
+    "answer": "Answer:",
+    "relatedTitle": "Now practise",
+    "relatedDesc": "Apply this lesson on a guided exercise, with progressive hints and a Socratic tutor.",
+    "relatedCta": "Practise this chapter"
+  },
+  "quiz": {
+    "progress": "Question {current}/{total}",
+    "score": "Score",
+    "correct": "Correct!",
+    "incorrect": "Not quite.",
+    "next": "Next question",
+    "seeResult": "See my result",
+    "result": "Your result",
+    "resultGood": "Excellent, you've mastered this chapter!",
+    "resultOk": "Good, but a few points still need review.",
+    "resultBad": "Re-read the lesson then try again — you'll improve.",
+    "restart": "Restart the quiz"
   }
 }

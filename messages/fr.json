@@ -151,6 +151,7 @@
     "metaDescription": "Exercice corrigé avec indices progressifs et tuteur socratique.",
     "statement": "Énoncé",
     "philosophy": "Essaie d'abord par toi-même. Débloque un indice seulement quand tu bloques — ton score d'autonomie n'en sera que plus élevé.",
+    "reviewCourse": "Réviser le cours",
     "listBadge": "Nouveau",
     "tabs": { "hints": "Indices", "tutor": "Tuteur socratique" },
     "autonomy": {
@@ -197,5 +198,28 @@
     "title": "Après l'exercice — réfléchis",
     "subtitle": "Ces questions fixent la compréhension. Réponds mentalement, puis compare.",
     "modelAnswer": "Réponse-modèle"
+  },
+  "course": {
+    "breadcrumb": "Cours",
+    "objectives": "Objectifs d'apprentissage",
+    "toc": "Sommaire",
+    "readingMin": "{min} min de lecture",
+    "answer": "Réponse :",
+    "relatedTitle": "Passe à la pratique",
+    "relatedDesc": "Applique ce cours sur un exercice guidé, avec indices progressifs et tuteur socratique.",
+    "relatedCta": "S'entraîner sur ce chapitre"
+  },
+  "quiz": {
+    "progress": "Question {current}/{total}",
+    "score": "Score",
+    "correct": "Bonne réponse !",
+    "incorrect": "Pas tout à fait.",
+    "next": "Question suivante",
+    "seeResult": "Voir mon résultat",
+    "result": "Ton résultat",
+    "resultGood": "Excellent, le chapitre est bien maîtrisé !",
+    "resultOk": "Bien, mais quelques notions sont encore à revoir.",
+    "resultBad": "Relis le cours puis retente le quiz — tu vas progresser.",
+    "restart": "Recommencer le quiz"
   }
 }

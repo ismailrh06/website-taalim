@@ -4,9 +4,10 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { DEMO_EXERCISES, getExercise } from "@/features/exercises/demo-exercises";
+import { getCoursesForExercise } from "@/features/courses/registry";
 import { getSubject, LEVELS } from "@/features/catalog/taxonomy";
 import { ExerciseWorkspace } from "@/components/exercises/exercise-workspace";
-import { IconTimer } from "@/components/icons";
+import { IconTimer, IconBookOpen } from "@/components/icons";
 
 // Pré-génère chaque exercice dans les 3 langues (bon pour le SEO — cf. §5).
 export function generateStaticParams() {
@@ -44,6 +45,7 @@ export default async function ExercisePage({
   const t = await getTranslations("exercise");
   const subject = getSubject(exercise.subjectId);
   const level = LEVELS.find((l) => l.id === exercise.levelId);
+  const relatedCourse = getCoursesForExercise(exercise.id)[0];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -99,6 +101,16 @@ export default async function ExercisePage({
           <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50 p-4 text-sm text-brand-900">
             {t("philosophy")}
           </div>
+
+          {relatedCourse && (
+            <Link
+              href={`/cours/lecon/${relatedCourse.slug}`}
+              className="mt-3 inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-500 hover:text-brand-700"
+            >
+              <IconBookOpen className="h-4 w-4" />
+              {t("reviewCourse")}
+            </Link>
+          )}
         </div>
 
         {/* Colonne outils interactifs */}
