@@ -16,6 +16,7 @@
     "mockExams": "Mock exams",
     "cpge": "Prépa / CNC",
     "concours": "Entrance exams",
+    "practice": "Practice",
     "login": "Log in",
     "signup": "Start for free"
   },
@@ -134,5 +135,67 @@
       "privacy": "Privacy"
     },
     "rights": "All rights reserved."
+  },
+  "exercise": {
+    "listTitle": "Practice actively",
+    "listSubtitle": "Exercises where you learn to think, not to copy: hints unlocked one by one, a tutor that guides you with questions, and an autonomy score that tracks your progress.",
+    "badgeHints": "Progressive hints",
+    "badgeTutor": "Socratic tutor",
+    "difficultyLabel": "Difficulty",
+    "allDifficulties": "All difficulties",
+    "allLevels": "All levels",
+    "difficulty": { "facile": "Easy", "moyen": "Medium", "difficile": "Hard" },
+    "estimated": "≈ {min} min",
+    "hintsCount": "{count} hints",
+    "breadcrumb": "Practice",
+    "metaDescription": "Solved exercise with progressive hints and a Socratic tutor.",
+    "statement": "Problem",
+    "philosophy": "Try on your own first. Unlock a hint only when you're stuck — your autonomy score will be higher for it.",
+    "listBadge": "New",
+    "tabs": { "hints": "Hints", "tutor": "Socratic tutor" },
+    "autonomy": {
+      "title": "Autonomy score",
+      "hint": "It drops with every help used. The more you solve alone, the higher it stays.",
+      "levels": {
+        "excellente": "Excellent autonomy",
+        "bonne": "Good autonomy",
+        "moyenne": "Moderate autonomy",
+        "a-renforcer": "Autonomy to build"
+      }
+    }
+  },
+  "hints": {
+    "title": "Progressive hints",
+    "subtitle": "Unlock hints one by one. Each level tells you a little more, never everything at once.",
+    "kinds": {
+      "comprendre": "Level 1 — Understand the problem",
+      "chapitre": "Level 2 — Identify the topic",
+      "piste": "Level 3 — A lead",
+      "formule": "Level 4 — The useful formula",
+      "premiere-etape": "Level 5 — The first step"
+    },
+    "unlock": "Unlock this hint",
+    "locked": "Hint locked",
+    "correctionTitle": "Full solution",
+    "showCorrection": "Show the full solution",
+    "showCorrectionLocked": "Unlock all hints first",
+    "confirmCorrection": "Sure? You learn much more by searching a little longer.",
+    "confirmYes": "Show solution",
+    "confirmNo": "Keep trying"
+  },
+  "tutor": {
+    "title": "Socratic tutor",
+    "subtitle": "It never gives the answer: it guides you with questions. Reply in your own words.",
+    "progress": "Step {current}/{total}",
+    "placeholder": "Type your answer…",
+    "finishedPlaceholder": "Dialogue finished",
+    "send": "Send",
+    "restart": "Restart",
+    "finishedBadge": "Reasoning complete ✓"
+  },
+  "reflection": {
+    "title": "After the exercise — reflect",
+    "subtitle": "These questions lock in understanding. Answer in your head, then compare.",
+    "modelAnswer": "Model answer"
   }
 }

@@ -23,6 +23,9 @@ export function Header() {
           <Link href="/examens" className="transition-colors hover:text-brand-700">
             {t("nav.exams")}
           </Link>
+          <Link href="/exercices" className="transition-colors hover:text-brand-700">
+            {t("nav.practice")}
+          </Link>
           <Link
             href={{ pathname: "/examens", query: { type: "blanc" } }}
             className="transition-colors hover:text-brand-700"
