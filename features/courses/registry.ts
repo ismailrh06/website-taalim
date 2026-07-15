@@ -3,8 +3,9 @@
 
 import type { Course } from "./types";
 import { COURS_SUITES_NUMERIQUES } from "./suites-numeriques";
+import { PROVISIONAL_COURSES } from "./provisional-courses";
 
-export const COURSES: Course[] = [COURS_SUITES_NUMERIQUES];
+export const COURSES: Course[] = [COURS_SUITES_NUMERIQUES, ...PROVISIONAL_COURSES];
 
 export function getCourse(slug: string): Course | undefined {
   return COURSES.find((c) => c.slug === slug);
