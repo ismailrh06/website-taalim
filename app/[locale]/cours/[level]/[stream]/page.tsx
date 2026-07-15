@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getAllStreamParams, getStream } from "@/features/catalog/queries";
-import { SUBJECT_ICONS } from "@/components/icons";
+import { filterCourses } from "@/features/courses/registry";
+import { SUBJECT_ICONS, IconBookOpen, IconFileCheck } from "@/components/icons";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateStaticParams() {
@@ -53,10 +54,19 @@ export default async function StreamPage({
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stream.subjects.map((subject) => {
           const Icon = SUBJECT_ICONS[subject.iconKey];
+          // Course.levelId/subjectId utilisent les identifiants de
+          // features/catalog/taxonomy.ts — levelSlug leur correspond
+          // directement, et subject.iconKey stocke ce même identifiant
+          // taxonomique (cf. prisma/seed.ts).
+          const courses = filterCourses({
+            levelId: levelSlug,
+            subjectId: subject.iconKey,
+          });
+
           return (
             <div
               key={subject.slug}
-              className="rounded-xl border border-slate-200 bg-white p-5"
+              className="flex flex-col rounded-xl border border-slate-200 bg-white p-5"
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
                 <Icon className="h-5 w-5" />
@@ -64,14 +74,34 @@ export default async function StreamPage({
               <h3 className="mt-3 font-semibold text-slate-900">
                 {subject.name[locale]}
               </h3>
+
+              {courses.length > 0 ? (
+                <ul className="mt-3 space-y-2">
+                  {courses.map((course) => (
+                    <li key={course.slug}>
+                      <Link
+                        href={`/cours/lecon/${course.slug}`}
+                        className="flex items-start gap-1.5 text-sm font-medium text-brand-700 hover:text-brand-800"
+                      >
+                        <IconBookOpen className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                        <span dir="auto">{course.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 text-sm text-slate-400">{t("noCourseYet")}</p>
+              )}
+
               <Link
                 href={{
                   pathname: "/examens",
                   query: { level: level.slug, subject: subject.slug },
                 }}
-                className="mt-2 inline-block text-sm font-medium text-brand-700 hover:text-brand-800"
+                className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-medium text-slate-500 hover:text-slate-700"
               >
-                {t("examsTitle")} →
+                <IconFileCheck className="h-3.5 w-3.5" />
+                {t("viewExams")} →
               </Link>
             </div>
           );

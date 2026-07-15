@@ -112,7 +112,10 @@
     "subjectsCount": "{count} subjects",
     "comingSoon": "Full content coming soon — the platform is under construction.",
     "viewOnCnee": "View on CNEE",
-    "notYetAvailable": "PDF coming soon"
+    "notYetAvailable": "PDF coming soon",
+    "readCourse": "Read the course",
+    "noCourseYet": "Course coming soon",
+    "viewExams": "Past exams"
   },
   "concours": {
     "title": "Entrance exams & admissions",

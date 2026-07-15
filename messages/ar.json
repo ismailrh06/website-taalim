@@ -112,7 +112,10 @@
     "subjectsCount": "{count} مواد",
     "comingSoon": "المحتوى الكامل قادم قريباً — المنصة قيد الإنشاء.",
     "viewOnCnee": "عرض على موقع CNEE",
-    "notYetAvailable": "PDF قريباً"
+    "notYetAvailable": "PDF قريباً",
+    "readCourse": "قراءة الدرس",
+    "noCourseYet": "الدرس قريباً",
+    "viewExams": "امتحانات سابقة"
   },
   "concours": {
     "title": "المباريات والولوج",
