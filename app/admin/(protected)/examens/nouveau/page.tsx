@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/authz";
 import { getLevelsWithStreams } from "@/features/catalog/queries";
 import { createExam } from "@/features/exams/actions";
 import { ExamForm } from "@/components/admin/exam-form";
 
 export default async function NewExamPage() {
+  await requireAdmin();
   const levels = await getLevelsWithStreams();
 
   async function action(_prevState: { error?: string }, formData: FormData) {

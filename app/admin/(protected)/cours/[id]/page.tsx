@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/authz";
 import { getStreamById } from "@/features/catalog/queries";
 import { updateStream } from "@/features/catalog/actions";
 import { StreamForm } from "@/components/admin/stream-form";
@@ -9,6 +10,7 @@ export default async function EditStreamPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdmin();
   const { id } = await params;
   const stream = await getStreamById(id);
   if (!stream) notFound();

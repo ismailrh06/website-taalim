@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/authz";
 import { getAdminExams } from "@/features/exams/queries";
 import { deleteExam } from "@/features/exams/actions";
 import { DeleteButton } from "@/components/admin/delete-button";
@@ -21,6 +22,7 @@ const TYPE_STYLES: Record<string, string> = {
 };
 
 export default async function AdminExamsPage() {
+  await requireAdmin();
   const exams = await getAdminExams();
 
   return (

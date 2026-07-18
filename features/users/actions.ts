@@ -47,7 +47,7 @@ export async function toggleUserActive(userId: string, isActive: boolean) {
 }
 
 const createUserSchema = z.object({
-  email: z.string().trim().email(),
+  email: z.string().trim().toLowerCase().email(),
   name: z.string().trim().min(2),
   password: z.string().min(8, "8 caractères minimum"),
   role: z.enum(["ELEVE", "ADMIN"]),
@@ -61,7 +61,9 @@ export async function createUser(formData: FormData) {
   }
   const data = parsed.data;
 
-  const existing = await prisma.user.findUnique({ where: { email: data.email } });
+  const existing = await prisma.user.findFirst({
+    where: { email: { equals: data.email, mode: "insensitive" } },
+  });
   if (existing) return { error: "Un compte existe déjà avec cet email." };
 
   const passwordHash = await bcrypt.hash(data.password, 12);

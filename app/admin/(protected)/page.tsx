@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/authz";
 import {
   IconFileCheck,
   IconLibrary,
@@ -15,7 +16,19 @@ const ACTION_STYLES = {
   DELETE: { label: "a supprimé", dot: "bg-red-500" },
 } as const;
 
+function timeAgo(date: Date) {
+  const minutes = Math.round((Date.now() - date.getTime()) / 60000);
+  if (minutes < 1) return "à l'instant";
+  if (minutes < 60) return `il y a ${minutes} min`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `il y a ${hours} h`;
+  const days = Math.round(hours / 24);
+  if (days < 7) return `il y a ${days} j`;
+  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+}
+
 export default async function AdminDashboard() {
+  const user = await requireAdmin();
   const [examCount, verifiedCount, streamCount, userCount, recentLogs] = await Promise.all([
     prisma.exam.count(),
     prisma.exam.count({ where: { pdfUrl: { not: null } } }),
@@ -29,11 +42,18 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { label: "Examens", value: examCount, icon: IconFileCheck, tint: "from-brand-50 to-brand-100 text-brand-700" },
-    { label: "PDF vérifiés", value: verifiedCount, icon: IconCheck, tint: "from-emerald-50 to-emerald-100 text-emerald-700" },
-    { label: "Filières", value: streamCount, icon: IconLibrary, tint: "from-sky-50 to-sky-100 text-sky-700" },
-    { label: "Utilisateurs", value: userCount, icon: IconUsers, tint: "from-amber-50 to-amber-100 text-amber-700" },
+    { label: "Examens", value: examCount, href: "/admin/examens", icon: IconFileCheck, tint: "from-brand-50 to-brand-100 text-brand-700" },
+    { label: "PDF vérifiés", value: verifiedCount, href: "/admin/examens", icon: IconCheck, tint: "from-emerald-50 to-emerald-100 text-emerald-700" },
+    { label: "Filières", value: streamCount, href: "/admin/cours", icon: IconLibrary, tint: "from-sky-50 to-sky-100 text-sky-700" },
+    { label: "Utilisateurs", value: userCount, href: "/admin/utilisateurs", icon: IconUsers, tint: "from-amber-50 to-amber-100 text-amber-700" },
   ];
+
+  const firstName = (user.name ?? "Admin").split(" ")[0];
+  const today = new Date().toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 
   return (
     <div>
@@ -41,18 +61,20 @@ export default async function AdminDashboard() {
         Vue d&apos;ensemble
       </p>
       <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
-        Tableau de bord
+        Bonjour, {firstName}
       </h1>
+      <p className="mt-1.5 text-sm capitalize text-slate-500">{today}</p>
 
       {/* Stats */}
       <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s) => (
-          <div
+          <Link
             key={s.label}
-            className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+            href={s.href}
+            className="group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
           >
             <span
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${s.tint}`}
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br transition-transform group-hover:scale-110 ${s.tint}`}
             >
               <s.icon className="h-5 w-5" />
             </span>
@@ -60,12 +82,12 @@ export default async function AdminDashboard() {
               {s.value}
             </p>
             <p className="mt-0.5 text-sm font-medium text-slate-500">{s.label}</p>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* Actions rapides */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/admin/examens/nouveau"
           className="group flex items-center gap-4 rounded-2xl bg-gradient-to-r from-brand-700 to-brand-600 p-5 text-white shadow-lg shadow-brand-700/20 transition-all hover:shadow-brand-700/30"
@@ -88,6 +110,18 @@ export default async function AdminDashboard() {
           <div>
             <p className="font-bold text-slate-900">Gérer les filières</p>
             <p className="text-sm text-slate-500">Créer, réordonner, assigner les matières</p>
+          </div>
+        </Link>
+        <Link
+          href="/admin/utilisateurs"
+          className="group flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 text-amber-700 transition-transform group-hover:scale-110">
+            <IconUsers className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="font-bold text-slate-900">Gérer les utilisateurs</p>
+            <p className="text-sm text-slate-500">Comptes, rôles et accès admin</p>
           </div>
         </Link>
       </div>
@@ -124,11 +158,14 @@ export default async function AdminDashboard() {
                     </span>{" "}
                     <span className="font-medium text-slate-700">« {log.entityLabel} »</span>
                   </p>
-                  <span className="shrink-0 text-xs tabular-nums text-slate-400">
-                    {log.createdAt.toLocaleString("fr-FR", {
+                  <span
+                    className="shrink-0 text-xs tabular-nums text-slate-400"
+                    title={log.createdAt.toLocaleString("fr-FR", {
                       dateStyle: "short",
                       timeStyle: "short",
                     })}
+                  >
+                    {timeAgo(log.createdAt)}
                   </span>
                 </li>
               );

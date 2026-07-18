@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/authz";
 import { getLevelsWithStreams } from "@/features/catalog/queries";
 import { getAdminExamById } from "@/features/exams/queries";
 import { updateExam } from "@/features/exams/actions";
@@ -10,6 +11,7 @@ export default async function EditExamPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdmin();
   const { id } = await params;
   const [levels, exam] = await Promise.all([getLevelsWithStreams(), getAdminExamById(id)]);
   if (!exam) notFound();

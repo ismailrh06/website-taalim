@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getLevel, getLevels, getStreamsByLevel } from "@/features/catalog/queries";
+import { PageHero } from "@/components/decor";
+import { Reveal } from "@/components/reveal";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateStaticParams() {
@@ -34,34 +36,39 @@ export default async function LevelPage({
   const streams = await getStreamsByLevel(levelSlug);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <span className="inline-block rounded-lg bg-brand-100 px-3 py-1 text-sm font-bold text-brand-800">
-        {level.shortName[locale]}
-      </span>
-      <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-        {level.name[locale]}
-      </h1>
-      <p className="mt-3 max-w-2xl text-slate-600">
-        {level.description[locale]}
-      </p>
+    <>
+      <PageHero
+        patternId={`level-zellige-${levelSlug}`}
+        eyebrow={level.shortName[locale]}
+        title={level.name[locale]}
+        subtitle={level.description[locale]}
+      />
 
-      <h2 className="mt-12 text-xl font-bold text-slate-900">{t("stream")}</h2>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {streams.map((stream) => (
-          <Link
-            key={stream.slug}
-            href={`/cours/${level.slug}/${stream.slug}`}
-            className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:border-brand-300 hover:shadow-md"
-          >
-            <h3 className="font-semibold text-slate-900 group-hover:text-brand-800">
-              {stream.name[locale]}
-            </h3>
-            <p className="mt-1 text-sm text-slate-500">
-              {t("subjectsCount", { count: stream.subjects.length })}
-            </p>
-          </Link>
-        ))}
+      <div className="bg-slate-50">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <Reveal>
+            <h2 className="text-xl font-bold text-slate-900">{t("stream")}</h2>
+          </Reveal>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {streams.map((stream, i) => (
+              <Reveal key={stream.slug} delay={(i % 3) * 90}>
+                <Link
+                  href={`/cours/${level.slug}/${stream.slug}`}
+                  className="group relative block overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-900/5"
+                >
+                  <span className="absolute inset-y-0 start-0 w-1 bg-gradient-to-b from-brand-500 to-brand-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <h3 className="font-semibold text-slate-900 transition-colors group-hover:text-brand-800">
+                    {stream.name[locale]}
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {t("subjectsCount", { count: stream.subjects.length })}
+                  </p>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

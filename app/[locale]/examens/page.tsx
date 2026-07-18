@@ -15,6 +15,8 @@ import {
   IconDownload,
   IconExternalLink,
 } from "@/components/icons";
+import { PageHero } from "@/components/decor";
+import { Reveal } from "@/components/reveal";
 import type { Locale } from "@/i18n/routing";
 
 const EXAM_TYPES: ExamType[] = ["national", "regional", "blanc", "cnc", "concours"];
@@ -62,15 +64,20 @@ export default async function ExamsPage({
     "w-full appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h1 className="text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-        {t("examsTitle")}
-      </h1>
-      <p className="mt-3 max-w-2xl text-slate-600">{t("examsSubtitle")}</p>
+    <>
+      <PageHero
+        patternId="examens-zellige"
+        eyebrow="CNEE · Annales officielles"
+        title={t("examsTitle")}
+        subtitle={t("examsSubtitle")}
+      />
 
+      <div className="bg-slate-50">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <Reveal>
       <form
         method="get"
-        className="mt-10 grid gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-2 lg:grid-cols-5"
+        className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-5"
       >
         <label className="block">
           <span className="mb-1 block text-xs font-semibold text-slate-600">
@@ -155,6 +162,7 @@ export default async function ExamsPage({
           </Link>
         </div>
       </form>
+      </Reveal>
 
       <p className="mt-8 text-sm font-medium text-slate-500">
         {t("results", { count: exams.length })}
@@ -168,7 +176,7 @@ export default async function ExamsPage({
           return (
             <li
               key={exam.id}
-              className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 transition-shadow hover:shadow-md"
+              className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-900/5"
             >
               <div dir="auto">
                 <h2 className="font-semibold text-slate-900">{exam.title}</h2>
@@ -236,9 +244,11 @@ export default async function ExamsPage({
         })}
       </ul>
 
-      <p className="mt-10 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+      <p className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         {t("comingSoon")}
       </p>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

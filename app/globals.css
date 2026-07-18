@@ -25,6 +25,43 @@
   --color-brand-950: #042f2e;
   --color-accent-400: #fbbf24;
   --color-accent-500: #f59e0b;
+
+  /* Animations décoratives (désactivées si prefers-reduced-motion) */
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-float-slow: float 13s ease-in-out infinite;
+  --animate-twinkle: twinkle 3.4s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 [dir="rtl"] body {
@@ -37,4 +74,36 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ————— Apparition au scroll (composant components/reveal.tsx) ————— */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ————— Accessibilité : aucune animation si l'utilisateur les refuse ————— */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

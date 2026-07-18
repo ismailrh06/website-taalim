@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/authz";
 import { createStream } from "@/features/catalog/actions";
 import { StreamForm } from "@/components/admin/stream-form";
 
@@ -7,6 +8,7 @@ export default async function NewStreamPage({
 }: {
   searchParams: Promise<{ niveau?: string }>;
 }) {
+  await requireAdmin();
   const { niveau } = await searchParams;
   const levelSlug = niveau ?? "1bac";
 

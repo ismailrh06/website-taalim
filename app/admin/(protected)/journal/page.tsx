@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/authz";
 import { IconClock } from "@/components/icons";
 
 const ACTION_META = {
@@ -16,6 +17,7 @@ const ENTITY_LABELS: Record<string, string> = {
 };
 
 export default async function AdminAuditLogPage() {
+  await requireAdmin();
   const logs = await prisma.auditLog.findMany({
     take: 200,
     orderBy: { createdAt: "desc" },

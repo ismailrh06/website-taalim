@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/authz";
 import { getLevelsWithStreams } from "@/features/catalog/queries";
 import { StreamList } from "@/components/admin/stream-list";
 import { IconPlus } from "@/components/icons";
 
 export default async function AdminCoursesPage() {
+  await requireAdmin();
   const levels = await getLevelsWithStreams();
 
   return (
