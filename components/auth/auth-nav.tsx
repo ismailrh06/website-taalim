@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { logoutStudent } from "@/features/auth/actions";
@@ -97,7 +98,8 @@ export function AuthNav() {
               {t("auth.menu.mySpace")}
             </Link>
             {user.role === "ADMIN" && (
-              <a
+              {/* next/link brut : /admin vit hors du routage i18n, pas de préfixe de locale */}
+              <NextLink
                 href="/admin"
                 role="menuitem"
                 className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-brand-50 hover:text-brand-800"
@@ -106,7 +108,7 @@ export function AuthNav() {
                   A
                 </span>
                 Admin
-              </a>
+              </NextLink>
             )}
             <form action={logoutStudent}>
               <button
