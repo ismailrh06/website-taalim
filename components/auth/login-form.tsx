@@ -7,7 +7,7 @@ import { authInputClass, authLabelClass, authSubmitClass } from "./ui";
 import { PasswordInput } from "./password-input";
 import { Spinner } from "./spinner";
 
-export function StudentLoginForm() {
+export function StudentLoginForm({ next }: { next?: string }) {
   const t = useTranslations("auth");
   const [state, formAction, pending] = useActionState<AuthActionState, FormData>(
     loginStudent,
@@ -16,6 +16,7 @@ export function StudentLoginForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      {next && <input type="hidden" name="next" value={next} />}
       {state.error && (
         <p
           role="alert"

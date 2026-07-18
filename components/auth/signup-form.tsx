@@ -24,7 +24,7 @@ function scoreOf(password: string) {
   return score;
 }
 
-export function StudentSignupForm() {
+export function StudentSignupForm({ next }: { next?: string }) {
   const t = useTranslations("auth");
   const [state, formAction, pending] = useActionState<AuthActionState, FormData>(
     registerStudent,
@@ -36,6 +36,7 @@ export function StudentSignupForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      {next && <input type="hidden" name="next" value={next} />}
       {state.error && (
         <p
           role="alert"

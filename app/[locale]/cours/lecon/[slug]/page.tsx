@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { auth } from "@/auth";
 import { COURSES, getCourse } from "@/features/courses/registry";
 import { getExercise } from "@/features/exercises/demo-exercises";
 import { getSubject, LEVELS } from "@/features/catalog/taxonomy";
@@ -36,6 +37,16 @@ export default async function LessonPage({
 
   const course = getCourse(slug);
   if (!course) notFound();
+
+  // Contenu réservé aux comptes connectés — retour sur cette même leçon
+  // une fois la connexion effectuée.
+  const session = await auth();
+  if (!session?.user) {
+    redirect({
+      href: { pathname: "/connexion", query: { next: `/cours/lecon/${slug}` } },
+      locale,
+    });
+  }
 
   const t = await getTranslations("course");
   const subject = getSubject(course.subjectId);

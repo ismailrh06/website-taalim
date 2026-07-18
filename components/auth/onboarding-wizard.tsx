@@ -17,6 +17,19 @@ const cardClass = (selected: boolean) =>
       : "border-white/10 bg-white/[0.06] hover:border-white/25 hover:bg-white/10 hover:-translate-y-0.5"
   }`;
 
+// La carte passe sur fond blanc une fois sélectionnée — le texte doit suivre,
+// sinon il reste blanc sur blanc (bug remonté par l'utilisateur).
+const titleClass = (selected: boolean) =>
+  `transition-colors duration-200 ${selected ? "text-slate-900" : "text-white"}`;
+const subtleClass = (selected: boolean) =>
+  `transition-colors duration-200 ${selected ? "text-brand-700" : "text-brand-200"}`;
+const mutedClass = (selected: boolean) =>
+  `transition-colors duration-200 ${selected ? "text-slate-500" : "text-brand-100/60"}`;
+const pillClass = (selected: boolean) =>
+  `rounded-full px-2.5 py-0.5 text-[11px] font-medium transition-colors duration-200 ${
+    selected ? "bg-brand-50 text-brand-700" : "bg-white/10 text-brand-100/80"
+  }`;
+
 function SelectedBadge({ visible }: { visible: boolean }) {
   return (
     <span
@@ -32,9 +45,11 @@ function SelectedBadge({ visible }: { visible: boolean }) {
 export function OnboardingWizard({
   levels,
   firstName,
+  next,
 }: {
   levels: LevelWithStreams[];
   firstName: string;
+  next?: string;
 }) {
   const t = useTranslations("auth.onboarding");
   const locale = useLocale() as Locale;
@@ -49,7 +64,7 @@ export function OnboardingWizard({
 
   const finish = (input: { levelSlug?: string; streamSlug?: string }) =>
     startTransition(async () => {
-      await completeOnboarding(input);
+      await completeOnboarding({ ...input, next });
     });
 
   return (
@@ -112,13 +127,13 @@ export function OnboardingWizard({
                   style={{ animationDelay: `${120 + i * 80}ms` }}
                 >
                   <SelectedBadge visible={levelSlug === l.slug} />
-                  <p className="text-lg font-extrabold text-white">
+                  <p className={`text-lg font-extrabold ${titleClass(levelSlug === l.slug)}`}>
                     {l.shortName[locale]}
                   </p>
-                  <p className="mt-0.5 text-sm font-semibold text-brand-200">
+                  <p className={`mt-0.5 text-sm font-semibold ${subtleClass(levelSlug === l.slug)}`}>
                     {l.name[locale]}
                   </p>
-                  <p className="mt-2 line-clamp-2 text-xs leading-5 text-brand-100/60">
+                  <p className={`mt-2 line-clamp-2 text-xs leading-5 ${mutedClass(levelSlug === l.slug)}`}>
                     {l.description[locale]}
                   </p>
                 </button>
@@ -146,21 +161,20 @@ export function OnboardingWizard({
                   style={{ animationDelay: `${120 + i * 70}ms` }}
                 >
                   <SelectedBadge visible={streamSlug === s.slug} />
-                  <p className="font-bold text-white">{s.name[locale]}</p>
-                  <p className="mt-1 text-xs font-medium text-brand-200/80">
+                  <p className={`font-bold ${titleClass(streamSlug === s.slug)}`}>
+                    {s.name[locale]}
+                  </p>
+                  <p className={`mt-1 text-xs font-medium ${subtleClass(streamSlug === s.slug)}`}>
                     {t("subjectsCount", { count: s.subjects.length })}
                   </p>
                   <span className="mt-3 flex flex-wrap gap-1.5">
                     {s.subjects.slice(0, 4).map((subject) => (
-                      <span
-                        key={subject.slug}
-                        className="rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-medium text-brand-100/80"
-                      >
+                      <span key={subject.slug} className={pillClass(streamSlug === s.slug)}>
                         {subject.name[locale]}
                       </span>
                     ))}
                     {s.subjects.length > 4 && (
-                      <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-medium text-brand-100/60">
+                      <span className={pillClass(streamSlug === s.slug)}>
                         +{s.subjects.length - 4}
                       </span>
                     )}

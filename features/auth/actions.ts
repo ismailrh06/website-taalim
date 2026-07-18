@@ -10,6 +10,7 @@ import { redirect } from "@/i18n/navigation";
 import { signIn, signOut, auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { safeNext } from "@/lib/safe-redirect";
 
 /// Les actions renvoient des codes d'erreur (pas des phrases) : le formulaire
 /// client les traduit via le namespace `auth.errors`, dans la locale active.
@@ -44,6 +45,7 @@ export async function registerStudent(
     return { error: "invalid-email" };
   }
   const { name, email, password } = parsed.data;
+  const next = safeNext(formData.get("next"));
 
   const allowed = await checkRateLimit(`signup:ip:${await clientIp()}`, 5, 3600);
   if (!allowed) return { error: "rate-limited" };
@@ -66,7 +68,10 @@ export async function registerStudent(
     redirect({ href: "/connexion", locale });
   }
 
-  redirect({ href: "/bienvenue", locale });
+  redirect({
+    href: next ? { pathname: "/bienvenue", query: { next } } : "/bienvenue",
+    locale,
+  });
   return {};
 }
 
@@ -77,6 +82,7 @@ export async function loginStudent(
   const locale = await getLocale();
   const email = formData.get("email");
   const password = formData.get("password");
+  const next = safeNext(formData.get("next"));
 
   try {
     await signIn("credentials", { email, password, redirect: false });
@@ -100,13 +106,20 @@ export async function loginStudent(
         })
       : null;
 
-  redirect({ href: user?.onboardedAt ? "/" : "/bienvenue", locale });
+  if (user?.onboardedAt) {
+    redirect({ href: next ?? "/", locale });
+  }
+  redirect({
+    href: next ? { pathname: "/bienvenue", query: { next } } : "/bienvenue",
+    locale,
+  });
   return {};
 }
 
 export async function completeOnboarding(input: {
   levelSlug?: string;
   streamSlug?: string;
+  next?: string;
 }) {
   const locale = await getLocale();
   const session = await auth();
@@ -133,6 +146,8 @@ export async function completeOnboarding(input: {
     data: { levelSlug, streamSlug, onboardedAt: new Date() },
   });
 
+  const next = safeNext(input.next);
+  if (next) redirect({ href: next, locale });
   if (levelSlug && streamSlug) {
     redirect({ href: `/cours/${levelSlug}/${streamSlug}`, locale });
   }
