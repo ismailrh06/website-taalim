@@ -72,9 +72,18 @@
     "how": {
       "title": "Comment ça marche ?",
       "steps": {
-        "one": { "title": "Choisis ta filière", "desc": "1BAC, 2BAC ou CPGE — sélectionne ta filière et tes matières." },
-        "two": { "title": "Révise activement", "desc": "Cours, exercices avec indices progressifs, quiz et examens blancs chronométrés." },
-        "three": { "title": "Suis ta progression", "desc": "Identifie tes lacunes, gagne des XP et arrive confiant le jour J." }
+        "one": {
+          "title": "Choisis ta filière",
+          "desc": "1BAC, 2BAC ou CPGE — sélectionne ta filière et tes matières."
+        },
+        "two": {
+          "title": "Révise activement",
+          "desc": "Cours, exercices avec indices progressifs, quiz et examens blancs chronométrés."
+        },
+        "three": {
+          "title": "Suis ta progression",
+          "desc": "Identifie tes lacunes, gagne des XP et arrive confiant le jour J."
+        }
       }
     },
     "cta": {
@@ -108,7 +117,10 @@
       "cnc": "Concours CNC",
       "concours": "Concours d'accès"
     },
-    "sessions": { "normale": "Session normale", "rattrapage": "Session de rattrapage" },
+    "sessions": {
+      "normale": "Session normale",
+      "rattrapage": "Session de rattrapage"
+    },
     "subjectsCount": "{count} matières",
     "comingSoon": "Le contenu complet arrive bientôt — la plateforme est en construction.",
     "viewOnCnee": "Voir sur le CNEE",
@@ -147,7 +159,11 @@
     "difficultyLabel": "Difficulté",
     "allDifficulties": "Toutes les difficultés",
     "allLevels": "Tous les niveaux",
-    "difficulty": { "facile": "Facile", "moyen": "Moyen", "difficile": "Difficile" },
+    "difficulty": {
+      "facile": "Facile",
+      "moyen": "Moyen",
+      "difficile": "Difficile"
+    },
     "estimated": "≈ {min} min",
     "hintsCount": "{count} indices",
     "breadcrumb": "S'entraîner",
@@ -156,7 +172,10 @@
     "philosophy": "Essaie d'abord par toi-même. Débloque un indice seulement quand tu bloques — ton score d'autonomie n'en sera que plus élevé.",
     "reviewCourse": "Réviser le cours",
     "listBadge": "Nouveau",
-    "tabs": { "hints": "Indices", "tutor": "Tuteur socratique" },
+    "tabs": {
+      "hints": "Indices",
+      "tutor": "Tuteur socratique"
+    },
     "autonomy": {
       "title": "Score d'autonomie",
       "hint": "Il diminue à chaque aide utilisée. Plus tu résous seul, plus il est élevé.",
@@ -224,5 +243,73 @@
     "resultOk": "Bien, mais quelques notions sont encore à revoir.",
     "resultBad": "Relis le cours puis retente le quiz — tu vas progresser.",
     "restart": "Recommencer le quiz"
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour !",
+      "subtitle": "Connecte-toi pour reprendre ta préparation là où tu t'es arrêté.",
+      "email": "Email",
+      "emailPlaceholder": "toi@exemple.com",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "noAccount": "Pas encore de compte ?",
+      "signupLink": "Créer un compte gratuit",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe"
+    },
+    "signup": {
+      "title": "Crée ton compte gratuit",
+      "subtitle": "Moins d'une minute pour accéder aux cours, examens et corrigés.",
+      "name": "Nom complet",
+      "namePlaceholder": "ex. Amine El Idrissi",
+      "email": "Email",
+      "emailPlaceholder": "toi@exemple.com",
+      "password": "Mot de passe",
+      "passwordHint": "8 caractères minimum",
+      "submit": "Créer mon compte",
+      "submitting": "Création du compte…",
+      "hasAccount": "Déjà un compte ?",
+      "loginLink": "Se connecter",
+      "strength": {
+        "weak": "Faible",
+        "medium": "Moyen",
+        "good": "Bon",
+        "strong": "Excellent"
+      },
+      "perks": {
+        "one": "Cours conformes au programme officiel",
+        "two": "Examens nationaux avec corrigés",
+        "three": "Exercices interactifs et suivi"
+      }
+    },
+    "errors": {
+      "bad-credentials": "Email ou mot de passe incorrect.",
+      "rate-limited": "Trop de tentatives. Patiente quelques minutes puis réessaie.",
+      "email-taken": "Un compte existe déjà avec cet email.",
+      "invalid-email": "Adresse email invalide.",
+      "invalid-name": "Ton nom doit contenir au moins 2 caractères.",
+      "invalid-password": "Le mot de passe doit contenir au moins 8 caractères."
+    },
+    "onboarding": {
+      "step": "Étape {current} sur {total}",
+      "welcome": "Bienvenue, {name} !",
+      "welcomeSubtitle": "Deux petites questions pour personnaliser ton espace.",
+      "levelTitle": "Quel est ton niveau ?",
+      "levelSubtitle": "On te proposera les cours et examens de ton programme.",
+      "streamTitle": "Et ta filière ?",
+      "streamSubtitle": "On affine pour ne te montrer que tes matières.",
+      "subjectsCount": "{count} matières",
+      "back": "Retour",
+      "continue": "Continuer",
+      "finish": "C'est parti !",
+      "finishing": "Préparation de ton espace…",
+      "skip": "Passer pour l'instant"
+    },
+    "menu": {
+      "account": "Mon compte",
+      "mySpace": "Mes cours",
+      "logout": "Se déconnecter"
+    }
   }
 }

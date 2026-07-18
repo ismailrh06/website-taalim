@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./locale-switcher";
 import { Logo } from "./logo";
+import { AuthNav } from "./auth/auth-nav";
 
 const navLinkClass =
   "relative py-1 transition-colors hover:text-brand-700 " +
@@ -48,12 +49,7 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
-          <Link
-            href="/cours"
-            className="hidden rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/20 transition-all hover:-translate-y-0.5 hover:bg-brand-800 hover:shadow-md sm:block"
-          >
-            {t("nav.signup")}
-          </Link>
+          <AuthNav />
         </div>
       </div>
     </header>

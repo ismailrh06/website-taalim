@@ -52,6 +52,12 @@ model User {
   updatedAt    DateTime   @updatedAt
   auditLogs    AuditLog[]
 
+  // Préférences choisies pendant l'onboarding élève — slugs plutôt que FK :
+  // le profil survit si un niveau/filière est renommé ou supprimé du catalogue.
+  levelSlug   String?
+  streamSlug  String?
+  onboardedAt DateTime?
+
   @@map("users")
 }
 
