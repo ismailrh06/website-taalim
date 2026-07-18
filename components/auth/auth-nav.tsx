@@ -98,7 +98,7 @@ export function AuthNav() {
               {t("auth.menu.mySpace")}
             </Link>
             {user.role === "ADMIN" && (
-              {/* next/link brut : /admin vit hors du routage i18n, pas de préfixe de locale */}
+              // next/link brut : /admin vit hors du routage i18n, pas de préfixe de locale
               <NextLink
                 href="/admin"
                 role="menuitem"
