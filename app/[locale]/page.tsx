@@ -138,6 +138,39 @@ export default async function HomePage({
         </Reveal>
       </section>
 
+      {/* ————— Comment ça marche ————— */}
+      <section className="bg-white py-20 sm:py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <Reveal>
+            <h2 className="text-balance text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              {t("home.how.title")}
+            </h2>
+          </Reveal>
+          <div className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+            {/* Ligne de liaison (desktop) */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-[16%] top-6 hidden border-t-2 border-dashed border-brand-200 md:block"
+            />
+            {(["one", "two", "three"] as const).map((step, i) => (
+              <Reveal key={step} delay={i * 140}>
+                <div className="relative text-center">
+                  <span className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-800 text-lg font-bold text-white shadow-lg shadow-brand-700/25 ring-4 ring-white">
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-5 text-lg font-bold text-slate-900">
+                    {t(`home.how.steps.${step}.title`)}
+                  </h3>
+                  <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-600">
+                    {t(`home.how.steps.${step}.desc`)}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ————— Niveaux ————— */}
       <section className="relative overflow-hidden bg-slate-50 py-20 sm:py-24">
         <ZelligePattern
@@ -274,39 +307,6 @@ export default async function HomePage({
                 </Reveal>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ————— Comment ça marche ————— */}
-      <section className="bg-white py-20 sm:py-24">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <Reveal>
-            <h2 className="text-balance text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              {t("home.how.title")}
-            </h2>
-          </Reveal>
-          <div className="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-            {/* Ligne de liaison (desktop) */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-[16%] top-6 hidden border-t-2 border-dashed border-brand-200 md:block"
-            />
-            {(["one", "two", "three"] as const).map((step, i) => (
-              <Reveal key={step} delay={i * 140}>
-                <div className="relative text-center">
-                  <span className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-800 text-lg font-bold text-white shadow-lg shadow-brand-700/25 ring-4 ring-white">
-                    {i + 1}
-                  </span>
-                  <h3 className="mt-5 text-lg font-bold text-slate-900">
-                    {t(`home.how.steps.${step}.title`)}
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-600">
-                    {t(`home.how.steps.${step}.desc`)}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>
