@@ -84,7 +84,7 @@ export default async function HomePage({
           {/* Voile sombre : le texte reste lisible, la photo reste présente */}
           <div className="absolute inset-0 bg-gradient-to-b from-brand-950/95 via-brand-950/85 to-brand-900/75" />
         </div>
-        <HeroSky />
+        <HeroSky pattern={false} />
 
         <div className="relative mx-auto max-w-7xl px-4 pb-48 pt-20 text-center sm:px-6 sm:pb-60 sm:pt-28">
           <span className="inline-flex items-center gap-2 rounded-full border border-brand-400/40 bg-brand-950/40 px-4 py-1.5 text-sm font-medium text-brand-200 backdrop-blur">
@@ -338,10 +338,6 @@ export default async function HomePage({
           />
           <div className="absolute inset-0 bg-gradient-to-b from-brand-950/95 via-brand-950/85 to-brand-950/95" />
         </div>
-        <ZelligePattern
-          id="concours-zellige"
-          className="pointer-events-none absolute inset-0 h-full w-full text-brand-300/[0.05]"
-        />
         <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6">
           <Reveal>
             <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
@@ -424,10 +420,6 @@ export default async function HomePage({
           />
           <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/75 to-brand-950/90" />
         </div>
-        <ZelligePattern
-          id="cta-zellige"
-          className="pointer-events-none absolute inset-0 h-full w-full text-brand-300/[0.05]"
-        />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <Reveal>
             <h2 className="text-balance text-3xl font-bold tracking-tight drop-shadow-sm sm:text-4xl">

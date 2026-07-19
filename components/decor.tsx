@@ -78,8 +78,13 @@ export function SummitRidge({
   );
 }
 
-/** Ciel animé du hero : halo, soleil flottant et étoiles scintillantes. */
-export function HeroSky() {
+/**
+ * Ciel animé du hero : halo, soleil flottant et étoiles scintillantes.
+ * `pattern=false` retire le filigrane zellige — sur une photo, ce motif
+ * géométrique entre en collision avec le détail de l'image et donne un
+ * rendu de grille cassée plutôt qu'une texture discrète.
+ */
+export function HeroSky({ pattern = true }: { pattern?: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       {/* Halo lumineux */}
@@ -91,10 +96,12 @@ export function HeroSky() {
         }}
       />
       {/* Zellige en filigrane */}
-      <ZelligePattern
-        id="hero-zellige"
-        className="absolute inset-0 h-full w-full text-brand-300/[0.06]"
-      />
+      {pattern && (
+        <ZelligePattern
+          id="hero-zellige"
+          className="absolute inset-0 h-full w-full text-brand-300/[0.06]"
+        />
+      )}
       {/* Soleil */}
       <div className="absolute end-[12%] top-[14%] animate-float-slow">
         <div className="relative">
