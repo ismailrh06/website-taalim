@@ -1,0 +1,373 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Les suites numériques (2BAC)
+%  Basé sur le template cours.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{assets/}}
+\newcommand{\logofile}{assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- PC, SVT, SM}
+\newcommand{\chapitretitre}{Les suites numériques}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title=#3, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Reconnaître une suite et la définir de façon explicite ou par récurrence.
+  \item Identifier et exploiter une suite arithmétique ou géométrique (terme général, somme).
+  \item Étudier le sens de variation et le caractère borné d'une suite.
+  \item Calculer une limite à l'aide des limites de référence et des opérations sur les limites.
+  \item Utiliser les théorèmes de convergence (monotonie, comparaison, encadrement).
+  \item Traiter une suite arithmético-géométrique du type $u_{n+1} = a\,u_n + b$.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 : GENERALITES -------------------
+\section{Généralités sur les suites}
+
+\begin{definition}
+Une \textbf{suite numérique} est une fonction qui associe, à chaque entier naturel $n$, un nombre réel noté $u_n$. On note la suite $(u_n)$ pour la distinguer de son \textbf{terme général} $u_n$, qui est un nombre. Le premier terme (souvent $u_0$, parfois $u_1$) est appelé \textbf{terme initial}.
+\end{definition}
+
+Il existe deux grandes façons de définir une suite, et savoir les distinguer est essentiel car les méthodes d'étude ne sont pas les mêmes :
+
+\begin{enumerate}[leftmargin=8mm, itemsep=1mm]
+  \item \textbf{Définition explicite} : une formule directe $u_n = f(n)$ calcule n'importe quel terme sans connaître les précédents. Exemple : $u_n = 2n + 3$.
+  \item \textbf{Définition par récurrence} : on donne le premier terme et une relation qui calcule chaque terme à partir du précédent, $u_{n+1} = f(u_n)$. Exemple : $u_0 = 1$ et $u_{n+1} = 2u_n + 1$.
+\end{enumerate}
+
+\begin{remarque}[Astuce]
+Si tu peux calculer $u_{100}$ directement en remplaçant $n$ par $100$, la définition est \emph{explicite}. Si tu as besoin de $u_{99}$ pour obtenir $u_{100}$, c'est une \emph{récurrence}.
+\end{remarque}
+
+% ------------------- SECTION 2 : ARITHMETIQUES -------------------
+\section{Suites arithmétiques}
+
+\begin{definition}
+Une suite $(u_n)$ est \textbf{arithmétique} lorsqu'on passe d'un terme au suivant en ajoutant toujours le même réel $r$, appelé la \textbf{raison} :
+\[
+  u_{n+1} = u_n + r \qquad \text{pour tout } n \in \mathbb{N}.
+\]
+\end{definition}
+
+\begin{propriete}[Terme général et somme]
+Pour une suite arithmétique de raison $r$ :
+\[
+  u_n = u_0 + n\,r
+  \qquad\text{et plus généralement}\qquad
+  u_n = u_p + (n - p)\,r.
+\]
+La somme de termes consécutifs vaut :
+\[
+  S = (\text{nombre de termes}) \times \frac{\text{premier terme} + \text{dernier terme}}{2}.
+\]
+En particulier : $1 + 2 + \cdots + n = \dfrac{n(n+1)}{2}$.
+\end{propriete}
+
+\begin{exemple}[Méthode attendue au bac]
+Soit $u_n = 5n - 2$. Montrons que $(u_n)$ est arithmétique :
+\[
+  u_{n+1} - u_n = \bigl[5(n+1) - 2\bigr] - \bigl[5n - 2\bigr] = 5n + 5 - 2 - 5n + 2 = 5.
+\]
+La différence est constante : $(u_n)$ est arithmétique de raison $r = 5$ et de premier terme $u_0 = -2$.
+\end{exemple}
+
+% ------------------- SECTION 3 : GEOMETRIQUES -------------------
+\section{Suites géométriques}
+
+\begin{definition}
+Une suite $(u_n)$ est \textbf{géométrique} lorsqu'on passe d'un terme au suivant en multipliant toujours par le même réel $q$, appelé la \textbf{raison} :
+\[
+  u_{n+1} = q \cdot u_n \qquad \text{pour tout } n \in \mathbb{N}.
+\]
+\end{definition}
+
+\begin{propriete}[Terme général et somme]
+Pour une suite géométrique de raison $q$ :
+\[
+  u_n = u_0 \cdot q^n
+  \qquad\text{et plus généralement}\qquad
+  u_n = u_p \cdot q^{\,n-p}.
+\]
+Somme de termes consécutifs (pour $q \neq 1$) :
+\[
+  S = \text{premier terme} \times \frac{1 - q^{\text{nombre de termes}}}{1 - q},
+  \qquad\text{en particulier}\quad
+  1 + q + q^2 + \cdots + q^n = \frac{1 - q^{n+1}}{1 - q}.
+\]
+\end{propriete}
+
+\begin{remarque}[Ne confonds pas les deux modèles]
+Arithmétique = on \textbf{ajoute} $r$ (croissance « en ligne droite »). Géométrique = on \textbf{multiplie} par $q$ (croissance ou décroissance « accélérée »). Pour prouver la nature d'une suite : calcule $u_{n+1} - u_n$ (arithmétique) ou $\dfrac{u_{n+1}}{u_n}$ (géométrique) et montre que le résultat ne dépend pas de $n$.
+\end{remarque}
+
+% ------------------- SECTION 4 : VARIATION ET BORNES -------------------
+\section{Sens de variation et suites bornées}
+
+\subsection{Sens de variation}
+
+Trois méthodes permettent d'étudier la monotonie d'une suite ; on choisit selon sa forme :
+
+\begin{enumerate}[leftmargin=8mm, itemsep=1mm]
+  \item Étudier le \textbf{signe de $u_{n+1} - u_n$} : positif pour tout $n$ $\Rightarrow$ croissante ; négatif $\Rightarrow$ décroissante. \emph{Méthode universelle, à privilégier.}
+  \item Comparer le \textbf{rapport $\dfrac{u_{n+1}}{u_n}$ à $1$} : utile \emph{uniquement} si tous les termes sont strictement positifs.
+  \item Utiliser la \textbf{fonction associée} : si $u_n = f(n)$ avec $f$ monotone sur $[0\,;+\infty[$, la suite a le même sens de variation que $f$.
+\end{enumerate}
+
+\subsection{Suites majorées, minorées, bornées}
+
+\begin{definition}
+La suite $(u_n)$ est \textbf{majorée} s'il existe un réel $M$ tel que $u_n \leq M$ pour tout $n$ ; \textbf{minorée} s'il existe un réel $m$ tel que $u_n \geq m$ pour tout $n$ ; \textbf{bornée} si elle est à la fois majorée et minorée : $m \leq u_n \leq M$.
+\end{definition}
+
+\begin{remarque}[Erreur classique]
+Un majorant n'est pas forcément atteint : dire « $u_n \leq 3$ » ne signifie pas qu'un terme vaut $3$. Et il ne suffit pas de vérifier sur les premiers termes : il faut démontrer l'inégalité pour \emph{tout} $n$.
+\end{remarque}
+
+% ------------------- SECTION 5 : LIMITES -------------------
+\section{Limite d'une suite et convergence}
+
+\begin{definition}
+Si les termes $u_n$ se stabilisent autour d'un réel $\ell$ quand $n \to +\infty$, on dit que la suite \textbf{converge} vers $\ell$ et on écrit $\lim\limits_{n \to +\infty} u_n = \ell$. Sinon, la suite \textbf{diverge} (elle tend vers $+\infty$, vers $-\infty$, ou n'a pas de limite).
+\end{definition}
+
+\begin{propriete}[Limites de référence]
+\[
+  \frac{1}{n} \to 0, \qquad
+  \frac{1}{n^2} \to 0, \qquad
+  \frac{1}{\sqrt{n}} \to 0, \qquad
+  \sqrt{n} \to +\infty, \qquad
+  n^k \to +\infty \ (k > 0).
+\]
+Pour la suite géométrique $(q^n)$ :
+\begin{itemize}[leftmargin=8mm, itemsep=0.5mm]
+  \item si $-1 < q < 1$, alors $q^n \to 0$ ;
+  \item si $q > 1$, alors $q^n \to +\infty$ ;
+  \item si $q = 1$, alors $q^n = 1$ pour tout $n$ ;
+  \item si $q \leq -1$, la suite $(q^n)$ n'a pas de limite.
+\end{itemize}
+\end{propriete}
+
+\begin{remarque}[Les quatre formes indéterminées]
+« $\infty - \infty$ », « $0 \times \infty$ », « $\dfrac{\infty}{\infty}$ » et « $\dfrac{0}{0}$ ». Face à une forme indéterminée, on ne conclut jamais directement : il faut transformer l'expression (factoriser par le terme dominant, simplifier, utiliser l'expression conjuguée\ldots).
+\end{remarque}
+
+\begin{exemple}[Lever une indétermination $\infty/\infty$]
+Cherchons la limite de $u_n = \dfrac{3n^2 + 2n}{n^2 + 5}$. Numérateur et dénominateur tendent vers $+\infty$ : forme indéterminée. On factorise par le terme dominant $n^2$ :
+\[
+  u_n = \frac{n^2\left(3 + \frac{2}{n}\right)}{n^2\left(1 + \frac{5}{n^2}\right)}
+      = \frac{3 + \frac{2}{n}}{1 + \frac{5}{n^2}}
+  \xrightarrow[n \to +\infty]{} \frac{3 + 0}{1 + 0} = 3.
+\]
+La suite converge vers $3$.
+\end{exemple}
+
+% ------------------- SECTION 6 : THEOREMES -------------------
+\section{Théorèmes de convergence}
+
+\begin{propriete}[Convergence monotone]
+Toute suite \textbf{croissante et majorée} converge. Toute suite \textbf{décroissante et minorée} converge.
+\end{propriete}
+
+\begin{remarque}
+Ce théorème prouve que la limite \emph{existe}, mais ne donne pas sa valeur.
+\end{remarque}
+
+\begin{propriete}[Théorème des gendarmes (encadrement)]
+Si $v_n \leq u_n \leq w_n$ à partir d'un certain rang, et si $(v_n)$ et $(w_n)$ tendent vers la même limite $\ell$, alors $(u_n)$ tend aussi vers $\ell$. \emph{Idéal pour les suites contenant $\cos(n)$ ou $\sin(n)$, que l'on encadre entre $-1$ et $1$.}
+\end{propriete}
+
+\begin{propriete}[Théorème de comparaison]
+Si $u_n \geq v_n$ à partir d'un certain rang et si $v_n \to +\infty$, alors $u_n \to +\infty$. De même, si $u_n \leq v_n$ et $v_n \to -\infty$, alors $u_n \to -\infty$.
+\end{propriete}
+
+% ------------------- SECTION 7 : ARITHMETICO-GEOMETRIQUES -------------------
+\section{Suites arithmético-géométriques}
+
+C'est le type de suite le plus fréquent dans les problèmes de bac : $u_{n+1} = a\,u_n + b$ (avec $a \neq 1$ et $b \neq 0$). Elle n'est ni arithmétique ni géométrique, mais une méthode standard la ramène à une suite géométrique.
+
+\begin{propriete}[Méthode en 4 étapes]
+\begin{enumerate}[leftmargin=8mm, itemsep=1mm]
+  \item \textbf{Point fixe} : résoudre $\ell = a\,\ell + b$. C'est la limite éventuelle de la suite.
+  \item \textbf{Suite auxiliaire} : poser $v_n = u_n - \ell$ et montrer qu'elle est géométrique ; on trouve $v_{n+1} = a\,v_n$, de raison $a$.
+  \item \textbf{Terme général} : $v_n = v_0 \cdot a^n$, puis revenir à $u_n = v_n + \ell$.
+  \item \textbf{Limite} : si $-1 < a < 1$, alors $a^n \to 0$ donc $u_n \to \ell$.
+\end{enumerate}
+\end{propriete}
+
+\begin{exemple}[Étude complète]
+Soit $u_0 = 5$ et $u_{n+1} = \frac{1}{2}u_n + 1$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Point fixe : $\ell = \frac{1}{2}\ell + 1$ donne $\frac{1}{2}\ell = 1$, soit $\ell = 2$.
+  \item On pose $v_n = u_n - 2$. Alors $v_{n+1} = u_{n+1} - 2 = \frac{1}{2}u_n + 1 - 2 = \frac{1}{2}(u_n - 2) = \frac{1}{2}v_n$.
+  \item $(v_n)$ est géométrique de raison $\frac{1}{2}$, avec $v_0 = u_0 - 2 = 3$, d'où $v_n = 3 \cdot \left(\frac{1}{2}\right)^n$.
+  \item Donc $u_n = 2 + 3 \cdot \left(\frac{1}{2}\right)^n$. Comme $-1 < \frac{1}{2} < 1$, on a $\left(\frac{1}{2}\right)^n \to 0$.
+\end{itemize}
+Conclusion : $\lim u_n = 2$, la suite converge vers $2$.
+\end{exemple}
+
+\begin{remarque}[Astuce mémo]
+La suite auxiliaire a \emph{toujours} pour raison le coefficient $a$ de la relation $u_{n+1} = a\,u_n + b$, et le nombre à retrancher est \emph{toujours} le point fixe $\ell$.
+\end{remarque}
+
+% ------------------- SECTION 8 : METHODES -------------------
+\section{Méthodes à connaître}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{6.6cm} >{\raggedright\arraybackslash}p{9.4cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ce que tu fais \\
+\rowcolor{tealpale} Montrer qu'une suite est arithmétique & Calculer $u_{n+1} - u_n$ et montrer que c'est une constante $r$. \\
+Montrer qu'une suite est géométrique & Calculer $u_{n+1}/u_n$ et montrer que c'est une constante $q$. \\
+\rowcolor{tealpale} Étudier le sens de variation & Étudier le signe de $u_{n+1} - u_n$ (méthode par défaut). \\
+Calculer une limite & Limites de référence + opérations ; lever toute indétermination. \\
+\rowcolor{tealpale} Prouver la convergence sans calculer & Montrer que la suite est monotone et bornée. \\
+Limite avec $\cos(n)$ ou $\sin(n)$ & Encadrer, puis appliquer le théorème des gendarmes. \\
+\rowcolor{tealpale} Suite $u_{n+1} = a\,u_n + b$ & Point fixe $\ell$, suite auxiliaire $v_n = u_n - \ell$ (géométrique de raison $a$). \\
+\end{tabular}
+\end{center}
+
+\begin{remarque}[Les erreurs qui coûtent des points au bac]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Conclure « la limite est $\ell$ » à partir de $\ell = a\ell + b$ \emph{sans} avoir prouvé que la suite converge.
+  \item Utiliser le quotient $u_{n+1}/u_n$ pour la variation alors que les termes ne sont pas tous positifs.
+  \item Appliquer la formule de somme géométrique quand $q = 1$ (division par zéro !) : si $q = 1$, la somme vaut $n \times$ premier terme.
+  \item Écrire « $\infty - \infty = 0$ » ou « $\infty/\infty = 1$ » : ce sont des formes indéterminées, jamais un résultat.
+  \item Confondre $u_n$ (un nombre) et $(u_n)$ (la suite entière) dans la rédaction.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Arithmétique : $u_{n+1} = u_n + r$, terme général $u_n = u_0 + n\,r$.
+  \item Géométrique : $u_{n+1} = q\,u_n$, terme général $u_n = u_0\,q^n$.
+  \item Sens de variation : signe de $u_{n+1} - u_n$ (méthode par défaut).
+  \item Convergence garantie : suite croissante majorée (ou décroissante minorée).
+  \item Limite de $q^n$ : $0$ si $|q| < 1$ ; $+\infty$ si $q > 1$.
+  \item Formes indéterminées : $\infty - \infty$, $0 \times \infty$, $\infty/\infty$, $0/0$.
+  \item Arithmético-géométrique $u_{n+1} = a\,u_n + b$ : point fixe $\ell$, puis $v_n = u_n - \ell$ géométrique de raison $a$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

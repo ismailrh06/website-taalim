@@ -1,0 +1,503 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Nombres complexes (2) — forme trigonométrique,
+%  exponentielle et applications géométriques
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Nombres complexes (2) -- forme trigonométrique}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Déterminer un argument, écrire un complexe sous forme trigonométrique et exponentielle, et passer d'une forme à l'autre.
+  \item Démontrer et utiliser les propriétés de l'argument (produit, quotient, puissance) et la formule de Moivre.
+  \item Utiliser les formules d'Euler pour linéariser ou développer des expressions trigonométriques.
+  \item Calculer les racines $n$-ièmes d'un nombre complexe, en particulier les racines de l'unité.
+  \item Exploiter les complexes en géométrie : angle orienté, alignement, orthogonalité, cocyclicité de quatre points, similitudes directes.
+  \item Résoudre les exercices type examen national : nature de triangles, transformations planes, racines de l'unité.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Forme trigonométrique et exponentielle}
+
+\begin{definition}[Argument]
+Soit $z\in\mathbb{C}^*$, d'image $M$. Un \textbf{argument} de $z$, noté $\arg(z)$, est une mesure en radians de l'angle orienté $\bigl(\vec u\,;\overrightarrow{OM}\bigr)$. Il est défini \textbf{modulo $2\pi$} : si $\theta$ est un argument de $z$, tous les arguments de $z$ sont $\theta+2k\pi$, $k\in\mathbb{Z}$.
+\end{definition}
+
+\begin{propriete}[Forme trigonométrique]
+Tout $z\in\mathbb{C}^*$ s'écrit
+\[
+  z = r(\cos\theta+i\sin\theta), \qquad r=|z|>0,\ \theta=\arg(z)\ [2\pi].
+\]
+Réciproquement, si $z=r(\cos\theta+i\sin\theta)$ avec $r>0$, alors $|z|=r$ et $\arg(z)=\theta\ [2\pi]$.
+\end{propriete}
+
+\begin{demo}
+Si $z=a+ib$, $r=|z|=\sqrt{a^2+b^2}>0$. Posons $\theta$ tel que $\cos\theta=\frac ar$, $\sin\theta=\frac br$ (possible car $\left(\frac ar\right)^2+\left(\frac br\right)^2=\frac{a^2+b^2}{r^2}=1$, ce couple est bien sur le cercle trigonométrique). Alors $z=a+ib=r\cos\theta+ir\sin\theta=r(\cos\theta+i\sin\theta)$, et $\theta$ est bien l'angle $(\vec u;\overrightarrow{OM})$.
+\end{demo}
+
+\begin{definition}[Notation exponentielle]
+Pour $\theta\in\mathbb{R}$, on note $e^{i\theta}=\cos\theta+i\sin\theta$ (notation d'Euler). Ainsi tout $z\in\mathbb{C}^*$ s'écrit sous \textbf{forme exponentielle} :
+\[
+  z = re^{i\theta}, \qquad r=|z|,\ \theta=\arg(z).
+\]
+\end{definition}
+
+\begin{propriete}[Cohérence de la notation exponentielle]
+\[
+  e^{i\theta}\times e^{i\theta'} = e^{i(\theta+\theta')}, \qquad
+  \frac{1}{e^{i\theta}} = e^{-i\theta}, \qquad
+  \left(e^{i\theta}\right)^n = e^{in\theta}\ (n\in\mathbb{Z}), \qquad
+  \overline{e^{i\theta}} = e^{-i\theta}, \qquad
+  \bigl|e^{i\theta}\bigr| = 1.
+\]
+\end{propriete}
+
+\begin{demo}
+$e^{i\theta}e^{i\theta'} = (\cos\theta+i\sin\theta)(\cos\theta'+i\sin\theta')$. En développant et en utilisant les formules d'addition $\cos(\theta+\theta')=\cos\theta\cos\theta'-\sin\theta\sin\theta'$ et $\sin(\theta+\theta')=\sin\theta\cos\theta'+\cos\theta\sin\theta'$, on obtient exactement $\cos(\theta+\theta')+i\sin(\theta+\theta')=e^{i(\theta+\theta')}$.
+\end{demo}
+
+% ------------------- SECTION 2 -------------------
+\section{Argument : propriétés et calculs}
+
+\begin{propriete}[Propriétés de l'argument -- modulo $2\pi$]
+Pour $z,z'\in\mathbb{C}^*$ :
+\[
+  \arg(zz') \equiv \arg(z)+\arg(z') \ [2\pi], \qquad
+  \arg\left(\frac1z\right) \equiv -\arg(z) \ [2\pi],
+\]
+\[
+  \arg\left(\frac{z}{z'}\right) \equiv \arg(z)-\arg(z') \ [2\pi], \qquad
+  \arg(z^n) \equiv n\arg(z)\ [2\pi]\ (n\in\mathbb{Z}), \qquad
+  \arg(\bar z) \equiv -\arg(z)\ [2\pi],
+\]
+\[
+  \arg(-z) \equiv \arg(z)+\pi\ [2\pi].
+\]
+\end{propriete}
+
+\begin{demo}
+$\arg(zz')\equiv\arg z+\arg z'\ [2\pi]$ : en écrivant $z=re^{i\theta}$, $z'=r'e^{i\theta'}$, on a $zz'=rr'e^{i(\theta+\theta')}$, qui est bien la forme exponentielle de $zz'$ (module $rr'>0$, argument $\theta+\theta'$).
+\end{demo}
+
+\begin{propriete}[Formule de Moivre]
+Pour tout $\theta\in\mathbb{R}$ et $n\in\mathbb{Z}$ :
+\[
+  (\cos\theta+i\sin\theta)^n = \cos(n\theta)+i\sin(n\theta).
+\]
+\end{propriete}
+
+\begin{demo}
+Conséquence immédiate de $\left(e^{i\theta}\right)^n=e^{in\theta}$.
+\end{demo}
+
+\begin{propriete}[Formules d'Euler]
+Pour tout $\theta\in\mathbb{R}$ :
+\[
+  \cos\theta = \frac{e^{i\theta}+e^{-i\theta}}{2}, \qquad \sin\theta = \frac{e^{i\theta}-e^{-i\theta}}{2i}.
+\]
+\end{propriete}
+
+\begin{demo}
+On additionne (resp. soustrait) $e^{i\theta}=\cos\theta+i\sin\theta$ et $e^{-i\theta}=\cos\theta-i\sin\theta$, puis on isole $\cos\theta$ (resp. $\sin\theta$).
+\end{demo}
+
+\begin{exemple}[Linéarisation avec les formules d'Euler]
+Linéarisons $\cos^3\theta$.
+\[
+  \cos^3\theta = \left(\frac{e^{i\theta}+e^{-i\theta}}{2}\right)^3
+  = \frac{e^{3i\theta}+3e^{i\theta}+3e^{-i\theta}+e^{-3i\theta}}{8}
+  = \frac{2\cos(3\theta)+6\cos\theta}{8} = \frac{\cos(3\theta)+3\cos\theta}{4}.
+\]
+\end{exemple}
+
+\begin{exemple}[Calcul d'argument]
+Déterminons module et argument de $z=1+i\sqrt3$.
+\[
+  |z| = \sqrt{1+3}=2, \qquad \cos\theta=\frac12,\ \sin\theta=\frac{\sqrt3}2 \Rightarrow \theta=\frac\pi3.
+\]
+\textbf{Conclusion} : $z=2e^{i\pi/3}$.
+\end{exemple}
+
+\begin{exemple}[Produit et quotient d'arguments]
+Soient $z_1=2e^{i\pi/4}$, $z_2=3e^{-i\pi/6}$. Calculons $|z_1z_2|$, $\arg(z_1z_2)$, et $z_1/z_2$ sous forme exponentielle.
+\[
+  z_1z_2 = 6e^{i(\pi/4-\pi/6)} = 6e^{i\pi/12}, \qquad \frac{z_1}{z_2} = \frac23e^{i(\pi/4+\pi/6)} = \frac23e^{i5\pi/12}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Racines $n$-ièmes}
+
+\begin{propriete}[Racines $n$-ièmes de l'unité]
+Pour $n\in\mathbb{N}^*$, les solutions de $z^n=1$ dans $\mathbb{C}$ sont les $n$ nombres
+\[
+  z_k = e^{i\frac{2k\pi}{n}}, \qquad k=0,1,\ldots,n-1.
+\]
+\end{propriete}
+
+\begin{demo}
+Cherchons $z=re^{i\theta}$ tel que $z^n=1$. Alors $r^ne^{in\theta}=1=1\cdot e^{i0}$, donc par unicité (module, argument modulo $2\pi$) : $r^n=1\Rightarrow r=1$ (car $r>0$), et $n\theta\equiv0\ [2\pi]\Rightarrow\theta\equiv0\ \left[\frac{2\pi}{n}\right]$, soit $\theta=\frac{2k\pi}{n}$ pour $k\in\mathbb{Z}$. En restreignant $k$ à $\{0,1,\ldots,n-1\}$, on obtient exactement $n$ solutions distinctes (les valeurs de $k$ hors de cet intervalle redonnent les mêmes points modulo $2\pi$).
+\end{demo}
+
+\begin{remarque}[Interprétation géométrique]
+Les images des racines $n$-ièmes de l'unité forment un \textbf{polygone régulier à $n$ côtés} inscrit dans le cercle trigonométrique, avec un sommet en $1$.
+\end{remarque}
+
+\begin{propriete}[Racines $n$-ièmes d'un complexe quelconque]
+Soit $Z=Re^{i\Phi}\in\mathbb{C}^*$ ($R>0$). Les solutions de $z^n=Z$ sont
+\[
+  z_k = R^{1/n}\,e^{i\left(\frac{\Phi}{n}+\frac{2k\pi}{n}\right)}, \qquad k=0,1,\ldots,n-1.
+\]
+\end{propriete}
+
+\begin{exemple}[Racines cubiques de l'unité]
+Résolvons $z^3=1$. Solutions : $z_0=1$, $z_1=e^{i2\pi/3}=-\frac12+i\frac{\sqrt3}2$, $z_2=e^{i4\pi/3}=-\frac12-i\frac{\sqrt3}2$.
+
+\smallskip
+On vérifie $1+z_1+z_2=0$ (propriété générale : la somme des racines $n$-ièmes de l'unité, pour $n\geq2$, est nulle).
+\end{exemple}
+
+\begin{exemple}[Racines quatrièmes d'un complexe]
+Résolvons $z^4=-16$.
+
+\smallskip
+$-16=16e^{i\pi}$, donc $R=16$, $\Phi=\pi$. $R^{1/4}=2$.
+\[
+  z_k = 2\,e^{i\left(\frac\pi4+\frac{k\pi}2\right)}, \qquad k=0,1,2,3.
+\]
+Soit $z_0=2e^{i\pi/4}=\sqrt2+i\sqrt2$, $z_1=2e^{i3\pi/4}=-\sqrt2+i\sqrt2$, $z_2=-\sqrt2-i\sqrt2$, $z_3=\sqrt2-i\sqrt2$.
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Applications géométriques}
+
+\begin{propriete}[Angle orienté et alignement]
+Pour $A,B,C$ trois points d'affixes deux à deux distinctes $a,b,c$ :
+\[
+  \bigl(\overrightarrow{AB}\,;\overrightarrow{AC}\bigr) \equiv \arg\left(\frac{c-a}{b-a}\right) \ [2\pi].
+\]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $A,B,C$ \textbf{alignés} $\iff \dfrac{c-a}{b-a}\in\mathbb{R}^*$.
+  \item $(AB)\perp(AC) \iff \dfrac{c-a}{b-a}\in i\mathbb{R}^*$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+Notons $z_1=b-a$ (affixe de $\overrightarrow{AB}$) et $z_2=c-a$ (affixe de $\overrightarrow{AC}$). On a $\dfrac{z_2}{z_1} = \dfrac{|z_2|}{|z_1|}e^{i(\arg z_2-\arg z_1)}$, et $\arg z_2-\arg z_1 \equiv (\vec u;\overrightarrow{AC})-(\vec u;\overrightarrow{AB}) \equiv (\overrightarrow{AB};\overrightarrow{AC})\ [2\pi]$ (relation de Chasles sur les angles). D'où le résultat : le module de $\frac{c-a}{b-a}$ vaut $\frac{AC}{AB}$ et son argument est l'angle $(\overrightarrow{AB};\overrightarrow{AC})$.
+
+\smallskip
+$A,B,C$ alignés $\iff (\overrightarrow{AB};\overrightarrow{AC})\equiv0\ [\pi] \iff \arg\left(\frac{c-a}{b-a}\right)\equiv0\ [\pi] \iff \dfrac{c-a}{b-a}\in\mathbb{R}^*$.
+\end{demo}
+
+\begin{propriete}[Critère de cocyclicité -- admis]
+Soient $A,B,C,D$ quatre points du plan, deux à deux distincts, d'affixes respectives $a,b,c,d$, avec $C,D\notin(AB)$. Les points $A,B,C,D$ sont \textbf{cocycliques} (situés sur un même cercle) \textbf{ou alignés} si et seulement si le \textbf{birapport}
+\[
+  \frac{(a-c)(b-d)}{(a-d)(b-c)}
+\]
+est un nombre \textbf{réel}.
+\end{propriete}
+
+\begin{remarque}[Justification (théorème de l'angle inscrit)]
+$C$ et $D$ « voient » le segment $[AB]$ sous le même angle, ou sous des angles supplémentaires, c'est-à-dire $(\overrightarrow{CA};\overrightarrow{CB}) \equiv (\overrightarrow{DA};\overrightarrow{DB})\ [\pi]$, si et seulement si $A,B,C,D$ sont cocycliques (théorème de l'angle inscrit, cas dégénéré : alignement). Cette égalité d'angles se traduit, via l'argument d'un quotient de différences, par le caractère réel du birapport ci-dessus.
+\end{remarque}
+
+\begin{exemple}[Vérifier une cocyclicité]
+Montrons que $A(0)$, $B(2)$, $C(1+i)$, $D(1-i)$ sont cocycliques.
+
+\smallskip
+Calculons le birapport :
+\[
+  \frac{(a-c)(b-d)}{(a-d)(b-c)} = \frac{\bigl(0-(1+i)\bigr)\bigl(2-(1-i)\bigr)}{\bigl(0-(1-i)\bigr)\bigl(2-(1+i)\bigr)} = \frac{(-1-i)(1+i)}{(-1+i)(1-i)}.
+\]
+Numérateur : $(-1-i)(1+i)=-1-i-i-i^2=-2i$. Dénominateur : $(-1+i)(1-i)=-1+i+i-i^2=2i$.
+\[
+  \frac{-2i}{2i} = -1 \in \mathbb{R}.
+\]
+\textbf{Conclusion} : le birapport est réel, donc $A,B,C,D$ sont cocycliques ou alignés ; comme $C,D\notin(AB)$ (l'axe réel), ils sont bien \textbf{cocycliques} (on vérifie d'ailleurs que les quatre points sont à distance $1$ du point d'affixe $1$ : ils sont sur le cercle de centre $\Omega(1)$ et de rayon $1$).
+\end{exemple}
+
+\begin{propriete}[Expressions complexes des transformations usuelles]
+Soit $M(z)$ un point du plan, d'image $M'(z')$ par une transformation. Dans un repère orthonormé direct :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{Translation} de vecteur $\vec w$ d'affixe $b$ : \quad $z'=z+b$.
+  \item \textbf{Homothétie} de centre $\Omega(\omega)$ et de rapport $k\in\mathbb{R}^*$ : \quad $z'-\omega=k(z-\omega)$, soit $z'=kz+(1-k)\omega$.
+  \item \textbf{Rotation} de centre $\Omega(\omega)$ et d'angle $\theta$ : \quad $z'-\omega=e^{i\theta}(z-\omega)$, soit $z'=e^{i\theta}z+\bigl(1-e^{i\theta}\bigr)\omega$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}[Rotation]
+Par définition géométrique, une rotation de centre $\Omega$ et d'angle $\theta$ envoie $M$ sur $M'$ tel que $\Omega M'=\Omega M$ et $(\overrightarrow{\Omega M}\,;\overrightarrow{\Omega M'})\equiv\theta\,[2\pi]$. En termes d'affixes (grâce à la propriété de l'angle orienté vue plus haut, appliquée à $\overrightarrow{\Omega M}$ et $\overrightarrow{\Omega M'}$) :
+\[
+  \frac{z'-\omega}{z-\omega} = \left|\frac{z'-\omega}{z-\omega}\right|e^{i\theta} = 1\times e^{i\theta} = e^{i\theta}
+\]
+(le module vaut $1$ car $\Omega M'=\Omega M$), d'où $z'-\omega=e^{i\theta}(z-\omega)$. Le cas de l'homothétie se traite de façon analogue, avec un rapport réel $k$ au lieu de $e^{i\theta}$ (angle nul si $k>0$, angle $\pi$ si $k<0$).
+\end{demo}
+
+\begin{exemple}[Reconnaître une transformation à partir de son expression complexe]
+Identifions la transformation $z'=iz+2$.
+
+\smallskip
+On a $a=i$, avec $|a|=1$ et $\arg(a)=\frac\pi2$ : c'est une \textbf{rotation} d'angle $\frac\pi2$. Centre : point fixe $\omega=\dfrac{b}{1-a}=\dfrac{2}{1-i}=\dfrac{2(1+i)}{(1-i)(1+i)}=\dfrac{2(1+i)}{2}=1+i$.
+
+\smallskip
+\textbf{Conclusion} : rotation de centre $\Omega(1+i)$ et d'angle $\dfrac\pi2$.
+\end{exemple}
+
+\begin{propriete}[Similitude directe]
+Une \textbf{similitude directe} de rapport $k>0$, d'angle $\theta$, de centre $\Omega$ (affixe $\omega$) est l'application qui à $M(z)$ associe $M'(z')$ tel que
+\[
+  z' - \omega = ke^{i\theta}(z-\omega).
+\]
+Réciproquement, toute transformation $z'=az+b$ avec $a\in\mathbb{C}^*$ est une similitude directe de rapport $|a|$, d'angle $\arg(a)$, dont le centre (si $a\ne1$) est le point fixe $\omega=\dfrac{b}{1-a}$.
+\end{propriete}
+
+\begin{exemple}[Nature d'un triangle via le rapport complexe]
+Soient $A(0)$, $B(1+i)$, $C(2i)$. Déterminons la nature du triangle $ABC$.
+\[
+  \frac{c-a}{b-a} = \frac{2i}{1+i} = \frac{2i(1-i)}{(1+i)(1-i)} = \frac{2i+2}{2} = 1+i.
+\]
+$|1+i|=\sqrt2$ et $\arg(1+i)=\frac\pi4$. Donc $\dfrac{AC}{AB}=\sqrt2$ et $(\overrightarrow{AB};\overrightarrow{AC})=\frac\pi4$.
+
+\smallskip
+\textbf{Conclusion} : le triangle $ABC$ n'est ni équilatéral ni isocèle en $A$ directement lisible, mais l'angle en $A$ vaut $45°$ ; pour un triangle \textbf{rectangle isocèle} en $A$ on aurait attendu $\left|\frac{c-a}{b-a}\right|=1$ et argument $\pm\frac\pi2$ -- ici ce n'est pas le cas, donc ce triangle n'est ni rectangle ni isocèle en $A$.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- forme exponentielle et puissance]
+Écrire $z=\left(\sqrt3-i\right)^6$ sous forme algébrique, en passant par la forme exponentielle.
+
+\smallskip
+\textbf{Corrigé.} $|\sqrt3-i|=\sqrt{3+1}=2$ ; $\cos\theta=\frac{\sqrt3}2$, $\sin\theta=-\frac12\Rightarrow\theta=-\frac\pi6$. Donc $\sqrt3-i=2e^{-i\pi/6}$.
+\[
+  z = 2^6e^{-i6\pi/6} = 64e^{-i\pi} = 64\bigl(\cos(-\pi)+i\sin(-\pi)\bigr) = 64\times(-1) = -64.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- triangle équilatéral direct]
+Montrer que le triangle $ABC$ d'affixes $a=0$, $b=1$, $c=e^{i\pi/3}$ est équilatéral direct.
+
+\smallskip
+\textbf{Corrigé.} $\dfrac{c-a}{b-a} = \dfrac{e^{i\pi/3}}{1} = e^{i\pi/3}$, de module $1$ et d'argument $\frac\pi3$.
+
+\smallskip
+Module $1$ $\Rightarrow AC=AB$ : triangle isocèle en $A$. Argument $\frac\pi3$ $\Rightarrow$ angle en $A$ vaut $60°$. Un triangle isocèle avec un angle au sommet de $60°$ est \textbf{équilatéral} (et l'orientation directe est donnée par l'argument positif).
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- équation avec racines $n$-ièmes et somme]
+Résoudre $z^5=32i$, puis calculer la somme des cinq solutions.
+
+\smallskip
+\textbf{Corrigé.} $32i=32e^{i\pi/2}$. $R^{1/5}=32^{1/5}=2$.
+\[
+  z_k = 2e^{i\left(\frac{\pi}{10}+\frac{2k\pi}5\right)}, \qquad k=0,1,2,3,4.
+\]
+\emph{Somme} : les $z_k$ sont les racines cinquièmes de $32i$, obtenues en multipliant les racines cinquièmes de l'unité par $2e^{i\pi/10}$ ; comme la somme des racines cinquièmes de l'unité est nulle (pour $n\geq2$), la somme des $z_k$ est également nulle : $\displaystyle\sum_{k=0}^4z_k=0$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- similitude directe]
+Soit $f$ la transformation d'expression complexe $z'=(1+i)z-2i$. Déterminer la nature et les éléments caractéristiques de $f$.
+
+\smallskip
+\textbf{Corrigé.} $a=1+i$, $b=-2i$. $|a|=\sqrt2$, $\arg(a)=\frac\pi4$ : $f$ est une \textbf{similitude directe} de rapport $\sqrt2$ et d'angle $\frac\pi4$.
+
+\smallskip
+Centre : point fixe $\omega=\dfrac{b}{1-a}=\dfrac{-2i}{1-(1+i)}=\dfrac{-2i}{-i}=2$.
+
+\smallskip
+\textbf{Conclusion} : $f$ est la similitude directe de centre $\Omega(2)$, de rapport $\sqrt2$, d'angle $\frac\pi4$.
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- linéarisation et intégrale (lien inter-chapitres)]
+Utiliser la linéarisation de $\cos^2\theta$ (via Euler) pour retrouver $\displaystyle\int_0^{\pi}\cos^2\theta\,d\theta$.
+
+\smallskip
+\textbf{Corrigé.} $\cos^2\theta=\left(\dfrac{e^{i\theta}+e^{-i\theta}}2\right)^2=\dfrac{e^{2i\theta}+2+e^{-2i\theta}}4=\dfrac{2\cos(2\theta)+2}4=\dfrac{1+\cos(2\theta)}2$.
+\[
+  \int_0^\pi\cos^2\theta\,d\theta = \int_0^\pi\frac{1+\cos(2\theta)}2\,d\theta = \left[\frac\theta2+\frac{\sin(2\theta)}4\right]_0^\pi = \frac\pi2.
+\]
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Trouver module et argument & $r=|z|=\sqrt{a^2+b^2}$, puis $\cos\theta=\frac ar$, $\sin\theta=\frac br$. \\
+Puissance $n$-ième & Forme exponentielle $z=re^{i\theta}$, puis $z^n=r^ne^{in\theta}$ (Moivre). \\
+\rowcolor{tealpale} Linéariser $\cos^n\theta$ ou $\sin^n\theta$ & Formules d'Euler, développer le binôme, regrouper les termes conjugués. \\
+Racines $n$-ièmes de $Z=Re^{i\Phi}$ & $z_k=R^{1/n}e^{i(\Phi/n+2k\pi/n)}$, $k=0,\ldots,n-1$. \\
+\rowcolor{tealpale} Alignement / orthogonalité de points & Étudier $\dfrac{c-a}{b-a}$ : réel (aligné) ou imaginaire pur (orthogonal). \\
+Montrer que 4 points sont cocycliques & Calculer le birapport $\dfrac{(a-c)(b-d)}{(a-d)(b-c)}$ : réel $\Rightarrow$ cocycliques ou alignés. \\
+Nature d'un triangle & Module de $\frac{c-a}{b-a}$ = rapport des côtés, argument = angle en $A$. \\
+\rowcolor{tealpale} Identifier une similitude $z'=az+b$ & Rapport $|a|$, angle $\arg(a)$, centre $\omega=\frac{b}{1-a}$ (si $a\ne1$). \\
+Reconnaître translation/rotation/homothétie & $|a|=1,\ a\ne1$ : rotation d'angle $\arg a$ ; $a\in\mathbb{R}^*\setminus\{1\}$ : homothétie de rapport $a$ ; $a=1$ : translation. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier « modulo $2\pi$ » en manipulant les arguments : $\arg(zz')\equiv\arg z+\arg z'\,[2\pi]$, pas une égalité stricte.
+  \item Confondre $\left(\frac{c-a}{b-a}\right)$ (angle en $A$) avec un autre rapport (bien identifier le sommet).
+  \item Oublier de vérifier $a,b,c$ deux à deux \textbf{distincts} avant d'utiliser les formules d'angle orienté.
+  \item Se tromper dans les racines $n$-ièmes en ne balayant pas $k=0$ à $n-1$ (oubli d'une racine ou doublon).
+  \item Écrire $e^{i\theta}\times e^{i\theta'}=e^{i\theta\theta'}$ au lieu de $e^{i(\theta+\theta')}$.
+  \item Pour la similitude, oublier que le centre n'est défini que si $a\ne1$ (sinon $f$ est une translation, pas une similitude au sens strict).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $z=re^{i\theta}$, $r=|z|$, $\theta=\arg z\,[2\pi]$ ; $\arg(zz')\equiv\arg z+\arg z'$ ; Moivre : $(\cos\theta+i\sin\theta)^n=\cos n\theta+i\sin n\theta$.
+  \item Euler : $\cos\theta=\frac{e^{i\theta}+e^{-i\theta}}2$, $\sin\theta=\frac{e^{i\theta}-e^{-i\theta}}{2i}$.
+  \item Racines $n$-ièmes de $Re^{i\Phi}$ : $z_k=R^{1/n}e^{i(\Phi/n+2k\pi/n)}$ ; racines de l'unité : polygone régulier, somme nulle.
+  \item Angle orienté $(\overrightarrow{AB};\overrightarrow{AC})=\arg\left(\frac{c-a}{b-a}\right)$ ; alignement $\iff$ rapport réel ; orthogonalité $\iff$ rapport imaginaire pur.
+  \item Cocyclicité de $A,B,C,D$ : birapport $\dfrac{(a-c)(b-d)}{(a-d)(b-c)}\in\mathbb{R}$ (ou alignement, cas dégénéré).
+  \item Translation : $z'=z+b$ ; homothétie $(\Omega,k)$ : $z'-\omega=k(z-\omega)$ ; rotation $(\Omega,\theta)$ : $z'-\omega=e^{i\theta}(z-\omega)$.
+  \item Similitude directe $z'=az+b$ : rapport $|a|$, angle $\arg a$, centre $\frac{b}{1-a}$ ; cas particuliers : $a=1$ translation, $a\in\mathbb{R}^*$ homothétie, $|a|=1$ rotation.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

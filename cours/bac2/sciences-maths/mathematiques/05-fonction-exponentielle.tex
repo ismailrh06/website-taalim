@@ -1,0 +1,443 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Fonction exponentielle
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Fonction exponentielle}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Définir $\exp$ comme réciproque de $\ln$ et démontrer ses propriétés algébriques et analytiques.
+  \item Maîtriser toutes les règles de calcul, les limites usuelles et les croissances comparées, démonstrations à l'appui.
+  \item Dériver des fonctions composées $e^u$, étudier des fonctions complètes faisant intervenir $\exp$.
+  \item Résoudre tous les types d'équations et d'inéquations exponentielles, y compris par changement de variable.
+  \item Manipuler l'exponentielle de base $a$ et relier exponentielle/logarithme dans les deux sens.
+  \item Traiter les exercices type examen national : suites liées à $\exp$, inégalités, modélisation (croissance/décroissance).
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Définition et lien avec le logarithme}
+
+\begin{definition}[Fonction exponentielle]
+La fonction $\ln$ est continue et strictement croissante de $]0\,;+\infty[$ sur $\mathbb{R}$ (théorème de la bijection, avec les limites $-\infty$ et $+\infty$ aux bornes) : elle admet donc une \textbf{fonction réciproque} définie sur $\mathbb{R}$, appelée \textbf{fonction exponentielle}, notée $\exp$ ou $x \mapsto e^x$ :
+\[
+  y = e^x \iff x = \ln y \qquad (x \in \mathbb{R},\ y > 0).
+\]
+\end{definition}
+
+\begin{propriete}[Conséquences directes de la réciprocité]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Pour tout $x \in \mathbb{R}$ : $e^x > 0$ ; \ $e^0 = 1$ (car $\ln 1 = 0$) ; \ $e^1 = e$ (car $\ln e = 1$).
+  \item Pour tout $x \in \mathbb{R}$ : $\ln(e^x) = x$ ; pour tout $y > 0$ : $e^{\ln y} = y$.
+  \item $\exp$ est continue et \textbf{strictement croissante} sur $\mathbb{R}$ (théorème de la bijection : $f^{-1}$ a le même sens de variation que $f$) : $e^a = e^b \iff a = b$ et $e^a < e^b \iff a < b$.
+  \item Dans un repère orthonormé, les courbes de $\exp$ et $\ln$ sont \textbf{symétriques par rapport à la droite} $y = x$.
+\end{itemize}
+\end{propriete}
+
+\begin{propriete}[Propriétés algébriques]
+Pour tous $a, b \in \mathbb{R}$, $n \in \mathbb{Z}$, $r \in \mathbb{Q}$ :
+\[
+  e^{a+b} = e^a e^b, \qquad
+  e^{-a} = \frac{1}{e^a}, \qquad
+  e^{a-b} = \frac{e^a}{e^b}, \qquad
+  \left(e^a\right)^n = e^{na}, \qquad
+  \left(e^a\right)^r = e^{ra}.
+\]
+\end{propriete}
+
+\begin{demo}
+Montrons $e^{a+b}=e^ae^b$. Posons $u=e^a>0$ et $v=e^b>0$, donc $a=\ln u$ et $b=\ln v$. Alors $a+b = \ln u+\ln v = \ln(uv)$ (relation fonctionnelle du logarithme, démontrée au chapitre précédent). En appliquant $\exp$ aux deux membres (et $\exp(\ln t)=t$) : $e^{a+b} = e^{\ln(uv)} = uv = e^a e^b$. Les autres formules s'en déduisent (par exemple $e^{-a}$ à partir de $e^a \times e^{-a} = e^0 = 1$).
+\end{demo}
+
+\begin{exemple}[Simplification]
+Simplifions $A = \dfrac{e^3\times e^{-1}}{e^{-2}}$ et $B = \ln(e^5) - e^{\ln 3}$.
+\[
+  A = \frac{e^{3-1}}{e^{-2}} = e^{2-(-2)} = e^4, \qquad B = 5 - 3 = 2.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Étude de la fonction exponentielle}
+
+\begin{propriete}[Dérivée : l'exponentielle est sa propre dérivée]
+$\exp$ est dérivable sur $\mathbb{R}$ et
+\[
+  \left(e^x\right)' = e^x.
+\]
+\end{propriete}
+
+\begin{demo}
+$\exp$ est la réciproque de $\ln$, dérivable et strictement monotone. Par le théorème de dérivation de la réciproque, pour $b=e^a$ :
+\[
+  \exp'(a) = \frac{1}{\ln'(e^a)} = \frac{1}{\frac{1}{e^a}} = e^a,
+\]
+car $\ln'(x)=\frac1x$. Ceci étant vrai pour tout $a\in\mathbb{R}$, on a bien $(e^x)'=e^x$.
+\end{demo}
+
+\begin{propriete}[Conséquences]
+Comme $e^x>0$ pour tout $x$, $(e^x)'=e^x>0$ : $\exp$ est \textbf{strictement croissante} sur $\mathbb{R}$ (ce que l'on savait déjà par réciprocité). La tangente en $x=0$ : $y=e^0+e^0(x-0)=1+x$, d'où l'inégalité classique :
+\[
+  e^x \geq x+1 \qquad\text{pour tout }x\in\mathbb{R}\quad(\text{égalité ssi }x=0).
+\]
+\end{propriete}
+
+\begin{demo}[de l'inégalité]
+Posons $g(x)=e^x-x-1$. $g'(x)=e^x-1$, du signe de $x$ (car $e^x>1 \iff x>0$, par stricte croissance de $\exp$ et $e^0=1$). Donc $g$ décroît sur $]-\infty\,;0]$, croît sur $[0\,;+\infty[$ : \textbf{minimum} $g(0)=1-0-1=0$. Ainsi $g(x)\geq0$ pour tout $x$, soit $e^x\geq x+1$.
+\end{demo}
+
+\begin{propriete}[Limites usuelles et croissances comparées]
+\[
+  \lim_{x\to+\infty}e^x=+\infty, \qquad \lim_{x\to-\infty}e^x=0 \ (\text{asymptote horizontale }y=0),
+\]
+\[
+  \lim_{x\to+\infty}\frac{e^x}{x}=+\infty, \qquad
+  \lim_{x\to+\infty}\frac{e^x}{x^n}=+\infty, \qquad
+  \lim_{x\to-\infty}x\,e^x=0, \qquad
+  \lim_{x\to-\infty}x^ne^x=0,
+\]
+\[
+  \lim_{x\to0}\frac{e^x-1}{x}=1.
+\]
+\end{propriete}
+
+\begin{demo}
+Pour $\lim\limits_{x\to+\infty}e^x=+\infty$ : par l'inégalité $e^x\geq x+1$, dès que $x+1\to+\infty$ on a $e^x\to+\infty$ (théorème de comparaison).
+
+\smallskip
+Pour $\lim\limits_{x\to+\infty}\frac{e^x}{x}=+\infty$ : appliquons l'inégalité à $\frac{x}{2}$ : $e^{x/2}\geq\frac x2+1>\frac x2$, donc $e^x=\left(e^{x/2}\right)^2>\frac{x^2}{4}$, d'où $\frac{e^x}{x}>\frac{x}{4}\to+\infty$ (pour $x>0$).
+
+\smallskip
+Pour $\lim\limits_{x\to-\infty}xe^x=0$ : poser $t=-x\to+\infty$ : $xe^x=-t\,e^{-t}=\dfrac{-t}{e^t}\to0$ (car $\frac{t}{e^t}=\frac{1}{e^t/t}\to0$ d'après le résultat précédent).
+
+\smallskip
+Pour $\lim\limits_{x\to0}\frac{e^x-1}{x}=1$ : c'est le taux d'accroissement de $\exp$ en $0$, qui tend vers $\exp'(0)=e^0=1$.
+\end{demo}
+
+\begin{remarque}[Hiérarchie de croissance en $+\infty$]
+$\ln x \ll x^n \ll e^x$ (chaque fonction « écrase » la précédente). C'est l'outil principal pour lever les indéterminations mêlant exponentielle et polynômes.
+\end{remarque}
+
+\begin{exemple}[Calculs de limites]
+\textbf{a)} $\displaystyle\lim_{x\to+\infty}\frac{e^x-x^2}{e^x} = \lim_{x\to+\infty}\left(1-\frac{x^2}{e^x}\right) = 1-0=1$.
+
+\smallskip
+\textbf{b)} $\displaystyle\lim_{x\to-\infty}\bigl(x^2+1\bigr)e^x = 0$ (croissance comparée directe, $x^2e^x\to0$ et $e^x\to0$).
+
+\smallskip
+\textbf{c)} $\displaystyle\lim_{x\to0}\frac{e^{2x}-1}{x}$ : on écrit $\dfrac{e^{2x}-1}{x}=2\times\dfrac{e^{2x}-1}{2x}\to2\times1=2$ (en posant $t=2x\to0$).
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Équations, inéquations : tous les cas}
+
+\begin{exemple}[Équation se ramenant au second degré]
+Résolvons $e^{2x}-3e^x+2=0$.
+
+\smallskip
+On pose $t=e^x>0$ : $t^2-3t+2=0 \iff (t-1)(t-2)=0$, donc $t=1$ ou $t=2$ (toutes deux $>0$, acceptables).
+
+\smallskip
+Retour à $x$ : $e^x=1\iff x=0$ ; $e^x=2\iff x=\ln2$.
+
+\smallskip
+\textbf{Conclusion} : $S=\{0\,;\ln2\}$.
+\end{exemple}
+
+\begin{exemple}[Inéquation directe]
+Résolvons $e^{1-2x}>e^{x+4}$.
+
+\smallskip
+Par stricte croissance de $\exp$ : $1-2x>x+4 \iff -3x>3 \iff x<-1$.
+
+\smallskip
+\textbf{Conclusion} : $S=\,]-\infty\,;-1[$.
+\end{exemple}
+
+\begin{exemple}[Équation mêlant $e^x$ et $x$]
+Résolvons $xe^x=0$, puis $(x-1)e^x=0$.
+
+\smallskip
+Comme $e^x\ne0$ pour tout $x$ (jamais nulle), $xe^x=0 \iff x=0$. De même $(x-1)e^x=0\iff x=1$.
+\end{exemple}
+
+\begin{remarque}[Le piège du signe et de la valeur interdite]
+$e^x>0$ pour \emph{tout} réel $x$ : une équation $e^x=-2$ ou $e^x=0$ n'a \textbf{aucune solution}. Lors d'un changement de variable $t=e^x$, rejette systématiquement les racines $t\leq0$.
+\end{remarque}
+
+\begin{exemple}[Système exponentiel]
+Résoudre $\begin{cases} e^x\cdot e^y=e^5 \\ e^x - e^y = 3 \end{cases}$.
+
+\smallskip
+La première équation donne $e^{x+y}=e^5$, soit $x+y=5$ ; en posant $u=e^x$, $v=e^y$ (tous deux $>0$) : $uv=e^5$ et $u-v=3$. On résout ce système en $u,v$ puis $x=\ln u$, $y=\ln v$ (démarche similaire à un système symétrique classique).
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Dérivée de $e^u$, exponentielle de base $a$}
+
+\begin{propriete}[Dérivée de la composée]
+Si $u$ est dérivable sur $I$ :
+\[
+  \left(e^{u}\right)' = u'\,e^{u}.
+\]
+Conséquence pour les primitives : les primitives de $u'e^u$ sont $e^u+C$.
+\end{propriete}
+
+\begin{definition}[Exponentielle de base $a$]
+Pour $a>0$, la fonction \textbf{exponentielle de base $a$} est définie sur $\mathbb{R}$ par
+\[
+  a^x = e^{x\ln a}.
+\]
+\end{definition}
+
+\begin{propriete}[Sens de variation et dérivée]
+$x\mapsto a^x$ est dérivable sur $\mathbb{R}$, de dérivée $\left(a^x\right)' = (\ln a)\,a^x$ (formule de dérivée composée avec $u(x)=x\ln a$). Elle est strictement croissante si $a>1$ (car $\ln a>0$), strictement décroissante si $0<a<1$ (car $\ln a<0$), constante égale à $1$ si $a=1$.
+\end{propriete}
+
+\begin{remarque}[Cohérence avec les puissances entières]
+Pour $n\in\mathbb{N}$, $a^n=e^{n\ln a}$ coïncide bien avec le produit répété $a\times a\times\cdots\times a$ ($n$ fois), et les règles usuelles des puissances ($a^{x+y}=a^xa^y$, $(a^x)^y=a^{xy}$, $(ab)^x=a^xb^x$) restent valables pour cette définition étendue à tout exposant réel.
+\end{remarque}
+
+\begin{exemple}[Étude d'une fonction avec exponentielle]
+Étudions les variations de $f(x)=(x+1)e^{-x}$ sur $\mathbb{R}$.
+
+\smallskip
+$f'(x) = 1\cdot e^{-x}+(x+1)(-e^{-x}) = e^{-x}(1-x-1) = -xe^{-x}$.
+
+\smallskip
+Comme $e^{-x}>0$, signe de $f'$ = signe de $-x$ : $f$ croît sur $]-\infty\,;0]$, décroît sur $[0\,;+\infty[$, maximum $f(0)=1$.
+
+\smallskip
+\textbf{Limites} : en $+\infty$, $f(x)=xe^{-x}+e^{-x}\to0$ (croissances comparées) : asymptote $y=0$. En $-\infty$ : $x+1\to-\infty$, $e^{-x}\to+\infty$, donc $f(x)\to-\infty$.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- suite géométrique liée à $\exp$]
+Soit $u_n = e^{n+1}$ pour $n\in\mathbb{N}$. Montrer que $(u_n)$ est géométrique et donner sa raison, puis calculer $\displaystyle\sum_{k=0}^{n}u_k$.
+
+\smallskip
+\textbf{Corrigé.} $\dfrac{u_{n+1}}{u_n}=\dfrac{e^{n+2}}{e^{n+1}}=e^{n+2-(n+1)}=e$ : $(u_n)$ géométrique de raison $e$, premier terme $u_0=e$.
+\[
+  \sum_{k=0}^{n}u_k = e\times\frac{1-e^{n+1}}{1-e} = \frac{e\left(e^{n+1}-1\right)}{e-1}.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- démontrer une inégalité]
+Montrer que pour tout $x\geq0$ : $e^x \geq 1+x+\dfrac{x^2}{2}$.
+
+\smallskip
+\textbf{Corrigé.} Posons $g(x)=e^x-1-x-\dfrac{x^2}{2}$. $g'(x)=e^x-1-x$, et $g''(x)=e^x-1\geq0$ pour $x\geq0$ (car $\exp$ croissante et $e^0=1$) : $g'$ est croissante sur $[0\,;+\infty[$, et $g'(0)=1-1-0=0$, donc $g'(x)\geq0$ pour $x\geq0$ : $g$ est croissante sur $[0\,;+\infty[$, et $g(0)=1-1-0-0=0$, donc $g(x)\geq0$, ce qui donne l'inégalité voulue.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- limite avec composée]
+Calculer $\displaystyle\lim_{x\to+\infty}\left(1+\frac{1}{x}\right)^x$.
+
+\smallskip
+\textbf{Corrigé.} On écrit $\left(1+\frac1x\right)^x = e^{x\ln\left(1+\frac1x\right)}$. Étudions l'exposant : en posant $t=\frac1x\to0^+$,
+\[
+  x\ln\left(1+\frac1x\right) = \frac{\ln(1+t)}{t} \xrightarrow[t\to0^+]{} 1
+\]
+(limite usuelle du logarithme). Par continuité de $\exp$ : $\left(1+\frac1x\right)^x \to e^1=e$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- équation avec $\ln$ et $\exp$ combinés]
+Résoudre $\ln(e^x+1)=x+\ln2$.
+
+\smallskip
+\textbf{Corrigé.} Le membre de gauche est défini pour tout $x$ (car $e^x+1>0$ toujours). L'équation équivaut, par injectivité de $\ln$ (les deux membres sont bien définis), à $e^x+1=e^{x+\ln2}=e^x\cdot e^{\ln2}=2e^x$, soit $1=e^x$, d'où $x=0$.
+\[
+  S=\{0\}.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- modélisation : décroissance radioactive]
+Une quantité de matière radioactive suit $N(t)=N_0e^{-\lambda t}$ avec $\lambda>0$. On sait que la moitié de la matière a disparu au bout de $T$ (demi-vie). Exprimer $\lambda$ en fonction de $T$, puis $T$ en fonction de $\lambda$.
+
+\smallskip
+\textbf{Corrigé.} $N(T)=\dfrac{N_0}{2} \iff N_0e^{-\lambda T}=\dfrac{N_0}{2} \iff e^{-\lambda T}=\dfrac12 \iff -\lambda T=\ln\dfrac12=-\ln2$.
+
+\smallskip
+D'où $\lambda T=\ln2$, soit $\lambda=\dfrac{\ln2}{T}$ et $T=\dfrac{\ln2}{\lambda}$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Équation type $e^{2x}+ae^x+b=0$ & Poser $t=e^x>0$, résoudre en $t$, rejeter $t\leq0$, revenir à $x=\ln t$. \\
+Inéquation avec $e^{\cdots}$ & Comparer directement les exposants (stricte croissance de $\exp$). \\
+\rowcolor{tealpale} Limite avec $e^x$ et polynômes en $\pm\infty$ & Croissances comparées : $\frac{e^x}{x^n}\to+\infty$ ; $x^ne^x\to0$ en $-\infty$. \\
+Limite du type $(1+f(x))^{g(x)}$ & Réécrire $e^{g(x)\ln(1+f(x))}$ et étudier l'exposant. \\
+\rowcolor{tealpale} Dériver $e^u$ & $(e^u)'=u'e^u$ ; toujours identifier $u$ d'abord. \\
+Primitive d'un produit $u'e^u$ & $e^u+C$. \\
+\rowcolor{tealpale} Démontrer une inégalité avec $\exp$ & Étudier le signe d'une fonction auxiliaire via sa (ou ses) dérivée(s). \\
+Modélisation (radioactivité, population) & Reconnaître $N(t)=N_0e^{kt}$, relier $k$ à une donnée (demi-vie, taux de croissance). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier que $e^x>0$ pour tout $x$ : rejeter toute solution $t\leq0$ après un changement de variable $t=e^x$.
+  \item Confondre $e^{a+b}=e^ae^b$ avec $e^{ab}=\bigl(e^a\bigr)^b$ (cette dernière est correcte, mais souvent mal appliquée).
+  \item Écrire $\left(e^{u}\right)'=e^{u}$ en oubliant le facteur $u'$ (identique à l'erreur classique pour $\ln u$).
+  \item Utiliser $\frac{e^x-1}{x}\to1$ sans vérifier que $x\to0$ (cette limite n'est valable qu'en $0$).
+  \item Confondre exponentielle de base $a$ ($a^x=e^{x\ln a}$, variable en exposant) et fonction puissance ($x^a$, variable en base).
+  \item Dans une modélisation, confondre le \textbf{taux} de croissance/décroissance ($k$ dans $e^{kt}$) avec la valeur initiale ou la demi-vie.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $y=e^x\iff x=\ln y$ ; $\ln(e^x)=x$ ; $e^{\ln y}=y$ ($y>0$) ; $e^x>0$ toujours ; $(e^x)'=e^x$ (démontré via la dérivée de la réciproque).
+  \item Règles : $e^{a+b}=e^ae^b$ ; $e^{-a}=\frac1{e^a}$ ; $(e^a)^r=e^{ra}$ ; $a^x=e^{x\ln a}$, $(a^x)'=(\ln a)a^x$.
+  \item Limites : $e^x\to+\infty$ ($x\to+\infty$), $e^x\to0$ ($x\to-\infty$) ; $\frac{e^x}{x^n}\to+\infty$ ; $x^ne^x\to0$ ($x\to-\infty$) ; $\frac{e^x-1}{x}\to1$.
+  \item Hiérarchie en $+\infty$ : $\ln x\ll x^n\ll e^x$.
+  \item Inégalité fondamentale : $e^x\geq x+1$ pour tout $x$ (égalité ssi $x=0$).
+  \item $(e^u)'=u'e^u$ ; primitives de $u'e^u$ : $e^u+C$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

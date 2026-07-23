@@ -1,0 +1,371 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Structure d'espace vectoriel
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Structure d'espace vectoriel}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Reconnaître que l'ensemble des vecteurs du plan (puis de l'espace) muni de $+$ et de la multiplication par un scalaire est un espace vectoriel réel.
+  \item Manipuler combinaisons linéaires, vecteurs colinéaires, familles libres et liées.
+  \item Démontrer qu'une partie est (ou n'est pas) un sous-espace vectoriel à l'aide de la caractérisation pratique.
+  \item Reconnaître une base du plan et de l'espace, et exploiter les coordonnées associées.
+  \item Faire le lien entre cette structure abstraite et les manipulations vectorielles déjà pratiquées en géométrie.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{L'ensemble des vecteurs comme espace vectoriel}
+
+\begin{definition}[Espace vectoriel réel]
+Un ensemble $E$, muni d'une addition interne $+$ et d'une multiplication externe par les réels $\cdot:\mathbb{R}\times E\to E$, est un \textbf{espace vectoriel réel} (ou $\mathbb{R}$-espace vectoriel) lorsque :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item $(E,+)$ est un \textbf{groupe commutatif} (vu au chapitre précédent), de neutre noté $\vec0$ ;
+  \item pour tous $\lambda,\mu\in\mathbb{R}$, $\vec u,\vec v\in E$ : $\lambda\cdot(\vec u+\vec v)=\lambda\cdot\vec u+\lambda\cdot\vec v$ ; $(\lambda+\mu)\cdot\vec u=\lambda\cdot\vec u+\mu\cdot\vec u$ ; $\lambda\cdot(\mu\cdot\vec u)=(\lambda\mu)\cdot\vec u$ ; $1\cdot\vec u=\vec u$.
+\end{enumerate}
+Les éléments de $E$ sont appelés \textbf{vecteurs}, ceux de $\mathbb{R}$ des \textbf{scalaires}.
+\end{definition}
+
+\begin{propriete}[L'ensemble des vecteurs du plan (puis de l'espace) est un espace vectoriel]
+L'ensemble $\mathcal{V}$ des vecteurs du plan, muni de l'addition vectorielle (relation de Chasles) et de la multiplication par un réel, vérifie tous les axiomes ci-dessus : c'est un \textbf{espace vectoriel réel}. Il en va de même pour l'ensemble des vecteurs de l'espace.
+\end{propriete}
+
+\begin{remarque}[Ce que change ce point de vue]
+Tu manipules déjà des combinaisons de vecteurs depuis la 1\up{ère} Bac (relation de Chasles, $\overrightarrow{AB}+\overrightarrow{BC}=\overrightarrow{AC}$, multiplication par un scalaire). Ce chapitre donne le \textbf{cadre théorique} qui justifie pourquoi ces manipulations (règles de calcul, coordonnées, alignement) fonctionnent toujours de la même façon, quel que soit le contexte géométrique.
+\end{remarque}
+
+\begin{propriete}[Règles de calcul dans un espace vectoriel]
+Pour tous $\lambda\in\mathbb{R}$, $\vec u\in E$ :
+\[
+  0\cdot\vec u = \vec0, \qquad \lambda\cdot\vec0=\vec0, \qquad (-1)\cdot\vec u=-\vec u, \qquad \lambda\cdot\vec u=\vec0 \iff \lambda=0 \text{ ou } \vec u=\vec0.
+\]
+\end{propriete}
+
+\begin{demo}
+$0\cdot\vec u=\vec0$ : $0\cdot\vec u=(0+0)\cdot\vec u=0\cdot\vec u+0\cdot\vec u$. En simplifiant (groupe $(E,+)$, on ajoute le symétrique de $0\cdot\vec u$ des deux côtés) : $\vec0=0\cdot\vec u$.
+\end{demo}
+
+% ------------------- SECTION 2 -------------------
+\section{Combinaisons linéaires, colinéarité}
+
+\begin{definition}[Combinaison linéaire]
+Une \textbf{combinaison linéaire} des vecteurs $\vec u_1,\ldots,\vec u_n$ est tout vecteur de la forme
+\[
+  \lambda_1\vec u_1+\lambda_2\vec u_2+\cdots+\lambda_n\vec u_n, \qquad \lambda_1,\ldots,\lambda_n\in\mathbb{R}.
+\]
+\end{definition}
+
+\begin{definition}[Vecteurs colinéaires]
+Deux vecteurs $\vec u,\vec v$ sont \textbf{colinéaires} lorsque l'un est combinaison linéaire de l'autre : il existe $\lambda\in\mathbb{R}$ tel que $\vec v=\lambda\vec u$ (ou $\vec u=\vec0$).
+\end{definition}
+
+\begin{definition}[Famille libre, famille liée]
+Une famille $(\vec u_1,\ldots,\vec u_n)$ est \textbf{libre} (ou les vecteurs sont \textbf{linéairement indépendants}) lorsque
+\[
+  \lambda_1\vec u_1+\cdots+\lambda_n\vec u_n=\vec0 \implies \lambda_1=\cdots=\lambda_n=0.
+\]
+Une famille qui n'est pas libre est dite \textbf{liée}.
+\end{definition}
+
+\begin{propriete}[Caractérisation dans le plan et l'espace]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Deux vecteurs du plan $(\vec u,\vec v)$ forment une famille \textbf{liée} $\iff$ ils sont colinéaires.
+  \item Trois vecteurs de l'espace $(\vec u,\vec v,\vec w)$ forment une famille \textbf{liée} $\iff$ ils sont coplanaires.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Étudier une famille de vecteurs]
+Dans le plan muni d'un repère, soient $\vec u(2,3)$, $\vec v(-4,-6)$. Montrons qu'ils sont colinéaires.
+
+\smallskip
+On cherche $\lambda$ tel que $\vec v=\lambda\vec u$ : $-4=2\lambda$ et $-6=3\lambda$ donnent tous deux $\lambda=-2$. Donc $\vec v=-2\vec u$ : les vecteurs sont colinéaires (famille liée).
+
+\smallskip
+\emph{Critère par déterminant} : $\vec u(x,y)$, $\vec v(x',y')$ colinéaires $\iff xy'-x'y=0$. Ici : $2\times(-6)-(-4)\times3=-12+12=0$. $\checkmark$
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Sous-espaces vectoriels}
+
+\begin{definition}[Sous-espace vectoriel]
+Soit $E$ un espace vectoriel et $F\subset E$. $F$ est un \textbf{sous-espace vectoriel} de $E$ lorsque $F$, muni des lois restreintes, est lui-même un espace vectoriel.
+\end{definition}
+
+\begin{propriete}[Caractérisation pratique]
+$F\subset E$, $F\ne\varnothing$, est un sous-espace vectoriel de $E$ si et seulement si :
+\[
+  (\forall \vec u,\vec v\in F)(\forall\lambda\in\mathbb{R})\quad \vec u+\lambda\vec v \in F.
+\]
+En particulier, un sous-espace vectoriel contient toujours $\vec0$.
+\end{propriete}
+
+\begin{demo}
+Si $F$ est un sous-espace vectoriel, la stabilité par combinaison linéaire découle directement des axiomes (loi interne $+$ et loi externe). Réciproquement, si la propriété est vérifiée : en prenant $\vec v=\vec u$, $\lambda=-1$, on obtient $\vec u-\vec u=\vec0\in F$ ; les axiomes d'espace vectoriel se transmettent alors de $E$ à $F$ (associativité, commutativité, etc. sont automatiquement vérifiées puisque valables sur $E$ tout entier).
+\end{demo}
+
+\begin{exemple}[Droite vectorielle]
+Soit $\vec u\ne\vec0$ un vecteur du plan. Montrons que $F=\{\lambda\vec u : \lambda\in\mathbb{R}\}$ (l'ensemble des vecteurs colinéaires à $\vec u$) est un sous-espace vectoriel.
+
+\smallskip
+$F\ne\varnothing$ ($\vec0=0\cdot\vec u\in F$). Soient $\vec x=\lambda\vec u$, $\vec y=\mu\vec u\in F$, et $\alpha\in\mathbb{R}$ :
+\[
+  \vec x+\alpha\vec y = \lambda\vec u+\alpha\mu\vec u = (\lambda+\alpha\mu)\vec u \in F.
+\]
+Donc $F$ est un sous-espace vectoriel de $\mathcal{V}$, appelé \textbf{droite vectorielle} dirigée par $\vec u$.
+\end{exemple}
+
+\begin{exemple}[Contre-exemple : ensemble non stable]
+L'ensemble $G=\{(x,y)\in\mathbb{R}^2 : x^2+y^2=1\}$ (le cercle unité, vu comme ensemble de vecteurs) n'est \textbf{pas} un sous-espace vectoriel : par exemple $(1,0)\in G$ mais $2\times(1,0)=(2,0)\notin G$ (la loi externe ne stabilise pas $G$).
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Bases et coordonnées}
+
+\begin{definition}[Base]
+Une famille $(\vec e_1,\ldots,\vec e_n)$ est une \textbf{base} de l'espace vectoriel $E$ lorsqu'elle est \textbf{libre} et \textbf{génératrice} (tout vecteur de $E$ est combinaison linéaire des $\vec e_i$).
+\end{definition}
+
+\begin{propriete}[Bases du plan et de l'espace]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Deux vecteurs \textbf{non colinéaires} $(\vec i,\vec j)$ forment une \textbf{base du plan} : tout vecteur $\vec w$ du plan s'écrit de façon \textbf{unique} $\vec w=x\vec i+y\vec j$, $(x,y)$ étant les \textbf{coordonnées} de $\vec w$ dans cette base.
+  \item Trois vecteurs \textbf{non coplanaires} $(\vec i,\vec j,\vec k)$ forment une \textbf{base de l'espace} : tout vecteur $\vec w$ s'écrit de façon unique $\vec w=x\vec i+y\vec j+z\vec k$.
+\end{itemize}
+\end{propriete}
+
+\begin{propriete}[Unicité de la décomposition]
+Dans une base, l'écriture d'un vecteur comme combinaison linéaire des vecteurs de base est \textbf{unique}.
+\end{propriete}
+
+\begin{demo}
+Supposons $x\vec i+y\vec j=x'\vec i+y'\vec j$. Alors $(x-x')\vec i=(y'-y)\vec j$. Si $x\ne x'$, on obtiendrait $\vec i=\dfrac{y'-y}{x-x'}\vec j$, c'est-à-dire $\vec i$ et $\vec j$ colinéaires, ce qui contredit l'hypothèse que $(\vec i,\vec j)$ est une base (famille libre). Donc $x=x'$, puis $(y'-y)\vec j=\vec0$ avec $\vec j\ne\vec0$, donc $y=y'$.
+\end{demo}
+
+\begin{exemple}[Décomposition dans une base]
+Dans une base $(\vec i,\vec j)$ du plan, soient $\vec u=2\vec i-\vec j$, $\vec v=\vec i+3\vec j$. Exprimons $\vec w=5\vec i+\vec j$ comme combinaison linéaire de $\vec u$ et $\vec v$.
+
+\smallskip
+On vérifie d'abord que $(\vec u,\vec v)$ est une base : $2\times3-1\times(-1)=7\ne0$, donc $\vec u,\vec v$ non colinéaires.
+
+\smallskip
+On cherche $a,b$ tels que $\vec w=a\vec u+b\vec v$ : $5\vec i+\vec j=a(2\vec i-\vec j)+b(\vec i+3\vec j)=(2a+b)\vec i+(-a+3b)\vec j$.
+
+\smallskip
+Par unicité de la décomposition dans la base $(\vec i,\vec j)$ : $2a+b=5$ et $-a+3b=1$. De la première : $b=5-2a$. En substituant : $-a+3(5-2a)=1\iff-7a+15=1\iff a=2$, d'où $b=1$.
+
+\smallskip
+\textbf{Conclusion} : $\vec w=2\vec u+\vec v$ (vérification : $2(2\vec i-\vec j)+(\vec i+3\vec j)=5\vec i+\vec j$ $\checkmark$).
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- montrer qu'une famille est une base]
+Dans un repère $(O,\vec i,\vec j)$, soient $\vec u(1,2)$ et $\vec v(3,1)$. Montrer que $(\vec u,\vec v)$ est une base du plan.
+
+\smallskip
+\textbf{Corrigé.} Il suffit de montrer que $\vec u$ et $\vec v$ ne sont pas colinéaires : $1\times1-3\times2=1-6=-5\ne0$. Donc $(\vec u,\vec v)$ est libre, et comme le plan est de dimension $2$, toute famille libre de $2$ vecteurs en est une base.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- sous-espace vectoriel dans $\mathbb{R}^3$]
+Soit $F=\{(x,y,z)\in\mathbb{R}^3 : x+y-z=0\}$. Montrer que $F$ est un sous-espace vectoriel de $\mathbb{R}^3$.
+
+\smallskip
+\textbf{Corrigé.} $F\ne\varnothing$ : $(0,0,0)\in F$ (car $0+0-0=0$).
+
+\smallskip
+Soient $(x,y,z),(x',y',z')\in F$ et $\lambda\in\mathbb{R}$. Montrons que $(x,y,z)+\lambda(x',y',z')=(x+\lambda x',y+\lambda y',z+\lambda z')\in F$ :
+\[
+  (x+\lambda x')+(y+\lambda y')-(z+\lambda z') = (x+y-z)+\lambda(x'+y'-z') = 0+\lambda\times0 = 0.
+\]
+Donc $F$ est un sous-espace vectoriel de $\mathbb{R}^3$ (un \textbf{plan vectoriel}, car il correspond aux vecteurs dont les coordonnées vérifient une équation linéaire homogène).
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- famille liée et coplanarité]
+Dans l'espace, soient $\vec u(1,1,1)$, $\vec v(2,0,1)$, $\vec w(4,2,3)$. Montrer que ces trois vecteurs sont coplanaires en exprimant $\vec w$ en fonction de $\vec u$ et $\vec v$.
+
+\smallskip
+\textbf{Corrigé.} On cherche $a,b$ tels que $\vec w=a\vec u+b\vec v$ :
+\[
+  \begin{cases} a+2b=4 \\ a=2 \\ a+b=3 \end{cases}
+\]
+De la deuxième équation : $a=2$. En substituant dans la troisième : $b=1$. Vérification dans la première : $2+2\times1=4$. $\checkmark$
+
+\smallskip
+\textbf{Conclusion} : $\vec w=2\vec u+\vec v$ : les trois vecteurs sont coplanaires (famille liée).
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Montrer que deux vecteurs sont colinéaires & Chercher $\lambda$ tel que $\vec v=\lambda\vec u$, ou calculer le déterminant $xy'-x'y=0$. \\
+Montrer qu'une famille de 2 (ou 3) vecteurs est une base & Prouver qu'elle est libre (non colinéaires / non coplanaires). \\
+\rowcolor{tealpale} Montrer que $F$ est un sous-espace vectoriel & $F\ne\varnothing$ (souvent $\vec0\in F$), puis $\vec u+\lambda\vec v\in F$ pour tous $\vec u,\vec v\in F$, $\lambda\in\mathbb{R}$. \\
+Décomposer un vecteur dans une base & Poser le système linéaire issu de l'identification des coordonnées, résoudre. \\
+\rowcolor{tealpale} Montrer que 3 vecteurs de l'espace sont coplanaires & Exprimer l'un comme combinaison linéaire des deux autres. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier de vérifier $F\ne\varnothing$ avant d'utiliser la caractérisation pratique d'un sous-espace vectoriel.
+  \item Confondre « famille libre » (aucune combinaison non triviale ne donne $\vec0$) et « famille génératrice » (elle engendre tout l'espace) : une base exige les \textbf{deux}.
+  \item Oublier qu'un sous-espace vectoriel contient \textbf{toujours} $\vec0$ : un ensemble qui ne le contient pas n'en est jamais un.
+  \item Confondre le critère de colinéarité $xy'-x'y=0$ avec une simple égalité de rapports mal posée quand une coordonnée est nulle.
+  \item Oublier l'\textbf{unicité} de la décomposition dans une base pour justifier l'identification terme à terme des coordonnées.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item L'ensemble des vecteurs du plan (resp. de l'espace), avec $+$ et $\cdot$, est un espace vectoriel réel.
+  \item Famille libre $\iff$ aucune combinaison linéaire non triviale ne vaut $\vec0$ ; sinon, famille liée.
+  \item Sous-espace vectoriel $F$ : $F\ne\varnothing$ et $\vec u+\lambda\vec v\in F$ pour tous $\vec u,\vec v\in F$, $\lambda\in\mathbb{R}$.
+  \item Base : famille libre et génératrice ; décomposition d'un vecteur dans une base \textbf{unique}.
+  \item Dans le plan : 2 vecteurs non colinéaires forment une base ; dans l'espace : 3 vecteurs non coplanaires.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

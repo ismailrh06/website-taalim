@@ -1,0 +1,474 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Calcul des probabilités
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Calcul des probabilités}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Construire le vocabulaire probabiliste (univers, événements) et démontrer les axiomes et propriétés de base.
+  \item Calculer une probabilité dans le cas de l'équiprobabilité, en combinant avec les outils de dénombrement.
+  \item Maîtriser les probabilités conditionnelles, l'indépendance d'événements, et la formule des probabilités totales.
+  \item Reconnaître et utiliser une variable aléatoire, sa loi de probabilité, son espérance, sa variance et son écart-type.
+  \item Déterminer et représenter la fonction de répartition d'une variable aléatoire discrète.
+  \item Connaître la loi binomiale : construction, formule, espérance et variance.
+  \item Traiter les exercices type examen national : arbres pondérés, urnes, lois usuelles, prise de décision.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Vocabulaire et axiomes des probabilités}
+
+\begin{definition}[Univers, événements]
+Une expérience aléatoire a pour \textbf{univers} $\Omega$ l'ensemble de ses résultats (issues) possibles. Un \textbf{événement} est une partie de $\Omega$. Un événement à un seul élément est \textbf{élémentaire}. $\varnothing$ est l'\textbf{événement impossible}, $\Omega$ l'\textbf{événement certain}.
+\end{definition}
+
+\begin{definition}[Probabilité]
+Une \textbf{probabilité} sur $\Omega$ fini est une application $P$ qui à chaque événement $A\subset\Omega$ associe $P(A)\in[0;1]$, vérifiant :
+\[
+  P(\Omega)=1, \qquad P(A\cup B)=P(A)+P(B) \quad\text{si } A\cap B=\varnothing.
+\]
+\end{definition}
+
+\begin{propriete}[Conséquences des axiomes]
+\[
+  P(\varnothing)=0, \qquad P(\bar A)=1-P(A), \qquad P(A\cup B)=P(A)+P(B)-P(A\cap B),
+\]
+\[
+  A\subset B \implies P(A)\leq P(B).
+\]
+\end{propriete}
+
+\begin{demo}
+$P(A\cup B)=P(A)+P(B)-P(A\cap B)$ : on décompose $A\cup B=A\cup(B\setminus A)$, union disjointe, donc $P(A\cup B)=P(A)+P(B\setminus A)$. Or $B=(B\cap A)\cup(B\setminus A)$, union disjointe, donc $P(B)=P(A\cap B)+P(B\setminus A)$, soit $P(B\setminus A)=P(B)-P(A\cap B)$. En substituant : $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.
+\end{demo}
+
+\begin{definition}[Équiprobabilité]
+Si $\Omega$ est fini et que tous les résultats élémentaires sont \textbf{équiprobables} (même probabilité $\frac{1}{\text{card}(\Omega)}$), alors pour tout événement $A$ :
+\[
+  P(A) = \frac{\text{card}(A)}{\text{card}(\Omega)} = \frac{\text{nombre de cas favorables}}{\text{nombre de cas possibles}}.
+\]
+\end{definition}
+
+\begin{exemple}[Calcul en situation d'équiprobabilité]
+On tire une carte au hasard dans un jeu de $32$ cartes. Calculons $P(\text{« tirer un roi »})$ et $P(\text{« tirer un coeur »})$.
+\[
+  P(\text{roi}) = \frac{4}{32} = \frac18, \qquad P(\text{coeur}) = \frac{8}{32} = \frac14.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Probabilités conditionnelles}
+
+\begin{definition}[Probabilité conditionnelle]
+Soient $A,B$ événements avec $P(A)>0$. La \textbf{probabilité de $B$ sachant $A$} est
+\[
+  P_A(B) = \frac{P(A\cap B)}{P(A)}.
+\]
+\end{definition}
+
+\begin{propriete}[Formule des probabilités composées]
+Si $P(A)>0$ : $P(A\cap B)=P(A)\times P_A(B)$.
+\end{propriete}
+
+\begin{definition}[Événements indépendants]
+$A$ et $B$ sont \textbf{indépendants} lorsque $P(A\cap B)=P(A)\times P(B)$ (de façon équivalente, si $P(A)>0$ : $P_A(B)=P(B)$, la réalisation de $A$ n'influence pas celle de $B$).
+\end{definition}
+
+\begin{propriete}[Système complet d'événements et probabilités totales]
+$(A_1,\ldots,A_n)$ forme un \textbf{système complet d'événements} si les $A_i$ sont deux à deux disjoints et $A_1\cup\cdots\cup A_n=\Omega$ (avec $P(A_i)>0$). Alors, pour tout événement $B$ :
+\[
+  P(B) = \sum_{i=1}^n P(A_i)\times P_{A_i}(B) \quad\text{(formule des probabilités totales)}.
+\]
+\end{propriete}
+
+\begin{demo}
+$B=(B\cap A_1)\cup\cdots\cup(B\cap A_n)$, union \textbf{disjointe} (car les $A_i$ le sont). Donc $P(B)=\sum_iP(B\cap A_i)=\sum_iP(A_i)P_{A_i}(B)$ (formule des probabilités composées).
+\end{demo}
+
+\begin{exemple}[Arbre pondéré et probabilités totales]
+Une urne $U_1$ contient $3$ boules rouges et $2$ boules vertes ; une urne $U_2$ contient $1$ boule rouge et $4$ boules vertes. On choisit une urne au hasard (équiprobabilité), puis on y tire une boule. Calculons $P(\text{« tirer rouge »})$.
+
+\smallskip
+Soit $A_1$ : « choisir $U_1$ », $A_2$ : « choisir $U_2$ », $R$ : « tirer rouge ». $P(A_1)=P(A_2)=\frac12$, $P_{A_1}(R)=\frac35$, $P_{A_2}(R)=\frac15$.
+\[
+  P(R) = \frac12\times\frac35+\frac12\times\frac15 = \frac{3}{10}+\frac1{10} = \frac4{10} = \frac25.
+\]
+\end{exemple}
+
+\begin{propriete}[Formule de Bayes]
+Si $(A_1,\ldots,A_n)$ système complet, $P(B)>0$ :
+\[
+  P_B(A_i) = \frac{P(A_i)\times P_{A_i}(B)}{P(B)} = \frac{P(A_i)P_{A_i}(B)}{\sum_jP(A_j)P_{A_j}(B)}.
+\]
+\end{propriete}
+
+\begin{exemple}[Application de Bayes -- reprise de l'exemple précédent]
+Sachant que l'on a tiré une boule rouge, calculons la probabilité que ce soit l'urne $U_1$ qui ait été choisie.
+\[
+  P_R(A_1) = \frac{P(A_1)P_{A_1}(R)}{P(R)} = \frac{\frac12\times\frac35}{\frac25} = \frac{\frac3{10}}{\frac25} = \frac3{10}\times\frac52 = \frac34.
+\]
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Variables aléatoires}
+
+\begin{definition}[Variable aléatoire, loi de probabilité]
+Une \textbf{variable aléatoire} $X$ sur $\Omega$ (fini) est une fonction $X:\Omega\to\mathbb{R}$. Si $X$ prend les valeurs $x_1,\ldots,x_n$, sa \textbf{loi de probabilité} est la donnée des $P(X=x_i)$ pour chaque $i$, avec $\sum_iP(X=x_i)=1$.
+\end{definition}
+
+\begin{definition}[Espérance, variance, écart-type]
+\[
+  E(X) = \sum_{i=1}^nx_iP(X=x_i), \qquad
+  V(X) = \sum_{i=1}^n\bigl(x_i-E(X)\bigr)^2P(X=x_i), \qquad
+  \sigma(X) = \sqrt{V(X)}.
+\]
+\end{definition}
+
+\begin{propriete}[Formule de König-Huygens]
+\[
+  V(X) = E(X^2)-\bigl(E(X)\bigr)^2.
+\]
+\end{propriete}
+
+\begin{demo}
+En développant : $V(X)=\sum_i(x_i-E(X))^2P(X=x_i) = \sum_i\bigl[x_i^2-2x_iE(X)+E(X)^2\bigr]P(X=x_i)$
+\[
+  = \sum_ix_i^2P(X=x_i) - 2E(X)\sum_ix_iP(X=x_i) + E(X)^2\sum_iP(X=x_i).
+\]
+Or $\sum_ix_i^2P(X=x_i)=E(X^2)$, $\sum_ix_iP(X=x_i)=E(X)$ et $\sum_iP(X=x_i)=1$, donc
+\[
+  V(X) = E(X^2)-2E(X)^2+E(X)^2 = E(X^2)-E(X)^2.
+\]
+\end{demo}
+
+\begin{propriete}[Linéarité de l'espérance]
+Pour $a,b\in\mathbb{R}$ : $E(aX+b)=aE(X)+b$, et $V(aX+b)=a^2V(X)$.
+\end{propriete}
+
+\begin{exemple}[Loi de probabilité complète]
+On lance deux dés équilibrés et on note $X$ la somme des points obtenus. Établissons la loi de $X$ et calculons $E(X)$.
+
+\smallskip
+$X$ prend les valeurs de $2$ à $12$. Par exemple $P(X=2)=\frac1{36}$ (seul $(1,1)$), $P(X=7)=\frac6{36}$ (6 combinaisons).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{c|ccccccccccc}
+$x_i$ & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\ \hline
+$P(X=x_i)$ & $\frac1{36}$ & $\frac2{36}$ & $\frac3{36}$ & $\frac4{36}$ & $\frac5{36}$ & $\frac6{36}$ & $\frac5{36}$ & $\frac4{36}$ & $\frac3{36}$ & $\frac2{36}$ & $\frac1{36}$ \\
+\end{tabular}
+\end{center}
+
+\[
+  E(X) = \frac{1}{36}\Bigl(2\times1+3\times2+\cdots+12\times1\Bigr) = \frac{252}{36} = 7.
+\]
+\end{exemple}
+
+\begin{definition}[Fonction de répartition]
+Soit $X$ une variable aléatoire prenant les valeurs $x_1<x_2<\cdots<x_n$. La \textbf{fonction de répartition} de $X$ est la fonction $F_X:\mathbb{R}\to[0\,;1]$ définie par
+\[
+  F_X(t) = P(X\leq t) = \sum_{x_i\leq t}P(X=x_i).
+\]
+\end{definition}
+
+\begin{propriete}[Propriétés de $F_X$]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $F_X$ est \textbf{en escalier}, \textbf{croissante} (au sens large) sur $\mathbb{R}$, constante entre deux valeurs consécutives prises par $X$.
+  \item $F_X(t)=0$ pour $t<x_1$ ; \quad $F_X(t)=1$ pour $t\geq x_n$.
+  \item Pour tout $i$ : $F_X(x_i)-F_X(x_{i-1}) = P(X=x_i)$ (le « saut » de $F_X$ en $x_i$ vaut $P(X=x_i)$), avec la convention $F_X(x_0)=0$.
+  \item Pour $a<b$ : $P(a<X\leq b)=F_X(b)-F_X(a)$.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Construire et représenter $F_X$]
+Soit $X$ la variable aléatoire de loi : $P(X=1)=0{,}2$, $P(X=2)=0{,}5$, $P(X=3)=0{,}3$. Déterminons $F_X$.
+
+\smallskip
+\[
+  F_X(t) =
+  \begin{cases}
+    0 & \text{si } t<1,\\
+    0{,}2 & \text{si } 1\leq t<2,\\
+    0{,}7 & \text{si } 2\leq t<3,\\
+    1 & \text{si } t\geq3.
+  \end{cases}
+\]
+La courbe de $F_X$ est une fonction \textbf{en escalier}, croissante par sauts de hauteur $0{,}2$ en $t=1$, $0{,}5$ en $t=2$, $0{,}3$ en $t=3$ (sauts qui totalisent bien $1$).
+
+\smallskip
+Par exemple, $P(1<X\leq3)=F_X(3)-F_X(1)=1-0{,}2=0{,}8$ (cohérent avec $P(X=2)+P(X=3)=0{,}5+0{,}3=0{,}8$).
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Loi binomiale}
+
+\begin{definition}[Épreuve de Bernoulli, schéma de Bernoulli]
+Une \textbf{épreuve de Bernoulli} de paramètre $p$ est une expérience à deux issues, « succès » (probabilité $p$) et « échec » (probabilité $1-p$). Un \textbf{schéma de Bernoulli} est la répétition de $n$ épreuves de Bernoulli \textbf{identiques et indépendantes}.
+\end{definition}
+
+\begin{propriete}[Loi binomiale]
+Dans un schéma de Bernoulli de paramètres $n$ et $p$, la variable aléatoire $X$ comptant le \textbf{nombre de succès} suit la \textbf{loi binomiale} $\mathcal{B}(n,p)$ :
+\[
+  P(X=k) = \binom nk p^k(1-p)^{n-k}, \qquad k=0,1,\ldots,n.
+\]
+\end{propriete}
+
+\begin{demo}
+Une issue donnée avec exactement $k$ succès (parmi $n$ épreuves) a pour probabilité $p^k(1-p)^{n-k}$ (indépendance des épreuves). Le nombre de façons de placer ces $k$ succès parmi les $n$ épreuves est $\dbinom nk$ (choix des positions). Par incompatibilité de ces différentes issues (union disjointe), on somme : $P(X=k)=\dbinom nkp^k(1-p)^{n-k}$.
+\end{demo}
+
+\begin{propriete}[Espérance et variance de la loi binomiale]
+Si $X\sim\mathcal{B}(n,p)$ :
+\[
+  E(X) = np, \qquad V(X) = np(1-p), \qquad \sigma(X) = \sqrt{np(1-p)}.
+\]
+\end{propriete}
+
+\begin{exemple}[Application de la loi binomiale]
+On lance $5$ fois un dé équilibré. Soit $X$ le nombre de fois où l'on obtient un $6$. $X\sim\mathcal{B}\left(5,\frac16\right)$.
+\[
+  P(X=2) = \binom52\left(\frac16\right)^2\left(\frac56\right)^3 = 10\times\frac1{36}\times\frac{125}{216} = \frac{1250}{7776} \approx 0{,}161.
+\]
+\[
+  E(X) = 5\times\frac16 = \frac56, \qquad V(X) = 5\times\frac16\times\frac56 = \frac{25}{36}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- équiprobabilité et dénombrement combiné]
+Une urne contient $10$ boules : $6$ rouges et $4$ noires. On tire simultanément $3$ boules. Calculer la probabilité d'obtenir exactement $2$ rouges.
+
+\smallskip
+\textbf{Corrigé.} $\text{card}(\Omega)=\dbinom{10}3=120$. Cas favorables : $2$ rouges parmi $6$ et $1$ noire parmi $4$ : $\dbinom62\times\dbinom41=15\times4=60$.
+\[
+  P = \frac{60}{120} = \frac12.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- indépendance à vérifier]
+On lance un dé équilibré. Soient $A$ : « obtenir un nombre pair », $B$ : « obtenir un multiple de $3$ ». $A$ et $B$ sont-ils indépendants ?
+
+\smallskip
+\textbf{Corrigé.} $P(A)=\frac36=\frac12$ ($\{2,4,6\}$), $P(B)=\frac26=\frac13$ ($\{3,6\}$). $A\cap B=\{6\}$, donc $P(A\cap B)=\frac16$.
+
+\smallskip
+$P(A)\times P(B)=\frac12\times\frac13=\frac16=P(A\cap B)$. \textbf{Conclusion} : $A$ et $B$ sont \textbf{indépendants}.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- variable aléatoire avec gain/perte]
+Un jeu consiste à tirer une carte parmi $32$. On gagne $10$ DH si c'est un roi, on perd $2$ DH sinon. Soit $X$ le gain algébrique. Déterminer la loi de $X$, calculer $E(X)$ et interpréter.
+
+\smallskip
+\textbf{Corrigé.} $P(X=10)=\dfrac{4}{32}=\dfrac18$ ; $P(X=-2)=\dfrac{28}{32}=\dfrac78$.
+\[
+  E(X) = 10\times\frac18+(-2)\times\frac78 = \frac{10}8-\frac{14}8 = -\frac48 = -0{,}5.
+\]
+\textbf{Interprétation} : le jeu est défavorable au joueur (en moyenne, il perd $0{,}5$ DH par partie).
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- probabilités totales avec arbre à trois branches]
+Une usine produit des pièces sur trois machines $M_1$, $M_2$, $M_3$, représentant respectivement $30\%$, $50\%$, $20\%$ de la production. Les taux de défaut sont respectivement $2\%$, $1\%$, $3\%$. On prend une pièce au hasard. Calculer la probabilité qu'elle soit défectueuse.
+
+\smallskip
+\textbf{Corrigé.} Soit $D$ : « la pièce est défectueuse ».
+\[
+  P(D) = 0{,}3\times0{,}02+0{,}5\times0{,}01+0{,}2\times0{,}03 = 0{,}006+0{,}005+0{,}006 = 0{,}017.
+\]
+\textbf{Conclusion} : $P(D)=1{,}7\%$.
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- loi binomiale, calcul « au moins »]
+On répète $4$ fois, de façon indépendante, une expérience où la probabilité de succès est $p=0{,}3$. Calculer la probabilité d'obtenir au moins un succès.
+
+\smallskip
+\textbf{Corrigé.} Soit $X\sim\mathcal{B}(4;0{,}3)$. Par le complémentaire :
+\[
+  P(X\geq1) = 1-P(X=0) = 1-\binom40(0{,}3)^0(0{,}7)^4 = 1-0{,}7^4 = 1-0{,}2401 = 0{,}7599.
+\]
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Calculer $P(A)$ en équiprobabilité & $\frac{\text{card}(A)}{\text{card}(\Omega)}$, avec dénombrement (arrangement/combinaison) pour les cardinaux. \\
+Situation en deux étapes (urne puis tirage...) & Arbre pondéré : produit sur chaque branche, somme sur les branches menant au résultat. \\
+\rowcolor{tealpale} « Sachant que... » & Probabilité conditionnelle $P_A(B)=\frac{P(A\cap B)}{P(A)}$. \\
+Retrouver la cause à partir d'un effet observé & Formule de Bayes. \\
+\rowcolor{tealpale} Vérifier une indépendance & Comparer $P(A\cap B)$ à $P(A)\times P(B)$. \\
+Loi d'une variable aléatoire & Lister toutes les valeurs possibles, calculer chaque probabilité, vérifier que la somme vaut $1$. \\
+\rowcolor{tealpale} Déterminer $F_X$ & Fonction en escalier : $F_X(t)=\sum_{x_i\leq t}P(X=x_i)$, sauts de hauteur $P(X=x_i)$ en chaque $x_i$. \\
+Répétitions identiques indépendantes & Reconnaître un schéma de Bernoulli, utiliser $\mathcal{B}(n,p)$. \\
+\rowcolor{tealpale} « Au moins un » succès & Passer par le complémentaire : $1-P(X=0)$. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Confondre $P(A\cap B)$ (probabilité de l'intersection) et $P_A(B)$ (probabilité conditionnelle) : $P(A\cap B)=P(A)\times P_A(B)$, ce ne sont pas la même chose.
+  \item Utiliser la formule d'équiprobabilité alors que les issues \textbf{ne sont pas} équiprobables (vérifier l'énoncé).
+  \item Oublier de vérifier que la somme des probabilités d'une loi vaut $1$.
+  \item Confondre indépendance et incompatibilité : deux événements incompatibles ($A\cap B=\varnothing$) ne sont en général \textbf{pas} indépendants (sauf cas particulier).
+  \item Dans la loi binomiale, oublier le coefficient binomial $\dbinom nk$ (compter le nombre d'arrangements des succès parmi les épreuves).
+  \item Confondre $E(X)$ (valeur moyenne) et la valeur la plus probable de $X$.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Équiprobabilité : $P(A)=\frac{\text{card}(A)}{\text{card}(\Omega)}$ ; $P(\bar A)=1-P(A)$ ; $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.
+  \item Conditionnelle : $P_A(B)=\frac{P(A\cap B)}{P(A)}$ ; indépendance : $P(A\cap B)=P(A)P(B)$.
+  \item Probabilités totales : $P(B)=\sum P(A_i)P_{A_i}(B)$ ; Bayes : $P_B(A_i)=\frac{P(A_i)P_{A_i}(B)}{P(B)}$.
+  \item $E(X)=\sum x_iP(X=x_i)$ ; $V(X)=E(X^2)-E(X)^2$ ; $\sigma(X)=\sqrt{V(X)}$.
+  \item Fonction de répartition : $F_X(t)=P(X\leq t)$, en escalier, croissante, saut $P(X=x_i)$ en $x_i$ ; $P(a<X\leq b)=F_X(b)-F_X(a)$.
+  \item Loi binomiale $\mathcal{B}(n,p)$ : $P(X=k)=\binom nkp^k(1-p)^{n-k}$, $E(X)=np$, $V(X)=np(1-p)$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

@@ -1,0 +1,477 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Fonction logarithme népérien
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Fonction logarithme népérien}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Construire $\ln$ comme primitive de $x \mapsto \frac{1}{x}$ s'annulant en $1$, et en déduire ses propriétés fondamentales.
+  \item Démontrer et utiliser la relation fonctionnelle et toutes les règles de calcul algébrique.
+  \item Maîtriser les limites usuelles et les croissances comparées, avec démonstration des cas clés.
+  \item Résoudre tous les types d'équations et d'inéquations logarithmiques, y compris avec changement de variable.
+  \item Dériver des fonctions composées avec $\ln u$, étudier des fonctions complètes, utiliser le logarithme décimal.
+  \item Traiter les exercices type examen national : étude de fonction avec $\ln$, suite liée à $\ln$, inégalités classiques.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Construction et premières propriétés}
+
+\begin{definition}[Logarithme népérien]
+La fonction \textbf{logarithme népérien}, notée $\ln$, est l'unique primitive sur $]0\,;+\infty[$ de la fonction $x \mapsto \dfrac{1}{x}$ qui s'annule en $1$ :
+\[
+  \ln : \ ]0\,;+\infty[\ \to \mathbb{R}, \qquad \ln(1) = 0, \qquad (\forall x > 0)\ \ln'(x) = \frac{1}{x}.
+\]
+(L'existence de cette primitive est garantie par la continuité de $x \mapsto \frac{1}{x}$ sur $]0\,;+\infty[$ ; l'unicité, par la propriété selon laquelle deux primitives d'une même fonction sur un intervalle diffèrent d'une constante.)
+\end{definition}
+
+\begin{propriete}[Conséquences immédiates]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $\ln$ est continue et dérivable sur $]0\,;+\infty[$, avec $\ln'(x) = \frac{1}{x} > 0$ : $\ln$ est \textbf{strictement croissante}.
+  \item $\ln x = 0 \iff x = 1$ ; $\ \ln x > 0 \iff x > 1$ ; $\ \ln x < 0 \iff 0 < x < 1$ (conséquences de la stricte croissance et de $\ln 1 = 0$).
+  \item Le réel $e$ est défini par $\ln e = 1$ ; on admet $e \approx 2{,}71828$.
+  \item Pour $a, b > 0$ : $\ln a = \ln b \iff a = b$, et $\ln a < \ln b \iff a < b$ (stricte croissance = injectivité + comparaison).
+\end{itemize}
+\end{propriete}
+
+\begin{remarque}[Le réflexe domaine de définition]
+Avant toute équation, inéquation, ou étude de fonction avec $\ln$, détermine \textbf{en premier} l'ensemble des $x$ pour lesquels les expressions sous les logarithmes sont \textbf{strictement positives}. Toute solution hors de ce domaine doit être rejetée -- c'est l'erreur la plus fréquente au bac.
+\end{remarque}
+
+% ------------------- SECTION 2 -------------------
+\section{Relation fonctionnelle et règles de calcul}
+
+\begin{propriete}[Relation fonctionnelle fondamentale]
+Pour tous $a, b > 0$ :
+\[
+  \ln(ab) = \ln a + \ln b.
+\]
+\end{propriete}
+
+\begin{demo}
+Fixons $b > 0$ et posons $g(x) = \ln(bx) - \ln x$ pour $x > 0$. Alors $g$ est dérivable et
+\[
+  g'(x) = \frac{b}{bx} - \frac{1}{x} = \frac{1}{x} - \frac{1}{x} = 0
+\]
+sur $]0\,;+\infty[$ : $g$ est donc \textbf{constante}. On calcule cette constante en $x = 1$ : $g(1) = \ln b - \ln 1 = \ln b$. Donc pour tout $x > 0$ : $\ln(bx) - \ln x = \ln b$, soit $\ln(bx) = \ln x + \ln b$. En posant $a = x$, on obtient $\ln(ab) = \ln a + \ln b$.
+\end{demo}
+
+\begin{propriete}[Règles de calcul dérivées]
+Pour tous $a, b > 0$, $n \in \mathbb{Z}$, $r \in \mathbb{Q}$ :
+\[
+  \ln\frac{1}{b} = -\ln b, \qquad
+  \ln\frac{a}{b} = \ln a - \ln b, \qquad
+  \ln\left(a^n\right) = n \ln a, \qquad
+  \ln\sqrt{a} = \frac{1}{2}\ln a, \qquad
+  \ln\left(a^r\right) = r \ln a.
+\]
+\end{propriete}
+
+\begin{demo}
+$\ln\frac{1}{b}$ : comme $b \times \frac{1}{b} = 1$, la relation fonctionnelle donne $\ln b + \ln\frac{1}{b} = \ln 1 = 0$, d'où $\ln\frac{1}{b} = -\ln b$. Puis $\ln\frac{a}{b} = \ln\left(a \times \frac{1}{b}\right) = \ln a + \ln\frac{1}{b} = \ln a - \ln b$. Pour $\ln(a^n)$ ($n \in \mathbb{N}$), récurrence immédiate à partir de la relation fonctionnelle ; le cas $n$ négatif s'en déduit avec $\ln\frac{1}{b}$. Enfin $\ln\sqrt{a} = \ln\left(a^{1/2}\right)$ vérifie $2\ln\sqrt{a} = \ln\left((\sqrt{a})^2\right) = \ln a$, d'où le résultat.
+\end{demo}
+
+\begin{exemple}[Simplification d'expressions]
+Simplifions $A = \ln 8 + \ln 3 - \ln 6$ et $B = \ln\bigl(\sqrt{2}+1\bigr) + \ln\bigl(\sqrt{2}-1\bigr)$.
+\[
+  A = \ln\frac{8\times 3}{6} = \ln 4 = \ln 2^2 = 2\ln 2, \qquad
+  B = \ln\bigl[(\sqrt2+1)(\sqrt2-1)\bigr] = \ln(2-1) = \ln 1 = 0.
+\]
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Étude complète et limites}
+
+\begin{propriete}[Limites aux bornes]
+\[
+  \lim_{x \to +\infty} \ln x = +\infty, \qquad \lim_{x \to 0^+} \ln x = -\infty.
+\]
+\end{propriete}
+
+\begin{demo}
+Pour $\lim\limits_{x\to+\infty}\ln x = +\infty$ : montrons d'abord que $\ln(2^n) = n\ln 2 \to +\infty$ quand $n \to +\infty$ (car $\ln 2 > 0$, $2 > 1$). Comme $\ln$ est croissante, pour tout $x \geq 2^n$, $\ln x \geq n \ln 2$ : donc $\ln x \to +\infty$ quand $x \to +\infty$. Pour la limite en $0^+$, on pose $x = \frac1t$ avec $t \to +\infty$ : $\ln x = \ln\frac1t = -\ln t \to -\infty$.
+\end{demo}
+
+\begin{remarque}[Asymptote et branche parabolique]
+La courbe de $\ln$ admet l'axe des ordonnées pour \textbf{asymptote verticale}. En $+\infty$, on verra que $\frac{\ln x}{x} \to 0$ : la courbe présente une \textbf{branche parabolique de direction $(Ox)$}.
+\end{remarque}
+
+\begin{propriete}[Croissances comparées et limites usuelles]
+\[
+  \lim_{x \to +\infty} \frac{\ln x}{x} = 0, \qquad
+  \lim_{x \to +\infty} \frac{\ln x}{x^n} = 0 \ (n \in \mathbb{N}^*), \qquad
+  \lim_{x \to 0^+} x \ln x = 0, \qquad
+  \lim_{x \to 0^+} x^n \ln x = 0,
+\]
+\[
+  \lim_{x \to 0} \frac{\ln(1+x)}{x} = 1, \qquad
+  \lim_{x \to 1} \frac{\ln x}{x-1} = 1.
+\]
+\end{propriete}
+
+\begin{demo}
+Montrons $\lim\limits_{x\to+\infty}\frac{\ln x}{x} = 0$. Pour $t \geq 1$, on a $\ln t \leq t - 1 \leq t$ (inégalité classique, obtenue via la concavité de $\ln$, voir plus loin). En appliquant cette inégalité à $\sqrt{x}$ (pour $x \geq 1$) : $\ln\sqrt{x} \leq \sqrt{x}$, soit $\frac{1}{2}\ln x \leq \sqrt x$, donc $0 < \frac{\ln x}{x} \leq \frac{2\sqrt x}{x} = \frac{2}{\sqrt x} \to 0$. Par gendarmes, $\frac{\ln x}{x} \to 0$.
+
+\smallskip
+Pour $\lim\limits_{x\to0^+} x\ln x = 0$ : poser $t = \frac1x \to +\infty$, alors $x\ln x = \frac1t \ln\frac1t = -\frac{\ln t}{t} \to 0$ (d'après ce qui précède).
+
+\smallskip
+Pour $\lim\limits_{x\to0}\frac{\ln(1+x)}{x} = 1$ : c'est le taux d'accroissement de $\ln$ en $1$, puisque $\frac{\ln(1+x)-\ln(1)}{x} \to \ln'(1) = 1$ par définition du nombre dérivé.
+\end{demo}
+
+\begin{exemple}[Calculs de limites avec croissances comparées]
+\textbf{a)} $\displaystyle\lim_{x \to +\infty} \frac{\ln x - x}{x} = \lim_{x\to+\infty}\left(\frac{\ln x}{x} - 1\right) = 0 - 1 = -1$.
+
+\smallskip
+\textbf{b)} $\displaystyle\lim_{x \to 0^+} x^2 \ln x = 0$ (croissance comparée directe).
+
+\smallskip
+\textbf{c)} $\displaystyle\lim_{x \to +\infty} \bigl(\ln(x+1) - \ln x\bigr) = \lim_{x\to+\infty}\ln\frac{x+1}{x} = \ln 1 = 0$ (par continuité de $\ln$ en $1$, car $\frac{x+1}{x}\to 1$).
+\end{exemple}
+
+\begin{propriete}[Concavité et inégalité fondamentale]
+$\ln$ est \textbf{concave} sur $]0\,;+\infty[$ (car $\ln''(x) = -\frac{1}{x^2} < 0$). La tangente en $x=1$ a pour équation $y = x - 1$, et par concavité la courbe est en dessous de cette tangente :
+\[
+  \ln x \leq x - 1 \qquad \text{pour tout } x > 0 \quad (\text{égalité si et seulement si } x = 1).
+\]
+\end{propriete}
+
+% ------------------- SECTION 4 -------------------
+\section{Équations, inéquations : tous les cas}
+
+\begin{exemple}[Équation directe]
+Résolvons $\ln(x-1) + \ln(x+2) = \ln 4$.
+
+\smallskip
+\textbf{Domaine} : $x-1>0$ et $x+2>0$, soit $x>1$ : $D=\,]1\,;+\infty[$.
+
+\smallskip
+Sur $D$ : $\ln\bigl[(x-1)(x+2)\bigr]=\ln4 \iff (x-1)(x+2)=4 \iff x^2+x-6=0 \iff (x-2)(x+3)=0$. Racines $x=2$, $x=-3$ ; seule $x=2\in D$ convient.
+
+\smallskip
+\textbf{Conclusion} : $S=\{2\}$.
+\end{exemple}
+
+\begin{exemple}[Inéquation directe]
+Résolvons $\ln(2x-1)\leq 0$.
+
+\smallskip
+\textbf{Domaine} : $x>\frac12$. Sur ce domaine : $\ln(2x-1)\leq \ln1 \iff 2x-1\leq1 \iff x\leq1$ (stricte croissance).
+
+\smallskip
+\textbf{Conclusion} : $S=\left]\frac12\,;1\right]$.
+\end{exemple}
+
+\begin{exemple}[Équation avec changement de variable]
+Résolvons $(\ln x)^2 - 3\ln x + 2 = 0$.
+
+\smallskip
+\textbf{Domaine} : $x>0$. On pose $t=\ln x$ (sans restriction de signe, $t\in\mathbb{R}$) : $t^2-3t+2=0 \iff (t-1)(t-2)=0$, donc $t=1$ ou $t=2$.
+
+\smallskip
+Retour à $x$ : $\ln x=1 \iff x=e$ ; $\ln x=2 \iff x=e^2$.
+
+\smallskip
+\textbf{Conclusion} : $S=\{e\,;e^2\}$.
+\end{exemple}
+
+\begin{exemple}[Système avec somme et produit]
+Résoudre le système $\begin{cases} \ln x + \ln y = \ln 6 \\ x + y = 5 \end{cases}$ (avec $x,y>0$).
+
+\smallskip
+La première équation équivaut à $xy = 6$ (domaine $x,y>0$ assuré). Donc $x$ et $y$ sont les racines de $X^2 - 5X + 6 = 0$, soit $(X-2)(X-3)=0$.
+
+\smallskip
+\textbf{Conclusion} : $\{x,y\}=\{2,3\}$, soit $(x,y)=(2,3)$ ou $(3,2)$.
+\end{exemple}
+
+\begin{remarque}[Piège : équation avec valeur absolue implicite]
+$\ln(x^2) = 2\ln|x|$ (et \textbf{non} $2\ln x$) car $x^2>0$ dès que $x\neq0$, y compris pour $x<0$, alors que $\ln x$ n'est pas défini pour $x<0$. Toujours vérifier si l'expression sous le logarithme peut être positive pour des $x$ de signe quelconque.
+\end{remarque}
+
+% ------------------- SECTION 5 -------------------
+\section{Dérivée de $\ln u$, primitives, logarithme décimal}
+
+\begin{propriete}[Dérivée de la composée]
+Si $u$ est dérivable et \textbf{strictement positive} sur $I$ :
+\[
+  \bigl(\ln u\bigr)' = \frac{u'}{u}.
+\]
+Conséquence pour les primitives : les primitives de $\dfrac{u'}{u}$ sont $\ln|u| + C$ (valable même si $u<0$, à condition que $u$ ne s'annule pas).
+\end{propriete}
+
+\begin{demo}
+Composée de $u$ (dérivable en $x$) et de $\ln$ (dérivable en $u(x) > 0$, de dérivée $\frac{1}{u(x)}$) : $(\ln u)'(x) = u'(x)\times\frac{1}{u(x)} = \frac{u'(x)}{u(x)}$.
+\end{demo}
+
+\begin{definition}[Logarithme décimal]
+Pour $x>0$, le \textbf{logarithme décimal} est $\log x = \dfrac{\ln x}{\ln 10}$. Il vérifie $\log 1=0$, $\log 10=1$, $\log(10^n)=n$ pour $n\in\mathbb{Z}$, et les mêmes règles de calcul que $\ln$ (produit, quotient, puissance). \emph{Usage} : mesure du pH en chimie ($\text{pH}=-\log[\text{H}_3\text{O}^+]$), échelle de Richter, etc.
+\end{definition}
+
+\begin{exemple}[Étude complète d'une fonction avec $\ln$]
+Étudions $f(x) = x - \ln x$ sur $D_f=\,]0\,;+\infty[$ : variations, limites, tableau.
+
+\smallskip
+\textbf{Dérivée} : $f'(x) = 1 - \dfrac1x = \dfrac{x-1}{x}$. Signe de $x-1$ (car $x>0$) : $f'<0$ sur $]0\,;1[$, $f'>0$ sur $]1\,;+\infty[$ : \textbf{minimum} $f(1) = 1 - 0 = 1$.
+
+\smallskip
+\textbf{Limites} : en $0^+$ : $x\to0$ et $-\ln x\to+\infty$, donc $f(x)\to+\infty$. En $+\infty$ : $f(x)=x\left(1-\frac{\ln x}{x}\right)\to+\infty$ (car $\frac{\ln x}{x}\to0$).
+
+\smallskip
+\textbf{Conséquence} : comme $f(x)\geq f(1)=1>0$ pour tout $x>0$, on retrouve l'inégalité $x > \ln x$ pour tout $x>0$ (plus forte que $\ln x \leq x-1$ pour $x\ne1$, elles sont en fait cohérentes).
+\end{exemple}
+
+\begin{exemple}[Dérivée d'une composée et étude de signe]
+Dérivons $f(x)=\ln\left(x^2+1\right)$ sur $\mathbb{R}$ (possible car $x^2+1>0$ toujours) :
+\[
+  f'(x) = \frac{2x}{x^2+1}.
+\]
+Signe de $f'$ = signe de $x$ : $f$ décroît sur $]-\infty\,;0]$, croît sur $[0\,;+\infty[$, minimum $f(0)=\ln1=0$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- domaine, dérivée, limites]
+Soit $f(x) = \ln\left(\dfrac{x-1}{x+1}\right)$. Déterminer $D_f$, calculer $f'(x)$, et les limites aux bornes.
+
+\smallskip
+\textbf{Corrigé.} \emph{Domaine} : $\dfrac{x-1}{x+1}>0 \iff x\in\,]-\infty\,;-1[\,\cup\,]1\,;+\infty[$ (tableau de signes).
+
+\smallskip
+\emph{Dérivée} : posons $u(x)=\dfrac{x-1}{x+1}$, avec $u'(x) = \dfrac{2}{(x+1)^2}$ (dérivée d'un quotient). Alors $f=\ln u$, donc $f'=\dfrac{u'}{u}$ :
+\[
+  f'(x) = \frac{2}{(x+1)^2}\times\frac{x+1}{x-1} = \frac{2}{(x+1)(x-1)} = \frac{2}{x^2-1}.
+\]
+
+\smallskip
+\emph{Limites} : en $-\infty$ et $+\infty$ : $\frac{x-1}{x+1}\to1$, donc $f(x)\to\ln1=0$. En $1^+$ : $\frac{x-1}{x+1}\to0^+$, donc $f(x)\to-\infty$. En $(-1)^-$ : $\frac{x-1}{x+1}\to+\infty$ (num. $\to-2$, dénom. $\to0^-$), donc $f(x)\to+\infty$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- suite définie via $\ln$]
+Soit $u_n=\ln(n^2+1)-\ln(n^2)$ pour $n\geq1$. Simplifier $u_n$ et calculer $\lim u_n$.
+
+\smallskip
+\textbf{Corrigé.} $u_n=\ln\dfrac{n^2+1}{n^2}=\ln\left(1+\dfrac{1}{n^2}\right)$. Comme $\dfrac{1}{n^2}\to0$ et $\ln$ continue en $1$ (avec $\ln1=0$) : $u_n\to\ln1=0$.
+
+\smallskip
+\emph{Variante plus fine} : en écrivant $u_n = \dfrac{\ln(1+1/n^2)}{1/n^2}\times\dfrac{1}{n^2}$, et en utilisant $\frac{\ln(1+x)}{x}\to1$ (avec $x=\frac{1}{n^2}\to0$), on obtient $u_n \sim \frac{1}{n^2}$, ce qui précise la vitesse de convergence vers $0$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- inéquation avec quotient]
+Résoudre $\ln\left(\dfrac{1}{x}\right) \geq \ln(x-2)$.
+
+\smallskip
+\textbf{Corrigé.} \emph{Domaine} : $\frac1x>0 \iff x>0$, et $x-2>0 \iff x>2$. Donc $D=\,]2\,;+\infty[$.
+
+\smallskip
+Sur $D$, par stricte croissance de $\ln$ : $\dfrac{1}{x}\geq x-2 \iff 1 \geq x(x-2)$ (car $x>0$) $\iff x^2-2x-1\leq0$. Racines de $X^2-2X-1$ : $X=1\pm\sqrt2$. Donc $x^2-2x-1\leq0 \iff x\in[1-\sqrt2\,;1+\sqrt2]$.
+
+\smallskip
+En intersectant avec $D=\,]2\,;+\infty[$ : comme $1+\sqrt2\approx2{,}41$, on obtient $S=\,]2\,;1+\sqrt2]$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- démontrer une inégalité par étude de fonction]
+Montrer que pour tout $x>0$ : $\ln x \leq 2(\sqrt x - 1)$.
+
+\smallskip
+\textbf{Corrigé.} Posons $g(x) = 2(\sqrt x-1) - \ln x$ sur $]0\,;+\infty[$. $g'(x) = \dfrac{1}{\sqrt x} - \dfrac1x = \dfrac{\sqrt x - 1}{x}$ (en multipliant : $\frac{1}{\sqrt x}=\frac{\sqrt x}{x}$).
+
+\smallskip
+Signe de $g'$ = signe de $\sqrt x - 1$ : $g$ décroît sur $]0\,;1]$, croît sur $[1\,;+\infty[$ : \textbf{minimum} $g(1) = 2(1-1)-\ln1 = 0$.
+
+\smallskip
+Donc $g(x)\geq g(1) = 0$ pour tout $x>0$, c'est-à-dire $\ln x \leq 2(\sqrt x-1)$.
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- limite avec composée exponentielle-log implicite]
+Calculer $\displaystyle\lim_{x\to+\infty}\bigl(\ln(2x+1)-\ln(x+3)\bigr)$ puis $\displaystyle\lim_{x\to0^+} x^2\ln(3x)$.
+
+\smallskip
+\textbf{Corrigé.} \emph{Premier calcul} : $\ln(2x+1)-\ln(x+3)=\ln\dfrac{2x+1}{x+3}\to\ln2$ (car $\frac{2x+1}{x+3}\to2$ et $\ln$ continue en $2$).
+
+\smallskip
+\emph{Second calcul} : $x^2\ln(3x) = x^2\ln3 + x^2\ln x \to 0 + 0 = 0$ (croissance comparée $x^2\ln x\to0$ en $0^+$, et $x^2\ln3\to0$).
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Équation/inéquation avec $\ln$ & Domaine d'abord (arguments $>0$), puis simplifier avec les règles de calcul. \\
+Équation type $(\ln x)^2+\cdots$ & Changement de variable $t=\ln x$, résoudre en $t$, revenir à $x=e^t$. \\
+\rowcolor{tealpale} Limite avec $\ln$ en $+\infty$ ou $0^+$ & Identifier une croissance comparée : $\frac{\ln x}{x^n}\to0$, $x^n\ln x\to0$. \\
+Limite du type $\frac{\ln(1+f(x))}{f(x)}$ avec $f(x)\to0$ & Reconnaître $\to1$ (taux d'accroissement de $\ln$ en $1$). \\
+\rowcolor{tealpale} Dériver $\ln u$ & $(\ln u)' = \frac{u'}{u}$, vérifier $u>0$ sur le domaine. \\
+Primitive d'un quotient $\frac{u'}{u}$ & $\ln|u| + C$. \\
+\rowcolor{tealpale} Démontrer une inégalité avec $\ln$ & Étudier le signe de (membre de droite) $-$ (membre de gauche) via sa dérivée. \\
+Étude complète d'une fonction avec $\ln$ & Domaine, limites (croissances comparées si besoin), dérivée, tableau, asymptotes. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Résoudre une équation/inéquation avec $\ln$ \textbf{sans déterminer le domaine} au préalable.
+  \item Écrire $\ln(x^2) = 2\ln x$ au lieu de $2\ln|x|$ (faux si $x$ peut être négatif).
+  \item Écrire $\ln(a+b) = \ln a + \ln b$ : \textbf{faux}, la relation ne s'applique qu'au \textbf{produit}.
+  \item Oublier de vérifier le signe de $u$ avant d'écrire $(\ln u)' = \frac{u'}{u}$.
+  \item Confondre $\ln x \leq x - 1$ (vraie pour tout $x>0$) avec une égalité générale.
+  \item Dans un changement de variable $t=\ln x$ : oublier que $t$ parcourt \textbf{tout} $\mathbb{R}$ (pas de restriction de signe sur $t$, contrairement à $x$).
+  \item Confondre $\ln$ (logarithme népérien, base $e$) et $\log$ (logarithme décimal, base $10$) dans un exercice de chimie ou physique.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $\ln$ : primitive de $\frac1x$ sur $]0\,;+\infty[$, $\ln1=0$, $\ln e=1$, strictement croissante ; $\ln(ab)=\ln a+\ln b$ (démontrée).
+  \item Limites : $\ln x\to+\infty$ ($x\to+\infty$), $\ln x\to-\infty$ ($x\to0^+$) ; $\frac{\ln x}{x^n}\to0$ ; $x^n\ln x\to0$ ; $\frac{\ln(1+x)}{x}\to1$.
+  \item Concavité : $\ln x \leq x-1$ pour tout $x>0$.
+  \item $(\ln u)'=\frac{u'}{u}$ ; primitives de $\frac{u'}{u}$ : $\ln|u|+C$ ; $\log x=\frac{\ln x}{\ln10}$.
+  \item Toujours commencer par le \textbf{domaine} ; changement de variable $t=\ln x$ pour les équations polynomiales en $\ln x$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

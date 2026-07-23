@@ -1,0 +1,434 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Produit scalaire et produit vectoriel
+%  dans l'espace
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Produit scalaire et produit vectoriel dans l'espace}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{20}{24}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Étendre le produit scalaire à l'espace, démontrer ses propriétés, et l'exprimer en coordonnées dans un repère orthonormé.
+  \item Utiliser le produit scalaire pour caractériser l'orthogonalité, calculer normes, distances et angles.
+  \item Définir le produit vectoriel, démontrer ses propriétés algébriques et son expression en coordonnées.
+  \item Utiliser le produit vectoriel pour tester la colinéarité, calculer des aires de triangles/parallélogrammes et des volumes.
+  \item Résoudre les exercices type examen national combinant les deux produits (vecteur normal à un plan, distance point-plan, etc.).
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Produit scalaire dans l'espace}
+
+\begin{definition}[Produit scalaire]
+Pour $\vec u,\vec v$ vecteurs de l'espace non nuls, le \textbf{produit scalaire} est
+\[
+  \vec u\cdot\vec v = \|\vec u\|\,\|\vec v\|\,\cos(\vec u,\vec v).
+\]
+Si $\vec u=\vec0$ ou $\vec v=\vec0$ : $\vec u\cdot\vec v=0$.
+\end{definition}
+
+\begin{propriete}[Propriétés algébriques]
+Pour tous vecteurs $\vec u,\vec v,\vec w$ de l'espace et $\lambda\in\mathbb{R}$ :
+\[
+  \vec u\cdot\vec v = \vec v\cdot\vec u, \qquad
+  \vec u\cdot(\vec v+\vec w) = \vec u\cdot\vec v+\vec u\cdot\vec w, \qquad
+  (\lambda\vec u)\cdot\vec v = \lambda(\vec u\cdot\vec v),
+\]
+\[
+  \vec u\cdot\vec u = \|\vec u\|^2, \qquad
+  \vec u\perp\vec v \iff \vec u\cdot\vec v=0.
+\]
+\end{propriete}
+
+\begin{propriete}[Expression en repère orthonormé]
+Dans un repère orthonormé de l'espace, si $\vec u(x,y,z)$ et $\vec v(x',y',z')$ :
+\[
+  \vec u\cdot\vec v = xx'+yy'+zz', \qquad \|\vec u\| = \sqrt{x^2+y^2+z^2}.
+\]
+\end{propriete}
+
+\begin{demo}
+Décomposons $\vec u=x\vec i+y\vec j+z\vec k$, $\vec v=x'\vec i+y'\vec j+z'\vec k$ où $(\vec i,\vec j,\vec k)$ est la base orthonormée du repère. Par bilinéarité du produit scalaire :
+\[
+  \vec u\cdot\vec v = \sum_{\text{termes}} (\text{coefficients})(\vec i\cdot\vec i,\ \vec i\cdot\vec j,\ldots).
+\]
+Comme $(\vec i,\vec j,\vec k)$ est orthonormée : $\vec i\cdot\vec i=\vec j\cdot\vec j=\vec k\cdot\vec k=1$ et $\vec i\cdot\vec j=\vec j\cdot\vec k=\vec i\cdot\vec k=0$. En développant, seuls les termes « carrés » (mêmes vecteurs de base) subsistent : $\vec u\cdot\vec v=xx'+yy'+zz'$.
+\end{demo}
+
+\begin{propriete}[Formule d'Al-Kashi vectorielle]
+\[
+  \|\vec u+\vec v\|^2 = \|\vec u\|^2+2\vec u\cdot\vec v+\|\vec v\|^2, \qquad
+  \|\vec u-\vec v\|^2 = \|\vec u\|^2-2\vec u\cdot\vec v+\|\vec v\|^2.
+\]
+Conséquence géométrique (dans un triangle $ABC$) :
+\[
+  BC^2 = AB^2+AC^2-2\,AB\times AC\times\cos\widehat{A}.
+\]
+\end{propriete}
+
+\begin{exemple}[Calcul de produit scalaire et angle]
+Soient $A(1,0,2)$, $B(3,1,1)$, $C(2,2,0)$ dans un repère orthonormé. Calculons $\overrightarrow{AB}\cdot\overrightarrow{AC}$ et l'angle $\widehat{BAC}$.
+
+\smallskip
+$\overrightarrow{AB}(2,1,-1)$, $\overrightarrow{AC}(1,2,-2)$.
+\[
+  \overrightarrow{AB}\cdot\overrightarrow{AC} = 2\times1+1\times2+(-1)\times(-2) = 2+2+2 = 6.
+\]
+\[
+  \|\overrightarrow{AB}\| = \sqrt{4+1+1}=\sqrt6, \qquad \|\overrightarrow{AC}\| = \sqrt{1+4+4}=3.
+\]
+\[
+  \cos\widehat{BAC} = \frac{6}{\sqrt6\times3} = \frac{6}{3\sqrt6} = \frac{2}{\sqrt6} = \frac{2\sqrt6}{6} = \frac{\sqrt6}{3}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Vecteur normal à un plan}
+
+\begin{definition}[Vecteur normal]
+Un vecteur $\vec n\ne\vec0$ est \textbf{normal} à un plan $\mathcal{P}$ lorsque $\vec n$ est orthogonal à tout vecteur directeur de $\mathcal{P}$ (de façon équivalente, orthogonal à deux vecteurs non colinéaires de $\mathcal{P}$).
+\end{definition}
+
+\begin{propriete}[Équation cartésienne d'un plan]
+Le plan passant par $A(x_0,y_0,z_0)$ et de vecteur normal $\vec n(a,b,c)$ a pour équation cartésienne
+\[
+  a(x-x_0)+b(y-y_0)+c(z-z_0)=0, \qquad\text{soit}\qquad ax+by+cz+d=0.
+\]
+Réciproquement, tout plan d'équation $ax+by+cz+d=0$ (avec $(a,b,c)\ne(0,0,0)$) admet $\vec n(a,b,c)$ pour vecteur normal.
+\end{propriete}
+
+\begin{demo}
+$M(x,y,z)\in\mathcal{P} \iff \overrightarrow{AM}$ est orthogonal à $\vec n$ (car $\overrightarrow{AM}$ est alors un vecteur directeur du plan, ou nul) $\iff \vec n\cdot\overrightarrow{AM}=0 \iff a(x-x_0)+b(y-y_0)+c(z-z_0)=0$.
+\end{demo}
+
+\begin{propriete}[Distance d'un point à un plan]
+La distance du point $M_0(x_0,y_0,z_0)$ au plan $\mathcal{P}:ax+by+cz+d=0$ est
+\[
+  d(M_0,\mathcal{P}) = \frac{|ax_0+by_0+cz_0+d|}{\sqrt{a^2+b^2+c^2}}.
+\]
+\end{propriete}
+
+\begin{exemple}[Équation de plan et distance]
+Déterminons l'équation du plan $\mathcal{P}$ passant par $A(1,2,-1)$ de vecteur normal $\vec n(2,-1,3)$, puis la distance de $O(0,0,0)$ à $\mathcal{P}$.
+
+\smallskip
+Équation : $2(x-1)-1(y-2)+3(z+1)=0 \iff 2x-y+3z+3=0$.
+
+\smallskip
+Distance de $O$ : $d(O,\mathcal{P})=\dfrac{|2\times0-0+3\times0+3|}{\sqrt{4+1+9}}=\dfrac{3}{\sqrt{14}}=\dfrac{3\sqrt{14}}{14}$.
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Produit vectoriel}
+
+\begin{definition}[Produit vectoriel]
+Pour $\vec u,\vec v$ vecteurs de l'espace, le \textbf{produit vectoriel} $\vec u\wedge\vec v$ est le vecteur défini par :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item si $\vec u,\vec v$ colinéaires (ou l'un est nul) : $\vec u\wedge\vec v=\vec0$ ;
+  \item sinon : $\vec u\wedge\vec v$ est orthogonal à $\vec u$ et à $\vec v$, sa norme vaut $\|\vec u\|\,\|\vec v\|\,|\sin(\vec u,\vec v)|$, et le triplet $(\vec u,\vec v,\vec u\wedge\vec v)$ est direct.
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Expression en coordonnées]
+Dans une base orthonormée directe, si $\vec u(x,y,z)$, $\vec v(x',y',z')$ :
+\[
+  \vec u\wedge\vec v = \bigl(yz'-zy'\,;\ zx'-xz'\,;\ xy'-yx'\bigr).
+\]
+\end{propriete}
+
+\begin{propriete}[Propriétés algébriques]
+\[
+  \vec u\wedge\vec v = -\vec v\wedge\vec u \quad\text{(antisymétrie)}, \qquad
+  \vec u\wedge(\vec v+\vec w) = \vec u\wedge\vec v+\vec u\wedge\vec w,
+\]
+\[
+  (\lambda\vec u)\wedge\vec v = \lambda(\vec u\wedge\vec v), \qquad
+  \vec u\wedge\vec v = \vec0 \iff \vec u,\vec v \text{ colinéaires}.
+\]
+\end{propriete}
+
+\begin{propriete}[Interprétation en aires]
+$\|\vec u\wedge\vec v\|$ est l'\textbf{aire du parallélogramme} construit sur $\vec u$ et $\vec v$. L'aire du triangle correspondant est
+\[
+  \mathcal{A}_{ABC} = \frac12\left\|\overrightarrow{AB}\wedge\overrightarrow{AC}\right\|.
+\]
+\end{propriete}
+
+\begin{exemple}[Calcul de produit vectoriel et aire]
+Soient $\vec u(1,2,-1)$, $\vec v(3,0,1)$. Calculons $\vec u\wedge\vec v$ et l'aire du parallélogramme associé.
+\[
+  \vec u\wedge\vec v = \bigl(2\times1-(-1)\times0\,;\ (-1)\times3-1\times1\,;\ 1\times0-2\times3\bigr) = (2,-4,-6).
+\]
+\[
+  \|\vec u\wedge\vec v\| = \sqrt{4+16+36} = \sqrt{56} = 2\sqrt{14}.
+\]
+L'aire du parallélogramme vaut $2\sqrt{14}$ (u.a.).
+\end{exemple}
+
+\begin{propriete}[Vecteur normal via le produit vectoriel]
+Si $\vec u,\vec v$ sont deux vecteurs directeurs (non colinéaires) d'un plan $\mathcal{P}$, alors $\vec u\wedge\vec v$ est un vecteur \textbf{normal} à $\mathcal{P}$.
+\end{propriete}
+
+\begin{exemple}[Trouver un plan par trois points via le produit vectoriel]
+Déterminons l'équation du plan $(ABC)$ où $A(1,0,0)$, $B(0,1,0)$, $C(0,0,1)$.
+
+\smallskip
+$\overrightarrow{AB}(-1,1,0)$, $\overrightarrow{AC}(-1,0,1)$.
+\[
+  \vec n = \overrightarrow{AB}\wedge\overrightarrow{AC} = (1\times1-0\times0\,;\ 0\times(-1)-(-1)\times1\,;\ (-1)\times0-1\times(-1)) = (1,1,1).
+\]
+Équation du plan (normal $(1,1,1)$, passant par $A(1,0,0)$) : $1(x-1)+1(y-0)+1(z-0)=0\iff x+y+z-1=0$.
+\end{exemple}
+
+\begin{propriete}[Produit mixte et volume]
+Le \textbf{produit mixte} de trois vecteurs $\vec u,\vec v,\vec w$ est $\bigl(\vec u\wedge\vec v\bigr)\cdot\vec w$. Sa valeur absolue est le \textbf{volume du parallélépipède} construit sur ces trois vecteurs :
+\[
+  V_{\text{parallélépipède}} = \bigl|(\vec u\wedge\vec v)\cdot\vec w\bigr|, \qquad
+  V_{\text{tétraèdre } ABCD} = \frac16\left|\bigl(\overrightarrow{AB}\wedge\overrightarrow{AC}\bigr)\cdot\overrightarrow{AD}\right|.
+\]
+Trois vecteurs sont \textbf{coplanaires} $\iff$ leur produit mixte est nul.
+\end{propriete}
+
+\begin{exemple}[Volume d'un tétraèdre]
+Soient $A(0,0,0)$, $B(1,0,0)$, $C(0,1,0)$, $D(0,0,1)$. Calculons le volume du tétraèdre $ABCD$.
+
+\smallskip
+$\overrightarrow{AB}(1,0,0)$, $\overrightarrow{AC}(0,1,0)$, $\overrightarrow{AD}(0,0,1)$.
+\[
+  \overrightarrow{AB}\wedge\overrightarrow{AC} = (0\times0-0\times1\,;\ 0\times0-1\times0\,;\ 1\times1-0\times0) = (0,0,1).
+\]
+\[
+  (\overrightarrow{AB}\wedge\overrightarrow{AC})\cdot\overrightarrow{AD} = 0\times0+0\times0+1\times1 = 1.
+\]
+\[
+  V = \frac16|1| = \frac16.
+\]
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- orthogonalité et équation de plan]
+Soient $A(1,1,1)$, $B(2,0,3)$. Déterminer l'équation du plan médiateur de $[AB]$ (plan orthogonal à $(AB)$ passant par son milieu).
+
+\smallskip
+\textbf{Corrigé.} $\overrightarrow{AB}(1,-1,2)$ est un vecteur normal du plan médiateur. Milieu $I\left(\dfrac32,\dfrac12,2\right)$.
+
+\smallskip
+Équation : $1\left(x-\dfrac32\right)-1\left(y-\dfrac12\right)+2(z-2)=0 \iff x-y+2z-\dfrac{3}{2}+\dfrac12-4=0 \iff x-y+2z-5=0$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- calcul d'aire par produit vectoriel]
+Soient $A(1,0,0)$, $B(0,2,0)$, $C(0,0,3)$. Calculer l'aire du triangle $ABC$.
+
+\smallskip
+\textbf{Corrigé.} $\overrightarrow{AB}(-1,2,0)$, $\overrightarrow{AC}(-1,0,3)$.
+\[
+  \overrightarrow{AB}\wedge\overrightarrow{AC} = (2\times3-0\times0\,;\ 0\times(-1)-(-1)\times3\,;\ (-1)\times0-2\times(-1)) = (6,3,2).
+\]
+\[
+  \left\|\overrightarrow{AB}\wedge\overrightarrow{AC}\right\| = \sqrt{36+9+4} = \sqrt{49} = 7.
+\]
+\[
+  \mathcal{A}_{ABC} = \frac72.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- distance et projeté orthogonal]
+Soit $\mathcal{P}:x+2y-2z+1=0$ et $M(1,2,3)$. Calculer $d(M,\mathcal{P})$, puis déterminer les coordonnées du projeté orthogonal $H$ de $M$ sur $\mathcal{P}$.
+
+\smallskip
+\textbf{Corrigé.} $d(M,\mathcal{P}) = \dfrac{|1+4-6+1|}{\sqrt{1+4+4}} = \dfrac{0}{3} = 0$ : le point $M$ appartient au plan $\mathcal{P}$ (vérification directe : $1+4-6+1=0$ $\checkmark$), donc $H=M$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- coplanarité par produit mixte]
+Montrer que les points $A(1,1,0)$, $B(2,0,1)$, $C(0,1,1)$, $D(1,0,2)$ sont coplanaires.
+
+\smallskip
+\textbf{Corrigé.} $\overrightarrow{AB}(1,-1,1)$, $\overrightarrow{AC}(-1,0,1)$, $\overrightarrow{AD}(0,-1,2)$.
+\[
+  \overrightarrow{AB}\wedge\overrightarrow{AC} = ((-1)(1)-(1)(0)\,;\ (1)(-1)-(1)(1)\,;\ (1)(0)-(-1)(-1)) = (-1,-2,-1).
+\]
+\[
+  (\overrightarrow{AB}\wedge\overrightarrow{AC})\cdot\overrightarrow{AD} = (-1)(0)+(-2)(-1)+(-1)(2) = 0+2-2 = 0.
+\]
+Le produit mixte est nul : les quatre points sont \textbf{coplanaires}.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Montrer $(AB)\perp(AC)$ & $\overrightarrow{AB}\cdot\overrightarrow{AC}=0$. \\
+Trouver l'équation d'un plan (point + normal) & $a(x-x_0)+b(y-y_0)+c(z-z_0)=0$. \\
+\rowcolor{tealpale} Trouver le plan $(ABC)$ (3 points) & Vecteur normal $=\overrightarrow{AB}\wedge\overrightarrow{AC}$, puis équation avec $A$. \\
+Distance point-plan & $d=\dfrac{|ax_0+by_0+cz_0+d|}{\sqrt{a^2+b^2+c^2}}$. \\
+\rowcolor{tealpale} Aire d'un triangle dans l'espace & $\mathcal{A}=\frac12\|\overrightarrow{AB}\wedge\overrightarrow{AC}\|$. \\
+Volume d'un tétraèdre & $V=\frac16|(\overrightarrow{AB}\wedge\overrightarrow{AC})\cdot\overrightarrow{AD}|$. \\
+\rowcolor{tealpale} Montrer 4 points coplanaires & Produit mixte nul. \\
+Tester la colinéarité de deux vecteurs & $\vec u\wedge\vec v=\vec0$ (ou déterminant $2\times2$ dans le plan). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Confondre produit scalaire (donne un \textbf{réel}) et produit vectoriel (donne un \textbf{vecteur}).
+  \item Erreur de signe dans les coordonnées du produit vectoriel : bien retenir l'ordre $yz'-zy'\,;\,zx'-xz'\,;\,xy'-yx'$ (permutation circulaire).
+  \item Oublier la valeur absolue dans la formule de distance point-plan.
+  \item Oublier le facteur $\frac12$ (aire du triangle) ou $\frac16$ (volume du tétraèdre) par rapport au parallélogramme/parallélépipède.
+  \item Utiliser le produit vectoriel dans le \textbf{plan} : il n'y est pas défini de la même façon (c'est une notion propre à l'espace, ou au déterminant $2\times2$ pour la colinéarité plane).
+  \item Confondre vecteur \textbf{directeur} d'une droite et vecteur \textbf{normal} d'un plan.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $\vec u\cdot\vec v=xx'+yy'+zz'$ (repère orthonormé) ; $\vec u\perp\vec v\iff\vec u\cdot\vec v=0$.
+  \item Plan de normal $(a,b,c)$ passant par $A$ : $a(x-x_0)+b(y-y_0)+c(z-z_0)=0$ ; distance $d=\frac{|ax_0+by_0+cz_0+d|}{\sqrt{a^2+b^2+c^2}}$.
+  \item $\vec u\wedge\vec v=(yz'-zy'\,;zx'-xz'\,;xy'-yx')$ ; orthogonal à $\vec u$ et $\vec v$ ; nul ssi colinéaires.
+  \item Aire triangle $=\frac12\|\overrightarrow{AB}\wedge\overrightarrow{AC}\|$ ; volume tétraèdre $=\frac16|(\overrightarrow{AB}\wedge\overrightarrow{AC})\cdot\overrightarrow{AD}|$ ; coplanarité $\iff$ produit mixte nul.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

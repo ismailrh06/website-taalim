@@ -1,0 +1,665 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Dérivation et étude des fonctions
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Dérivation et étude des fonctions}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Étudier la dérivabilité d'une fonction en un point (à droite, à gauche) et interpréter géométriquement (tangente, point anguleux, tangente verticale).
+  \item Maîtriser toutes les formules de dérivation : opérations, composées usuelles, dérivée d'une fonction réciproque, puissances rationnelles.
+  \item Démontrer et appliquer le théorème de Rolle, le théorème des accroissements finis (TAF) et son inégalité.
+  \item Relier rigoureusement signe de la dérivée et monotonie, déterminer et justifier les extremums locaux.
+  \item Étudier la concavité, les points d'inflexion, classifier toutes les branches infinies, et mener l'étude complète d'une fonction jusqu'au tracé.
+  \item Résoudre les exercices type examen national : tangentes, position relative, encadrements par convexité, suites liées à une fonction.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Dérivabilité en un point}
+
+\begin{definition}[Nombre dérivé -- définition formelle]
+Soit $f$ définie sur un intervalle ouvert contenant $a$. On dit que $f$ est \textbf{dérivable en $a$} lorsque le taux d'accroissement $\tau(x) = \dfrac{f(x) - f(a)}{x - a}$ admet une limite \textbf{finie} quand $x \to a$ :
+\[
+  \lim_{x \to a} \frac{f(x) - f(a)}{x - a} = \ell \in \mathbb{R}.
+\]
+Ce nombre $\ell$, noté $f'(a)$, est le \textbf{nombre dérivé} de $f$ en $a$. De façon équivalente, en posant $h = x - a$ :
+\[
+  f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.
+\]
+On définit de même la \textbf{dérivabilité à droite} ($x \to a^+$, notée $f'_d(a)$) et \textbf{à gauche} ($x \to a^-$, notée $f'_g(a)$), en restreignant la limite à $x > a$ ou $x < a$.
+\end{definition}
+
+\begin{propriete}
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $f$ est dérivable en $a$ si et seulement si $f'_d(a)$ et $f'_g(a)$ existent et sont \textbf{égales} (auquel cas $f'(a)$ est leur valeur commune).
+  \item \textbf{Interprétation géométrique} : si $f$ est dérivable en $a$, la courbe $\mathcal{C}_f$ admet au point $A\bigl(a\,;f(a)\bigr)$ une \textbf{tangente} de coefficient directeur $f'(a)$, d'équation
+  \[
+    y = f'(a)\,(x - a) + f(a).
+  \]
+  \item Si $f'_d(a) \neq f'_g(a)$ (toutes deux finies), la courbe admet un \textbf{point anguleux} en $A$ : deux demi-tangentes de pentes différentes.
+  \item Si le taux d'accroissement tend vers $+\infty$ ou $-\infty$ (à droite et/ou à gauche), la courbe admet une \textbf{demi-tangente verticale} en $A$, d'équation $x = a$.
+  \item \textbf{Dérivable $\Rightarrow$ continue.} Toute fonction dérivable en $a$ est continue en $a$. \emph{La réciproque est fausse.}
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+Montrons que dérivable en $a$ implique continue en $a$. Pour $x \neq a$ au voisinage de $a$ :
+\[
+  f(x) - f(a) = \frac{f(x) - f(a)}{x - a} \times (x - a).
+\]
+Quand $x \to a$, le premier facteur tend vers $f'(a)$ (fini) et le second vers $0$ : par produit des limites, $f(x) - f(a) \to 0$, c'est-à-dire $\lim\limits_{x \to a} f(x) = f(a)$, ce qui est la continuité en $a$.
+\end{demo}
+
+\begin{exemple}[Calcul direct du nombre dérivé]
+Montrons, à partir de la définition, que $f(x) = x^2$ est dérivable en $3$ et calculons $f'(3)$.
+\[
+  \frac{f(3 + h) - f(3)}{h} = \frac{(3+h)^2 - 9}{h} = \frac{9 + 6h + h^2 - 9}{h} = \frac{6h + h^2}{h} = 6 + h
+  \xrightarrow[h \to 0]{} 6.
+\]
+Donc $f$ est dérivable en $3$ et $f'(3) = 6$.
+\end{exemple}
+
+\begin{exemple}[Point anguleux]
+Étudions la dérivabilité de $f(x) = |x|$ en $0$.
+\[
+  \lim_{x \to 0^+} \frac{|x| - 0}{x - 0} = \lim_{x \to 0^+} \frac{x}{x} = 1,
+  \qquad
+  \lim_{x \to 0^-} \frac{|x|}{x} = \lim_{x \to 0^-} \frac{-x}{x} = -1.
+\]
+$f'_d(0) = 1 \neq f'_g(0) = -1$ : $f$ n'est pas dérivable en $0$, bien qu'elle y soit continue. La courbe présente un point anguleux à l'origine, avec deux demi-tangentes de pentes $1$ et $-1$.
+\end{exemple}
+
+\begin{exemple}[Tangente verticale]
+Étudions la dérivabilité de $f(x) = \sqrt{x}$ en $0$.
+\[
+  \frac{f(x) - f(0)}{x - 0} = \frac{\sqrt{x}}{x} = \frac{1}{\sqrt{x}} \xrightarrow[x \to 0^+]{} +\infty.
+\]
+$f$ n'est pas dérivable en $0$ (limite infinie) ; la courbe admet en $0$ une \textbf{demi-tangente verticale} d'équation $x = 0$.
+\end{exemple}
+
+\begin{remarque}[Approximation affine locale]
+Au voisinage de $a$, si $f$ est dérivable en $a$ : $f(x) \approx f(a) + f'(a)(x - a)$ pour $x$ proche de $a$. Utile pour estimer une valeur numérique sans calculatrice : par exemple, avec $f(x) = \sqrt{x}$, $f'(x) = \frac{1}{2\sqrt{x}}$, donc $f'(4) = \frac{1}{4}$, d'où
+\[
+  \sqrt{4{,}02} \approx f(4) + f'(4)\times 0{,}02 = 2 + \frac{0{,}02}{4} = 2{,}005.
+\]
+\end{remarque}
+
+% ------------------- SECTION 2 -------------------
+\section{Calcul des dérivées : toutes les formules}
+
+\begin{propriete}[Dérivées des fonctions usuelles]
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\sffamily\small
+\begin{tabular}{>{\centering\arraybackslash}p{3.6cm} >{\centering\arraybackslash}p{4.4cm} >{\centering\arraybackslash}p{6.4cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Fonction & \color{white}\bfseries Dérivée & \color{white}\bfseries Domaine de dérivabilité \\
+\rowcolor{tealpale} $x^n$ ($n \in \mathbb{Z}$) & $n\,x^{n-1}$ & $\mathbb{R}$ (ou $\mathbb{R}^*$ si $n < 0$) \\
+$\sqrt{x}$ & $\dfrac{1}{2\sqrt{x}}$ & $]0\,;+\infty[$ \\
+\rowcolor{tealpale} $\sqrt[n]{x}$ & $\dfrac{1}{n}x^{\frac{1}{n}-1}$ & $]0\,;+\infty[$ \\
+$\sin x$ & $\cos x$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $\cos x$ & $-\sin x$ & $\mathbb{R}$ \\
+$\tan x$ & $1 + \tan^2 x = \dfrac{1}{\cos^2 x}$ & $x \neq \frac{\pi}{2} + k\pi$ \\
+\end{tabular}
+\end{center}
+\end{propriete}
+
+\begin{propriete}[Opérations sur les dérivées]
+Si $u$ et $v$ sont dérivables sur $I$ (avec $\lambda \in \mathbb{R}$) :
+\[
+  (u + v)' = u' + v', \qquad
+  (\lambda u)' = \lambda u', \qquad
+  (uv)' = u'v + uv',
+\]
+\[
+  \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2} \ (v \neq 0), \qquad
+  \left(\frac{1}{v}\right)' = \frac{-v'}{v^2}.
+\]
+\end{propriete}
+
+\begin{propriete}[Dérivée d'une fonction composée : toutes les formes]
+Si $g$ est dérivable en $f(a)$ et $f$ dérivable en $a$, alors $g \circ f$ est dérivable en $a$ et
+\[
+  (g \circ f)'(a) = f'(a) \times g'\bigl(f(a)\bigr).
+\]
+Formes composées usuelles, pour $u$ dérivable sur $I$ :
+\[
+  (u^n)' = n\,u'\,u^{n-1} \ (n \in \mathbb{Z}), \qquad
+  \left(\sqrt{u}\right)' = \frac{u'}{2\sqrt{u}} \ (u > 0), \qquad
+  \left(\sqrt[n]{u}\right)' = \frac{u'}{n\,u^{\frac{n-1}{n}}} \ (u > 0),
+\]
+\[
+  \bigl(\sin u\bigr)' = u'\cos u, \qquad
+  \bigl(\cos u\bigr)' = -u'\sin u, \qquad
+  \bigl(\tan u\bigr)' = u'\bigl(1 + \tan^2 u\bigr) = \frac{u'}{\cos^2 u}.
+\]
+\end{propriete}
+
+\begin{demo}
+Démontrons $(u^2)' = 2u'u$ à partir de la règle du produit : en écrivant $u^2 = u \times u$,
+\[
+  (u \times u)' = u' \times u + u \times u' = 2u\,u'.
+\]
+Le cas général $(u^n)'$ se démontre par récurrence sur $n$ en utilisant cette même règle du produit à chaque étape.
+\end{demo}
+
+\begin{propriete}[Dérivée de la fonction réciproque]
+Soit $f$ continue, strictement monotone sur $I$, dérivable en $a \in I$ avec $f'(a) \neq 0$. Alors $f^{-1}$ est dérivable en $b = f(a)$ et
+\[
+  \left(f^{-1}\right)'(b) = \frac{1}{f'\bigl(f^{-1}(b)\bigr)}.
+\]
+\textbf{Cas où $f'(a) = 0$} : $f^{-1}$ n'est \textbf{pas} dérivable en $b = f(a)$ (la courbe de $f^{-1}$ admet une tangente verticale en ce point).
+
+\smallskip
+Application aux puissances rationnelles : pour $x > 0$ et $r \in \mathbb{Q}^*$,
+\[
+  \left(x^{r}\right)' = r\,x^{r-1}.
+\]
+\end{propriete}
+
+\begin{demo}
+Partons de $f\bigl(f^{-1}(y)\bigr) = y$ pour tout $y \in J$, et dérivons formellement les deux membres (composée), en admettant que $f^{-1}$ est dérivable en $b$ :
+\[
+  \bigl(f^{-1}\bigr)'(b) \times f'\bigl(f^{-1}(b)\bigr) = 1
+  \quad\Longrightarrow\quad
+  \bigl(f^{-1}\bigr)'(b) = \frac{1}{f'\bigl(f^{-1}(b)\bigr)}.
+\]
+\end{demo}
+
+\begin{exemple}[Dérivée d'une réciproque -- calcul complet]
+Soit $f(x) = x^3 + x$ sur $\mathbb{R}$, strictement croissante ($f'(x) = 3x^2 + 1 > 0$), donc bijective de $\mathbb{R}$ sur $\mathbb{R}$. Calculons $(f^{-1})'(2)$ sans expliciter $f^{-1}$.
+
+\smallskip
+On cherche $a$ tel que $f(a) = 2$ : on constate $f(1) = 1 + 1 = 2$, donc $f^{-1}(2) = 1$. Comme $f'(1) = 3 + 1 = 4 \neq 0$ :
+\[
+  (f^{-1})'(2) = \frac{1}{f'(1)} = \frac{1}{4}.
+\]
+\end{exemple}
+
+\begin{exemple}[Dérivées composées combinées]
+Dérivons $f(x) = \sqrt{3x^2 + 1}$ et $g(x) = \sin(2x^3 - x)$ sur $\mathbb{R}$.
+\[
+  f'(x) = \frac{(3x^2+1)'}{2\sqrt{3x^2+1}} = \frac{6x}{2\sqrt{3x^2+1}} = \frac{3x}{\sqrt{3x^2+1}},
+\]
+\[
+  g'(x) = (6x^2 - 1)\cos(2x^3 - x).
+\]
+\end{exemple}
+
+\begin{exemple}[Tangente à une courbe]
+Écrivons l'équation de la tangente à $\mathcal{C}_f$ en $x_0 = 1$, où $f(x) = x^3 - 2x + 1$.
+\[
+  f(1) = 1 - 2 + 1 = 0, \qquad f'(x) = 3x^2 - 2, \qquad f'(1) = 1.
+\]
+Tangente : $y = f'(1)(x - 1) + f(1) = 1\times(x - 1) + 0 = x - 1$.
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Théorème de Rolle et accroissements finis}
+
+\begin{propriete}[Théorème de Rolle]
+Soit $f$ \textbf{continue} sur $[a\,;b]$, \textbf{dérivable} sur $]a\,;b[$, avec $f(a) = f(b)$. Alors il existe (au moins) un $c \in\, ]a\,;b[$ tel que
+\[
+  f'(c) = 0.
+\]
+\end{propriete}
+
+\begin{demo}
+$f$ est continue sur le segment $[a\,;b]$ : elle est donc bornée et atteint son minimum $m$ et son maximum $M$ (propriété admise, vue au chapitre précédent).
+
+\smallskip
+\textbf{Cas 1} : $m = M$. Alors $f$ est constante sur $[a\,;b]$, donc $f'(c) = 0$ pour tout $c \in\, ]a\,;b[$.
+
+\smallskip
+\textbf{Cas 2} : $m \neq M$. Comme $f(a) = f(b)$, l'un au moins des deux extrema $m$ ou $M$ est atteint en un point $c \in\, ]a\,;b[$ (pas aux bornes). En ce point $c$, $f$ admet un \textbf{extremum local}, et $f$ est dérivable en $c$ : par la condition nécessaire d'extremum (voir section suivante), $f'(c) = 0$.
+\end{demo}
+
+\begin{propriete}[Théorème des accroissements finis (TAF)]
+Soit $f$ \textbf{continue} sur $[a\,;b]$ et \textbf{dérivable} sur $]a\,;b[$. Alors il existe $c \in\, ]a\,;b[$ tel que
+\[
+  f(b) - f(a) = f'(c)\,(b - a).
+\]
+\textbf{Inégalité des accroissements finis} : si de plus $m \leq f'(x) \leq M$ sur $]a\,;b[$, alors
+\[
+  m\,(b - a) \;\leq\; f(b) - f(a) \;\leq\; M\,(b - a),
+\]
+et si $|f'(x)| \leq k$ sur l'intervalle, alors $|f(b) - f(a)| \leq k\,|b - a|$.
+\end{propriete}
+
+\begin{demo}
+Le TAF se déduit de Rolle en introduisant la fonction auxiliaire
+\[
+  \varphi(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a).
+\]
+$\varphi$ est continue sur $[a\,;b]$, dérivable sur $]a\,;b[$, et $\varphi(a) = 0$, $\varphi(b) = f(b) - f(a) - \bigl(f(b) - f(a)\bigr) = 0$. D'après Rolle, il existe $c \in\, ]a\,;b[$ tel que $\varphi'(c) = 0$, c'est-à-dire
+\[
+  f'(c) - \frac{f(b) - f(a)}{b - a} = 0 \quad\Longrightarrow\quad f(b) - f(a) = f'(c)(b - a).
+\]
+L'inégalité s'obtient en encadrant $f'(c)$ par $m$ et $M$, puis en multipliant par $(b - a) > 0$.
+\end{demo}
+
+\begin{exemple}[Encadrement classique via TAF]
+Montrons que pour tout $x > 0$ : $\ \sin x \leq x$.
+
+\smallskip
+Posons $f(t) = \sin t$ sur $[0\,;x]$ : $f$ est continue sur $[0\,;x]$, dérivable sur $]0\,;x[$ et $f'(t) = \cos t \leq 1$. L'inégalité des accroissements finis avec $M = 1$ donne
+\[
+  \sin x - \sin 0 \leq 1 \times (x - 0), \qquad\text{d'où}\qquad \sin x \leq x.
+\]
+\end{exemple}
+
+\begin{exemple}[Encadrement d'une racine]
+Montrons que pour tout $x > 1$ : $\ \dfrac{1}{2\sqrt{x}} < \sqrt{x} - \sqrt{x - 1} < \dfrac{1}{2\sqrt{x-1}}$.
+
+\smallskip
+Appliquons le TAF à $f(t) = \sqrt{t}$ sur $[x-1\,;x]$ : il existe $c \in\, ]x-1\,;x[$ tel que $\sqrt{x} - \sqrt{x-1} = f'(c) = \dfrac{1}{2\sqrt{c}}$. Comme $x - 1 < c < x$, la fonction $t \mapsto \frac{1}{2\sqrt{t}}$ étant décroissante :
+\[
+  \frac{1}{2\sqrt{x}} < \frac{1}{2\sqrt{c}} < \frac{1}{2\sqrt{x-1}},
+\]
+ce qui donne exactement l'encadrement annoncé.
+\end{exemple}
+
+\begin{remarque}[Utilisation type bac avec les suites récurrentes]
+L'inégalité $|f(b) - f(a)| \leq k|b - a|$ sert dans les problèmes de suites $u_{n+1} = f(u_n)$ avec point fixe $\ell$ ($f(\ell) = \ell$) : si $|f'| \leq k < 1$ sur un intervalle stable contenant les $u_n$ et $\ell$, alors
+\[
+  |u_{n+1} - \ell| = |f(u_n) - f(\ell)| \leq k\,|u_n - \ell|,
+\]
+d'où, par récurrence immédiate, $|u_n - \ell| \leq k^n\,|u_0 - \ell| \to 0$ (car $0 \leq k < 1$) : ceci prouve la convergence de $(u_n)$ vers $\ell$, \textbf{sans} passer par monotonie + borne.
+\end{remarque}
+
+% ------------------- SECTION 4 -------------------
+\section{Monotonie, extremums, concavité}
+
+\begin{propriete}[Condition nécessaire d'extremum local]
+Si $f$ est dérivable en $a$, intérieur à son domaine, et si $f$ admet un extremum local en $a$, alors $f'(a) = 0$.
+\end{propriete}
+
+\begin{remarque}[La réciproque est fausse]
+$f'(a) = 0$ ne suffit \emph{pas} à garantir un extremum : pour $f(x) = x^3$, $f'(0) = 0$ mais $f$ est strictement croissante sur $\mathbb{R}$ (pas d'extremum en $0$, c'est un \textbf{point d'inflexion à tangente horizontale}). Il faut vérifier que $f'$ \textbf{change de signe} en $a$.
+\end{remarque}
+
+\begin{propriete}[Signe de la dérivée et variations]
+Soit $f$ dérivable sur un intervalle $I$ :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $f' \geq 0$ sur $I$ (nulle en des points isolés) $\iff$ $f$ croissante sur $I$ ; $f' > 0$ sur $I$ $\Rightarrow$ $f$ strictement croissante ;
+  \item $f' \leq 0$ sur $I$ $\iff$ $f$ décroissante sur $I$ ; $f' < 0$ sur $I$ $\Rightarrow$ $f$ strictement décroissante ;
+  \item $f' = 0$ sur $I$ $\iff$ $f$ constante sur $I$.
+\end{itemize}
+\textbf{Extremum local} (condition suffisante) : si $f'$ s'annule en $a$ \textbf{en changeant de signe}, alors $f(a)$ est un extremum local : maximum si $f'$ passe de $+$ à $-$, minimum si $f'$ passe de $-$ à $+$.
+\end{propriete}
+
+\begin{demo}
+($f' \geq 0 \Rightarrow f$ croissante) Soient $x_1 < x_2$ dans $I$. Par le TAF appliqué sur $[x_1\,;x_2]$, il existe $c \in\, ]x_1\,;x_2[$ tel que $f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$. Comme $f'(c) \geq 0$ et $x_2 - x_1 > 0$, on a $f(x_2) - f(x_1) \geq 0$, donc $f(x_1) \leq f(x_2)$ : $f$ est croissante.
+\end{demo}
+
+\begin{definition}[Concavité et point d'inflexion]
+Soit $f$ deux fois dérivable sur $I$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $f'' \geq 0$ sur $I$, la courbe est \textbf{convexe} sur $I$ (elle est située au-dessus de chacune de ses tangentes).
+  \item Si $f'' \leq 0$ sur $I$, la courbe est \textbf{concave} sur $I$ (au-dessous de ses tangentes).
+  \item Un \textbf{point d'inflexion} est un point où $f''$ s'annule \textbf{en changeant de signe} : la courbe y traverse sa tangente.
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Convexité et position par rapport à la tangente]
+Si $f$ est convexe sur $I$, pour tout $a \in I$ et tout $x \in I$ :
+\[
+  f(x) \geq f(a) + f'(a)(x - a).
+\]
+(Autrement dit, la courbe est toujours au-dessus de sa tangente en tout point.) L'inégalité est renversée si $f$ est concave.
+\end{propriete}
+
+\begin{remarque}[Piège classique]
+$f''(a) = 0$ ne suffit \emph{pas} pour un point d'inflexion : il faut le \emph{changement de signe} de $f''$. Contre-exemple : $f(x) = x^4$ en $0$ : $f''(x) = 12x^2$, donc $f''(0) = 0$, mais $f''(x) \geq 0$ partout (pas de changement de signe) : la courbe reste convexe, il n'y a \textbf{pas} d'inflexion en $0$.
+\end{remarque}
+
+\begin{exemple}[Extremum et convexité]
+Étudions $f(x) = x^3 - 3x$ sur $\mathbb{R}$ : variations, extrema, concavité, inflexion.
+\[
+  f'(x) = 3x^2 - 3 = 3(x-1)(x+1), \qquad f''(x) = 6x.
+\]
+$f'$ s'annule en $-1$ et $1$, change de signe ($+,-,+$) : \textbf{maximum local} $f(-1) = 2$, \textbf{minimum local} $f(1) = -2$.
+
+\smallskip
+$f''$ s'annule en $0$, change de signe ($f'' < 0$ sur $]-\infty\,;0[$, $f'' > 0$ sur $]0\,;+\infty[$) : \textbf{point d'inflexion} en $x = 0$ (avec $f(0) = 0$), la courbe passant de concave à convexe.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Branches infinies : classification complète}
+
+\begin{propriete}[Les quatre types de branches infinies]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Asymptote verticale} : $\lim\limits_{x \to a} f(x) = \pm\infty$ (ou une seule limite latérale infinie) $\ \Rightarrow$ droite $x = a$.
+  \item \textbf{Asymptote horizontale} : $\lim\limits_{x \to \pm\infty} f(x) = b$ (fini) $\ \Rightarrow$ droite $y = b$.
+  \item \textbf{Asymptote oblique} : $\lim\limits_{x \to \pm\infty} \bigl[f(x) - (ax + b)\bigr] = 0$ $\ \Rightarrow$ droite $y = ax + b$ ($a \neq 0$).
+  \item \textbf{Branches paraboliques} : quand $f(x) \to \pm\infty$ sans asymptote, on étudie $\dfrac{f(x)}{x}$ :
+    \begin{itemize}[leftmargin=5mm]
+      \item $\dfrac{f(x)}{x} \to \pm\infty$ : branche parabolique de \textbf{direction $(Oy)$} ;
+      \item $\dfrac{f(x)}{x} \to 0$ : branche parabolique de \textbf{direction $(Ox)$} ;
+      \item $\dfrac{f(x)}{x} \to a \neq 0$ (fini) : on étudie ensuite $f(x) - ax$ :
+        \begin{itemize}[leftmargin=5mm]
+          \item limite finie $b$ $\Rightarrow$ \textbf{asymptote oblique} $y = ax + b$ (retour au cas 3) ;
+          \item limite infinie $\Rightarrow$ \textbf{branche parabolique de direction} $y = ax$.
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+\end{propriete}
+
+\begin{propriete}[Position de la courbe par rapport à l'asymptote oblique]
+Si $\mathcal{C}_f$ admet l'asymptote $y = ax + b$ en $+\infty$ (ou $-\infty$), on étudie le signe de $f(x) - (ax + b)$ :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $f(x) - (ax+b) > 0$ : la courbe est \textbf{au-dessus} de l'asymptote ;
+  \item $f(x) - (ax+b) < 0$ : la courbe est \textbf{au-dessous} de l'asymptote ;
+  \item si ce signe change en un point, la courbe \textbf{traverse} son asymptote en ce point.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Étude guidée complète]
+Étudions $f(x) = \dfrac{x^2 + 1}{x}$ sur $D_f = \mathbb{R}^*$.
+
+\smallskip
+\textbf{Écriture simplifiée} : $f(x) = x + \dfrac{1}{x}$. $f$ est impaire ($f(-x) = -f(x)$) : on étudie sur $]0\,;+\infty[$ puis on complète par symétrie par rapport à l'origine.
+
+\smallskip
+\textbf{Limites} : $\lim\limits_{x \to 0^+} f(x) = +\infty$ : \textbf{asymptote verticale} $x = 0$. En $+\infty$ : $f(x) \to +\infty$, et $f(x) - x = \frac{1}{x} \to 0$ : \textbf{asymptote oblique} $y = x$. Signe de $f(x) - x = \frac{1}{x} > 0$ sur $]0\,;+\infty[$ : la courbe est \textbf{au-dessus} de l'asymptote.
+
+\smallskip
+\textbf{Dérivée} : $f'(x) = 1 - \dfrac{1}{x^2} = \dfrac{x^2 - 1}{x^2}$, du signe de $x^2 - 1$. Sur $]0\,;+\infty[$ : $f' < 0$ sur $]0\,;1[$, $f' > 0$ sur $]1\,;+\infty[$ : \textbf{minimum local} en $x = 1$, $f(1) = 2$.
+
+\smallskip
+\textbf{Conclusion} : sur $]0\,;+\infty[$, $f$ décroît de $+\infty$ à $2$ puis croît vers $+\infty$ ; asymptotes $x = 0$ et $y = x$ ; par imparité, sur $]-\infty\,;0[$ : maximum local $f(-1) = -2$, mêmes asymptotes.
+\end{exemple}
+
+\subsection{Plan d'étude complet -- méthode à suivre}
+
+\begin{remarque}[Les six étapes]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Domaine} $D_f$ ; parité, périodicité éventuelles (pour réduire l'intervalle d'étude).
+  \item \textbf{Limites} aux bornes de $D_f$ ; classification des asymptotes et branches infinies.
+  \item \textbf{Dérivabilité}, calcul de $f'$, étude de son signe.
+  \item \textbf{Tableau de variations} complet (flèches, valeurs et limites en chaque borne).
+  \item \textbf{Concavité}, points d'inflexion (si demandé), tangentes remarquables (points à tangente horizontale, verticale).
+  \item \textbf{Tracé} de la courbe : asymptotes en pointillés, extremums, points d'inflexion, quelques valeurs numériques.
+\end{enumerate}
+\end{remarque}
+
+% ------------------- SECTION 6 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- dérivabilité et paramètre]
+Soit $f$ définie par $f(x) = \sqrt{x^2 + 1}$ si $x \leq 0$ et $f(x) = ax + 1$ si $x > 0$. Déterminer $a$ pour que $f$ soit dérivable en $0$.
+
+\smallskip
+\textbf{Corrigé.} \emph{Continuité d'abord} : $f(0) = 1$ (branche de gauche) ; $\lim\limits_{x \to 0^+} f(x) = 1$ (branche de droite, quel que soit $a$) : continuité automatique.
+
+\smallskip
+\emph{Dérivées à gauche et à droite} : pour $x \leq 0$, $f'(x) = \dfrac{x}{\sqrt{x^2+1}}$, donc $f'_g(0) = 0$. Pour $x > 0$, $f'(x) = a$, donc $f'_d(0) = a$.
+
+\smallskip
+$f$ dérivable en $0$ $\iff f'_g(0) = f'_d(0) \iff a = 0$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- tangente et position relative]
+Soit $f(x) = x^3 - 3x^2 + 2$. Écrire l'équation de la tangente $T$ au point d'abscisse $1$, et étudier la position de $\mathcal{C}_f$ par rapport à $T$.
+
+\smallskip
+\textbf{Corrigé.} $f(1) = 1 - 3 + 2 = 0$ ; $f'(x) = 3x^2 - 6x$, $f'(1) = -3$. Tangente : $y = -3(x-1) + 0 = -3x + 3$.
+
+\smallskip
+Étudions $g(x) = f(x) - (-3x + 3) = x^3 - 3x^2 + 3x - 1$. On reconnaît l'identité remarquable $g(x) = (x - 1)^3$ (vérification : $(x-1)^3 = x^3 - 3x^2 + 3x - 1$ \checkmark).
+
+\smallskip
+Le signe de $(x-1)^3$ est celui de $(x - 1)$ : $g(x) < 0$ pour $x < 1$, $g(x) = 0$ en $x=1$, $g(x) > 0$ pour $x > 1$.
+
+\smallskip
+\textbf{Conclusion} : $\mathcal{C}_f$ est en dessous de $T$ pour $x < 1$, au-dessus pour $x > 1$ : la courbe \textbf{traverse} sa tangente en $x=1$, qui est donc un point d'inflexion (vérification : $f''(x) = 6x - 6$, s'annule bien en $1$ en changeant de signe \checkmark).
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- Rolle appliqué à une dérivée]
+Soit $f(x) = (x-1)(x-2)(x-3)$. Montrer, sans calculer $f'$, que $f'$ admet au moins deux racines réelles distinctes.
+
+\smallskip
+\textbf{Corrigé.} $f$ est un polynôme, donc continue et dérivable sur $\mathbb{R}$. On a $f(1) = f(2) = f(3) = 0$.
+
+\smallskip
+Sur $[1\,;2]$ : $f$ continue, dérivable, $f(1) = f(2)$ : par Rolle, il existe $c_1 \in\, ]1\,;2[$ tel que $f'(c_1) = 0$.
+
+\smallskip
+Sur $[2\,;3]$ : de même, il existe $c_2 \in\, ]2\,;3[$ tel que $f'(c_2) = 0$.
+
+\smallskip
+Comme $]1\,;2[$ et $]2\,;3[$ sont disjoints, $c_1 \neq c_2$ : $f'$ admet (au moins) deux racines réelles distinctes.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- suite récurrente via l'inégalité des accroissements finis]
+Soit $f(x) = \sqrt{x + 6}$, et $(u_n)$ définie par $u_0 = 3$, $u_{n+1} = f(u_n)$. On admet que $u_n \in [2\,;3]$ pour tout $n$. Montrer que $|u_{n+1} - 3| \leq \frac{1}{4}|u_n - 3|$, puis en déduire $\lim u_n$.
+
+\smallskip
+\textbf{Corrigé.} $f(3) = \sqrt{9} = 3$ : $3$ est point fixe de $f$. Sur $[2\,;3]$, $f'(x) = \dfrac{1}{2\sqrt{x+6}}$ ; comme $x + 6 \in [8\,;9]$, $\sqrt{x+6} \geq \sqrt{8} = 2\sqrt{2}$, donc $f'(x) \leq \dfrac{1}{4\sqrt{2}} < \dfrac{1}{4}$.
+
+\smallskip
+Par l'inégalité des accroissements finis entre $u_n$ et $3$ (tous deux dans $[2\,;3]$, intervalle stable) :
+\[
+  |u_{n+1} - 3| = |f(u_n) - f(3)| \leq \frac{1}{4}|u_n - 3|.
+\]
+Par récurrence : $|u_n - 3| \leq \left(\frac{1}{4}\right)^n |u_0 - 3| = \left(\frac{1}{4}\right)^n \to 0$. Par encadrement, $u_n - 3 \to 0$, donc $\boxed{\lim u_n = 3}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- convexité et inégalité]
+Montrer que pour tout $x \geq 0$ : $\sqrt{1 + x} \leq 1 + \dfrac{x}{2}$.
+
+\smallskip
+\textbf{Corrigé.} Posons $f(t) = \sqrt{1+t}$ sur $[0\,;+\infty[$. $f'(t) = \dfrac{1}{2\sqrt{1+t}}$, $f''(t) = -\dfrac{1}{4(1+t)^{3/2}} < 0$ : $f$ est \textbf{concave} sur $[0\,;+\infty[$.
+
+\smallskip
+Une fonction concave est en dessous de chacune de ses tangentes. La tangente en $t = 0$ : $f(0) = 1$, $f'(0) = \frac{1}{2}$, donc $y = 1 + \frac{t}{2}$. Par concavité :
+\[
+  f(t) \leq 1 + \frac{t}{2} \qquad \text{pour tout } t \geq 0,
+\]
+ce qui est exactement l'inégalité demandée (avec $t = x$).
+\end{exemple}
+
+\begin{exemple}[Exercice 6 -- étude complète avec branches infinies]
+Étudier $f(x) = \dfrac{x^2 - x + 1}{x - 1}$ sur $D_f = \mathbb{R} \setminus \{1\}$ : asymptotes, variations, tracé.
+
+\smallskip
+\textbf{Corrigé.} \emph{Écriture} : division euclidienne donne $f(x) = x + \dfrac{1}{x-1}$.
+
+\smallskip
+\emph{Limites} : $\lim\limits_{x \to 1^{\pm}} f(x) = \pm\infty$ : asymptote verticale $x = 1$. En $\pm\infty$ : $f(x) - x = \frac{1}{x-1} \to 0$ : asymptote oblique $y = x$. Signe de $\frac{1}{x-1}$ : positif si $x > 1$ (courbe au-dessus), négatif si $x < 1$ (courbe en dessous).
+
+\smallskip
+\emph{Dérivée} : $f'(x) = 1 - \dfrac{1}{(x-1)^2} = \dfrac{(x-1)^2 - 1}{(x-1)^2} = \dfrac{x(x-2)}{(x-1)^2}$.
+
+\smallskip
+Signe de $f'$ = signe de $x(x-2)$ (dénominateur toujours positif) : $f' > 0$ sur $]-\infty\,;0[$, $f' < 0$ sur $]0\,;1[\cup]1\,;2[$, $f' > 0$ sur $]2\,;+\infty[$.
+
+\smallskip
+\textbf{Conclusion} : maximum local $f(0) = -1$, minimum local $f(2) = 3$ ; asymptotes $x=1$ et $y=x$.
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Étudier la dérivabilité en $a$ & Calculer $f'_g(a)$ et $f'_d(a)$ séparément, comparer. \\
+Écrire l'équation d'une tangente & $y = f'(x_0)(x - x_0) + f(x_0)$. \\
+\rowcolor{tealpale} Position courbe / tangente ou asymptote & Étudier le signe de $f(x) - (\text{droite})$. \\
+Montrer qu'une dérivée s'annule $k$ fois & Rolle sur chacun des $k$ sous-intervalles où $f$ prend la même valeur. \\
+\rowcolor{tealpale} Prouver la convergence d'une suite $u_{n+1}=f(u_n)$ & Inégalité des accroissements finis : $|f'| \leq k < 1$ sur un intervalle stable. \\
+Trouver les extrema locaux & Signe de $f'$ ; vérifier le \textbf{changement de signe}, pas juste $f'=0$. \\
+\rowcolor{tealpale} Trouver un point d'inflexion & Signe de $f''$ ; vérifier le \textbf{changement de signe}. \\
+Prouver une inégalité $f(x) \leq $ droite & Étudier la concavité de $f$ (ou TAF). \\
+\rowcolor{tealpale} Classifier une branche infinie & Étudier $\frac{f(x)}{x}$ puis $f(x) - ax$ selon l'arbre de décision. \\
+Dériver une composée & Identifier $u$, appliquer la formule adaptée ($u^n$, $\sqrt{u}$, $\sin u$, etc.). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Confondre $f'(a) = 0$ avec « extremum en $a$ » : il faut le \textbf{changement de signe} (contre-exemple $x^3$ en $0$).
+  \item Confondre $f''(a) = 0$ avec « point d'inflexion en $a$ » : même exigence de changement de signe (contre-exemple $x^4$ en $0$).
+  \item Oublier de vérifier la \textbf{continuité} avant d'étudier la dérivabilité en un point de raccordement.
+  \item Appliquer Rolle sans vérifier $f(a) = f(b)$, ou le TAF en oubliant l'hypothèse de continuité sur le \textbf{segment fermé}.
+  \item Écrire $(f^{-1})'(b) = \frac{1}{f'(b)}$ au lieu de $\frac{1}{f'(f^{-1}(b))}$.
+  \item Utiliser l'inégalité des accroissements finis sur un intervalle où $f'$ n'est \textbf{pas} bornée par $k < 1$.
+  \item Oublier le facteur $u'$ en dérivant une composée : $(\sin(x^2))' = 2x\cos(x^2)$, \textbf{pas} $\cos(x^2)$.
+  \item Ne pas distinguer asymptote oblique et branche parabolique : toujours vérifier que $f(x) - ax$ tend vers une limite \textbf{finie}.
+  \item Conclure à la dérivabilité d'une fonction définie par morceaux sans comparer $f'_g$ et $f'_d$ séparément.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $f'(a) = \lim\limits_{h \to 0}\frac{f(a+h)-f(a)}{h}$ ; tangente $y = f'(a)(x-a)+f(a)$ ; dérivable $\Rightarrow$ continue (jamais l'inverse).
+  \item Formules composées : $(u^n)' = nu'u^{n-1}$, $(\sqrt{u})' = \frac{u'}{2\sqrt{u}}$, $(\sin u)'=u'\cos u$ ; réciproque : $(f^{-1})'(b) = \frac{1}{f'(f^{-1}(b))}$.
+  \item Rolle : $f(a)=f(b) \Rightarrow \exists c, f'(c)=0$ ; TAF : $f(b)-f(a)=f'(c)(b-a)$ ; $|f'|\leq k \Rightarrow |f(b)-f(a)|\leq k|b-a|$ (clé pour les suites).
+  \item Signe de $f'$ $\to$ monotonie (démontré via TAF) ; extremum = changement de signe de $f'$ ; inflexion = changement de signe de $f''$.
+  \item Branches infinies : verticale/horizontale/oblique/parabolique, via l'étude de $f(x)/x$ puis $f(x)-ax$.
+  \item Convexe $\Rightarrow$ courbe au-dessus des tangentes ; outil puissant pour démontrer des inégalités.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

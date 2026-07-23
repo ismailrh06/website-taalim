@@ -1,0 +1,465 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Géométrie analytique de l'espace
+%  (droites, plans, sphère)
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Géométrie analytique de l'espace}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Déterminer représentation paramétrique et équation cartésienne d'une droite ou d'un plan de l'espace.
+  \item Étudier toutes les positions relatives : droite-droite, droite-plan, plan-plan.
+  \item Calculer des distances (point-droite, point-plan) et déterminer des projections orthogonales.
+  \item Calculer un angle entre deux droites, deux plans, ou une droite et un plan.
+  \item Déterminer l'équation d'une sphère et étudier ses intersections avec une droite ou un plan.
+  \item Résoudre les exercices type examen national combinant vecteurs, produit scalaire/vectoriel et sphères.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Représentations d'une droite}
+
+\begin{propriete}[Représentation paramétrique]
+La droite $\mathcal{D}$ passant par $A(x_0,y_0,z_0)$ de vecteur directeur $\vec u(a,b,c)\ne\vec0$ est l'ensemble des points $M(x,y,z)$ tels que
+\[
+  \begin{cases} x=x_0+ta \\ y=y_0+tb \\ z=z_0+tc \end{cases} \qquad t\in\mathbb{R}.
+\]
+\end{propriete}
+
+\begin{demo}
+$M\in\mathcal{D} \iff \overrightarrow{AM}$ colinéaire à $\vec u \iff \exists t\in\mathbb{R},\ \overrightarrow{AM}=t\vec u$, ce qui donne exactement le système ci-dessus en coordonnées.
+\end{demo}
+
+\begin{exemple}[Paramétrer une droite]
+Droite passant par $A(1,-1,2)$, de vecteur directeur $\vec u(2,0,-1)$ :
+\[
+  \begin{cases} x=1+2t \\ y=-1 \\ z=2-t \end{cases} \qquad t\in\mathbb{R}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Positions relatives de deux droites}
+
+\begin{propriete}[Classification]
+Deux droites $\mathcal{D}(A,\vec u)$ et $\mathcal{D}'(B,\vec v)$ de l'espace sont :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{parallèles} si $\vec u,\vec v$ colinéaires : \textbf{confondues} si de plus $A\in\mathcal{D}'$, sinon \textbf{strictement parallèles} ;
+  \item \textbf{sécantes} si $\vec u,\vec v$ non colinéaires et $\overrightarrow{AB},\vec u,\vec v$ \textbf{coplanaires} (produit mixte nul) ;
+  \item \textbf{non coplanaires} (gauches) si $\vec u,\vec v$ non colinéaires et $\overrightarrow{AB},\vec u,\vec v$ non coplanaires.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Déterminer la position relative]
+Soient $\mathcal{D}$ passant par $A(1,0,0)$, $\vec u(1,1,0)$, et $\mathcal{D}'$ passant par $B(0,1,1)$, $\vec v(1,0,1)$.
+
+\smallskip
+$\vec u,\vec v$ non colinéaires (coordonnées non proportionnelles). $\overrightarrow{AB}(-1,1,1)$.
+\[
+  \vec u\wedge\vec v = (1\times1-0\times0\,;\ 0\times1-1\times1\,;\ 1\times0-1\times1) = (1,-1,-1).
+\]
+\[
+  \overrightarrow{AB}\cdot(\vec u\wedge\vec v) = (-1)(1)+(1)(-1)+(1)(-1) = -1-1-1 = -3 \ne 0.
+\]
+\textbf{Conclusion} : les droites sont \textbf{non coplanaires}.
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Plans : équation cartésienne, positions relatives}
+
+\begin{remarque}[Rappel du chapitre précédent]
+L'équation cartésienne d'un plan de vecteur normal $\vec n(a,b,c)$ passant par $A(x_0,y_0,z_0)$ est $a(x-x_0)+b(y-y_0)+c(z-z_0)=0$, soit $ax+by+cz+d=0$.
+\end{remarque}
+
+\begin{propriete}[Positions relatives de deux plans]
+Soient $\mathcal{P}:ax+by+cz+d=0$ (normal $\vec n(a,b,c)$) et $\mathcal{P}':a'x+b'y+c'z+d'=0$ (normal $\vec n'(a',b',c')$).
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $\mathcal{P}\parallel\mathcal{P}'$ (ou confondus) $\iff \vec n,\vec n'$ colinéaires.
+  \item Sinon, $\mathcal{P}$ et $\mathcal{P}'$ sont \textbf{sécants} selon une droite, de vecteur directeur $\vec n\wedge\vec n'$.
+\end{itemize}
+\end{propriete}
+
+\begin{propriete}[Position relative droite-plan]
+Soit $\mathcal{D}(A,\vec u)$ et $\mathcal{P}$ de normal $\vec n$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $\mathcal{D}\parallel\mathcal{P} \iff \vec u\cdot\vec n=0$ : \textbf{incluse} dans $\mathcal{P}$ si de plus $A\in\mathcal{P}$, sinon strictement parallèle.
+  \item Sinon ($\vec u\cdot\vec n\ne0$), $\mathcal{D}$ est \textbf{sécante} à $\mathcal{P}$ en un unique point.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Intersection droite-plan]
+Soit $\mathcal{D}$ : $\begin{cases}x=1+t\\y=2-t\\z=t\end{cases}$ et $\mathcal{P}:x+y+z-4=0$. Déterminons leur intersection.
+
+\smallskip
+Substituons : $(1+t)+(2-t)+t-4=0\iff t-1=0\iff t=1$.
+
+\smallskip
+\textbf{Point d'intersection} : $x=2$, $y=1$, $z=1$, soit $M(2,1,1)$.
+\end{exemple}
+
+\begin{propriete}[Système de deux plans définissant une droite]
+Deux plans \textbf{sécants} (non parallèles) $\mathcal{P}:ax+by+cz+d=0$ et $\mathcal{P}':a'x+b'y+c'z+d'=0$ définissent une droite $\mathcal{D}=\mathcal{P}\cap\mathcal{P}'$, de vecteur directeur $\vec n\wedge\vec n'$ (où $\vec n,\vec n'$ sont les normales respectives).
+\end{propriete}
+
+\begin{exemple}[Trouver la droite intersection de deux plans]
+Soient $\mathcal{P}:x+y-z=0$ et $\mathcal{P}':2x-y+z-3=0$. Déterminons une représentation paramétrique de $\mathcal{P}\cap\mathcal{P}'$.
+
+\smallskip
+$\vec n(1,1,-1)$, $\vec n'(2,-1,1)$, non colinéaires : les plans sont sécants.
+\[
+  \vec n\wedge\vec n' = (1\times1-(-1)\times(-1)\,;\ (-1)\times2-1\times1\,;\ 1\times(-1)-1\times2) = (0,-3,-3).
+\]
+On peut simplifier le vecteur directeur en $(0,1,1)$.
+
+\smallskip
+\textbf{Point particulier} : cherchons un point du système en fixant $z=0$ : $x+y=0$ et $2x-y=3$. En additionnant : $3x=3\iff x=1$, puis $y=-1$. Point $A(1,-1,0)$.
+
+\smallskip
+\textbf{Conclusion} : $\mathcal{D}:\begin{cases}x=1\\y=-1+t\\z=t\end{cases}$, $t\in\mathbb{R}$.
+\end{exemple}
+
+\subsection{Angles entre droites et plans}
+
+\begin{propriete}[Formules d'angle via le produit scalaire]
+On définit l'angle géométrique (dans $\left[0\,;\frac\pi2\right]$) entre deux droites, deux plans, ou une droite et un plan, à l'aide de leurs vecteurs directeurs/normaux, en prenant la valeur absolue du cosinus (pour obtenir l'angle \textbf{aigu}, indépendant du sens choisi pour les vecteurs) :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{Angle entre deux droites} $\mathcal{D}(\vec u)$, $\mathcal{D}'(\vec u')$ :
+  \[
+    \cos\theta = \frac{|\vec u\cdot\vec u'|}{\|\vec u\|\,\|\vec u'\|}.
+  \]
+  \item \textbf{Angle entre deux plans} $\mathcal{P}(\vec n)$, $\mathcal{P}'(\vec n')$ :
+  \[
+    \cos\theta = \frac{|\vec n\cdot\vec n'|}{\|\vec n\|\,\|\vec n'\|}.
+  \]
+  \item \textbf{Angle entre une droite $\mathcal{D}(\vec u)$ et un plan $\mathcal{P}(\vec n)$} :
+  \[
+    \sin\theta = \frac{|\vec u\cdot\vec n|}{\|\vec u\|\,\|\vec n\|}.
+  \]
+\end{itemize}
+\end{propriete}
+
+\begin{remarque}[Pourquoi un sinus pour droite-plan]
+L'angle entre une droite et un plan se mesure entre la droite et sa \textbf{projection} sur le plan, et non entre la droite et la normale : c'est pourquoi la formule utilise $\sin$ (angle complémentaire de celui entre $\vec u$ et $\vec n$) plutôt que $\cos$.
+\end{remarque}
+
+\begin{exemple}[Calcul d'angle entre deux plans]
+Soient $\mathcal{P}:x+y+z-1=0$ et $\mathcal{P}':x-y+2=0$. Calculons l'angle entre ces deux plans.
+
+\smallskip
+$\vec n(1,1,1)$, $\vec n'(1,-1,0)$.
+\[
+  \cos\theta = \frac{|1\times1+1\times(-1)+1\times0|}{\sqrt3\times\sqrt2} = \frac{|0|}{\sqrt6} = 0.
+\]
+\textbf{Conclusion} : $\theta=\dfrac\pi2$ : les deux plans sont \textbf{perpendiculaires}.
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Distances et projections}
+
+\begin{propriete}[Distance d'un point à une droite]
+La distance du point $M_0$ à la droite $\mathcal{D}(A,\vec u)$ est
+\[
+  d(M_0,\mathcal{D}) = \frac{\left\|\overrightarrow{AM_0}\wedge\vec u\right\|}{\|\vec u\|}.
+\]
+\end{propriete}
+
+\begin{demo}
+$\left\|\overrightarrow{AM_0}\wedge\vec u\right\|$ est l'aire du parallélogramme construit sur $\overrightarrow{AM_0}$ et $\vec u$, qui vaut aussi (base $\times$ hauteur) $\|\vec u\|\times d(M_0,\mathcal{D})$ (la hauteur étant la distance cherchée). En isolant $d(M_0,\mathcal{D})$, on obtient la formule.
+\end{demo}
+
+\begin{exemple}[Calcul de distance point-droite]
+Soit $\mathcal{D}$ passant par $A(0,0,0)$, $\vec u(1,1,1)$, et $M_0(1,0,0)$.
+\[
+  \overrightarrow{AM_0}(1,0,0), \qquad \overrightarrow{AM_0}\wedge\vec u = (0\times1-0\times1\,;\ 0\times1-1\times1\,;\ 1\times1-0\times1) = (0,-1,1).
+\]
+\[
+  d(M_0,\mathcal{D}) = \frac{\sqrt{0+1+1}}{\sqrt3} = \frac{\sqrt2}{\sqrt3} = \frac{\sqrt6}{3}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Sphères}
+
+\begin{definition}[Sphère]
+La \textbf{sphère} de centre $\Omega(x_0,y_0,z_0)$ et de rayon $R>0$ est l'ensemble des points $M(x,y,z)$ tels que $\Omega M=R$, d'équation
+\[
+  (x-x_0)^2+(y-y_0)^2+(z-z_0)^2 = R^2.
+\]
+\end{definition}
+
+\begin{propriete}[Reconnaître une équation de sphère]
+Une équation $x^2+y^2+z^2+ax+by+cz+d=0$ est celle d'une sphère si et seulement si, après mise sous forme canonique,
+\[
+  \left(x+\frac a2\right)^2+\left(y+\frac b2\right)^2+\left(z+\frac c2\right)^2 = \frac{a^2+b^2+c^2}{4}-d
+\]
+a un second membre \textbf{strictement positif} (sinon : point unique si nul, ensemble vide si négatif).
+\end{propriete}
+
+\begin{exemple}[Reconnaître et déterminer centre/rayon]
+Soit $(S):x^2+y^2+z^2-4x+2y-6=0$. Déterminons si c'est une sphère.
+
+\smallskip
+Mise sous forme canonique : $(x-2)^2-4+(y+1)^2-1+z^2-6=0 \iff (x-2)^2+(y+1)^2+z^2=11$.
+
+\smallskip
+\textbf{Conclusion} : $(S)$ est la sphère de centre $\Omega(2,-1,0)$ et de rayon $R=\sqrt{11}$.
+\end{exemple}
+
+\begin{propriete}[Intersection sphère-plan]
+Soit $(S)$ sphère de centre $\Omega$, rayon $R$, et $\mathcal{P}$ un plan. Posons $d=d(\Omega,\mathcal{P})$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $d>R$ : $(S)\cap\mathcal{P}=\varnothing$.
+  \item Si $d=R$ : $\mathcal{P}$ est \textbf{tangent} à $(S)$ en un unique point (le projeté orthogonal de $\Omega$ sur $\mathcal{P}$).
+  \item Si $d<R$ : $(S)\cap\mathcal{P}$ est un \textbf{cercle} de centre le projeté orthogonal de $\Omega$ sur $\mathcal{P}$, de rayon $r=\sqrt{R^2-d^2}$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+Soit $H$ le projeté orthogonal de $\Omega$ sur $\mathcal{P}$, $d=\Omega H$. Pour $M\in\mathcal{P}$ : $\Omega M^2=\Omega H^2+HM^2$ (Pythagore, car $(\Omega H)\perp\mathcal{P}$ donc $\perp(HM)$). $M\in(S)\cap\mathcal{P} \iff \Omega M=R \iff HM^2=R^2-d^2$. Si $R^2-d^2>0$, ceci décrit un cercle de centre $H$, rayon $\sqrt{R^2-d^2}$ (dans le plan $\mathcal{P}$).
+\end{demo}
+
+\begin{exemple}[Étude d'une intersection sphère-plan]
+Soit $(S)$ de centre $\Omega(0,0,0)$, rayon $R=5$, et $\mathcal{P}:x+2y+2z-6=0$. Étudions $(S)\cap\mathcal{P}$.
+
+\smallskip
+\[
+  d(\Omega,\mathcal{P}) = \frac{|0+0+0-6|}{\sqrt{1+4+4}} = \frac{6}{3} = 2.
+\]
+Comme $d=2<R=5$ : $(S)\cap\mathcal{P}$ est un \textbf{cercle} de rayon $r=\sqrt{25-4}=\sqrt{21}$, centré au projeté orthogonal de $\Omega$ sur $\mathcal{P}$.
+\end{exemple}
+
+\begin{propriete}[Plan tangent à une sphère]
+Le plan tangent à la sphère $(S)$ de centre $\Omega$ en un point $A\in(S)$ est le plan passant par $A$, de vecteur normal $\overrightarrow{\Omega A}$.
+\end{propriete}
+
+\begin{exemple}[Équation du plan tangent]
+Soit $(S)$ de centre $\Omega(1,1,1)$, rayon $3$, et $A(4,1,1)\in(S)$ (vérification : $\Omega A=\sqrt{9+0+0}=3$ $\checkmark$). Déterminons le plan tangent en $A$.
+
+\smallskip
+$\overrightarrow{\Omega A}(3,0,0)$, normal au plan tangent. Équation : $3(x-4)+0(y-1)+0(z-1)=0\iff x=4$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- droite définie par deux points, position par rapport à un plan]
+Soient $A(1,2,0)$, $B(3,0,2)$, et $\mathcal{P}:x-y+z-1=0$. Déterminer la position relative de $(AB)$ et $\mathcal{P}$.
+
+\smallskip
+\textbf{Corrigé.} $\vec u=\overrightarrow{AB}(2,-2,2)$, normal $\vec n(1,-1,1)$ de $\mathcal{P}$.
+\[
+  \vec u\cdot\vec n = 2\times1+(-2)\times(-1)+2\times1 = 2+2+2 = 6 \ne 0.
+\]
+\textbf{Conclusion} : $(AB)$ est \textbf{sécante} à $\mathcal{P}$ (pas parallèle).
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- sphère passant par des points donnés]
+Déterminer l'équation de la sphère de centre $\Omega(1,-2,3)$ passant par $A(4,-2,3)$.
+
+\smallskip
+\textbf{Corrigé.} $R=\Omega A=\sqrt{(4-1)^2+0+0}=\sqrt9=3$.
+\[
+  (S):(x-1)^2+(y+2)^2+(z-3)^2=9.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- intersection droite-sphère]
+Soit $(S):x^2+y^2+z^2=9$ et $\mathcal{D}:\begin{cases}x=t\\y=t\\z=1\end{cases}$. Déterminer $(S)\cap\mathcal{D}$.
+
+\smallskip
+\textbf{Corrigé.} Substituons : $t^2+t^2+1=9\iff2t^2=8\iff t^2=4\iff t=\pm2$.
+
+\smallskip
+\textbf{Conclusion} : deux points d'intersection, $M_1(2,2,1)$ et $M_2(-2,-2,1)$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- problème combiné plans et sphère]
+Soit $(S):x^2+y^2+z^2-2x+4y-4=0$ et $\mathcal{P}:x-2y+2z+5=0$. Le plan $\mathcal{P}$ coupe-t-il la sphère $(S)$ ? Si oui, préciser le rayon du cercle d'intersection.
+
+\smallskip
+\textbf{Corrigé.} Forme canonique de $(S)$ : $(x-1)^2-1+(y+2)^2-4+z^2-4=0\iff(x-1)^2+(y+2)^2+z^2=9$. Centre $\Omega(1,-2,0)$, rayon $R=3$.
+\[
+  d(\Omega,\mathcal{P}) = \frac{|1-2(-2)+2(0)+5|}{\sqrt{1+4+4}} = \frac{|1+4+5|}{3} = \frac{10}{3}.
+\]
+Comme $\frac{10}3\approx3{,}33>R=3$ : \textbf{le plan ne coupe pas la sphère}, $(S)\cap\mathcal{P}=\varnothing$.
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Position relative de deux droites & Colinéarité des vecteurs directeurs ; sinon, coplanarité via produit mixte. \\
+Position relative droite-plan & Comparer $\vec u\cdot\vec n$ à $0$ (parallèle si nul). \\
+\rowcolor{tealpale} Intersection de deux plans sécants & Vecteur directeur $\vec n\wedge\vec n'$, puis chercher un point particulier. \\
+Reconnaître une sphère & Forme canonique, vérifier que le second membre est strictement positif. \\
+\rowcolor{tealpale} Étudier $(S)\cap\mathcal{P}$ & Comparer $d(\Omega,\mathcal{P})$ à $R$ (cercle si $d<R$, tangence si $d=R$, vide si $d>R$). \\
+Plan tangent en un point $A$ de la sphère & Normal $=\overrightarrow{\Omega A}$, plan passant par $A$. \\
+\rowcolor{tealpale} Intersection droite-sphère & Substituer la paramétrisation de la droite dans l'équation de la sphère. \\
+Calculer un angle (droites, plans, droite-plan) & Cosinus (ou sinus pour droite-plan) avec valeur absolue, à partir des vecteurs directeurs/normaux. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier de vérifier la coplanarité (produit mixte) avant de conclure que deux droites sont sécantes.
+  \item Confondre les conditions de parallélisme droite-plan ($\vec u\cdot\vec n=0$) et plan-plan ($\vec n,\vec n'$ colinéaires).
+  \item Erreur de signe lors de la mise sous forme canonique d'une équation de sphère (division par $2$ mal appliquée).
+  \item Oublier de vérifier que le second membre de la forme canonique est \textbf{positif} avant de conclure qu'il s'agit bien d'une sphère.
+  \item Confondre le rayon du cercle d'intersection sphère-plan ($\sqrt{R^2-d^2}$) avec le rayon $R$ de la sphère elle-même.
+  \item Oublier qu'un vecteur normal à un plan est aussi vecteur \textbf{directeur} de toute droite orthogonale à ce plan (et inversement).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Droite $(A,\vec u)$ : $\begin{cases}x=x_0+ta\\y=y_0+tb\\z=z_0+tc\end{cases}$ ; plan $(A,\vec n)$ : $a(x-x_0)+b(y-y_0)+c(z-z_0)=0$.
+  \item Positions relatives : droites (colinéaires/coplanaires) ; plans (normales colinéaires) ; droite-plan ($\vec u\cdot\vec n$).
+  \item Distance point-droite : $\frac{\|\overrightarrow{AM_0}\wedge\vec u\|}{\|\vec u\|}$ ; point-plan : $\frac{|ax_0+by_0+cz_0+d|}{\sqrt{a^2+b^2+c^2}}$.
+  \item Sphère $(\Omega,R)$ : $(x-x_0)^2+(y-y_0)^2+(z-z_0)^2=R^2$ ; forme canonique pour reconnaître.
+  \item $(S)\cap\mathcal{P}$ selon $d(\Omega,\mathcal{P})$ vs $R$ : vide, tangent, ou cercle de rayon $\sqrt{R^2-d^2}$.
+  \item Angles : $\cos\theta=\frac{|\vec u\cdot\vec u'|}{\|\vec u\|\|\vec u'\|}$ (droites/plans, via directeurs/normaux) ; $\sin\theta=\frac{|\vec u\cdot\vec n|}{\|\vec u\|\|\vec n\|}$ (droite-plan).
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

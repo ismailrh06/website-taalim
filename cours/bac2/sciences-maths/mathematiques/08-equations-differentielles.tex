@@ -1,0 +1,362 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Équations différentielles
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Équations différentielles}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Résoudre et démontrer la solution générale de $y'=ay$ et $y'=ay+b$ ($a\ne0$).
+  \item Déterminer la solution vérifiant une condition initiale, et vérifier une solution par substitution.
+  \item Résoudre l'équation du second ordre $y''+\omega^2y=0$ avec deux conditions initiales.
+  \item Reconnaître ces équations dans des situations de modélisation issues de la physique et de la biologie.
+  \item Traiter les exercices type examen national combinant équation différentielle et étude de fonction.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{L'équation $y'=ay$}
+
+\begin{definition}
+Une \textbf{équation différentielle} est une équation dont l'inconnue est une \textbf{fonction} $y$, faisant intervenir $y$ et ses dérivées. \textbf{Résoudre} l'équation sur un intervalle, c'est trouver \textbf{toutes} les fonctions dérivables qui la vérifient sur cet intervalle.
+\end{definition}
+
+\begin{propriete}[Solutions de $y'=ay$]
+Soit $a\in\mathbb{R}^*$. Les solutions sur $\mathbb{R}$ de $y'=ay$ sont exactement les fonctions
+\[
+  y(x) = Ce^{ax}, \qquad C\in\mathbb{R}.
+\]
+\end{propriete}
+
+\begin{demo}
+\emph{Les fonctions $Ce^{ax}$ sont solutions} : si $y(x)=Ce^{ax}$, alors $y'(x)=Cae^{ax}=ay(x)$. $\checkmark$
+
+\smallskip
+\emph{Ce sont les seules} : soit $y$ une solution de $y'=ay$. Posons $z(x)=y(x)e^{-ax}$. Alors
+\[
+  z'(x) = y'(x)e^{-ax}+y(x)\times(-a)e^{-ax} = e^{-ax}\bigl(y'(x)-ay(x)\bigr) = e^{-ax}\times0 = 0.
+\]
+Donc $z$ est \textbf{constante} sur $\mathbb{R}$ (intervalle) : $z(x)=C$, soit $y(x)e^{-ax}=C$, c'est-à-dire $y(x)=Ce^{ax}$.
+\end{demo}
+
+\begin{propriete}[Unicité avec condition initiale]
+Pour tout $(x_0,y_0)$, il existe une \textbf{unique} solution de $y'=ay$ vérifiant $y(x_0)=y_0$.
+\end{propriete}
+
+\begin{exemple}[Résolution avec condition initiale]
+Résolvons $y'=-2y$ avec $y(0)=5$.
+
+\smallskip
+Solutions générales : $y(x)=Ce^{-2x}$. Condition $y(0)=5$ : $C=5$.
+
+\smallskip
+\textbf{Conclusion} : $y(x)=5e^{-2x}$ -- modèle de \textbf{décroissance exponentielle} (retrouvé en physique : décroissance radioactive $N(t)=N_0e^{-\lambda t}$).
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{L'équation $y'=ay+b$}
+
+\begin{propriete}[Solutions de $y'=ay+b$]
+Soient $a\in\mathbb{R}^*$, $b\in\mathbb{R}$. Les solutions sur $\mathbb{R}$ de $y'=ay+b$ sont
+\[
+  y(x) = Ce^{ax}-\frac ba, \qquad C\in\mathbb{R}.
+\]
+\end{propriete}
+
+\begin{demo}
+Posons $y_p=-\frac ba$, la \textbf{solution particulière constante} (vérification : $y_p'=0$ et $ay_p+b=a\left(-\frac ba\right)+b=0$, donc $y_p'=ay_p+b$ est vérifiée). Soit $y$ une solution quelconque de $y'=ay+b$, et posons $z=y-y_p$. Alors
+\[
+  z' = y'-y_p' = (ay+b)-0 = ay+b = a(z+y_p)+b = az+ay_p+b = az+0 = az
+\]
+(en utilisant $ay_p+b=0$). Donc $z$ vérifie $z'=az$ : d'après la section précédente, $z(x)=Ce^{ax}$, soit $y(x)=Ce^{ax}+y_p=Ce^{ax}-\frac ba$.
+\end{demo}
+
+\begin{remarque}[Méthode en 3 étapes]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item Chercher la \textbf{solution constante} : $0=a\ell+b$, d'où $\ell=-\frac ba$.
+  \item Écrire la solution générale : $y(x)=Ce^{ax}+\ell$.
+  \item Déterminer $C$ avec la condition initiale.
+\end{enumerate}
+Parallèle avec les suites arithmético-géométriques $u_{n+1}=au_n+b$ : même logique de point fixe + partie exponentielle/géométrique.
+\end{remarque}
+
+\begin{exemple}[Résolution complète type bac]
+Résolvons $y'=3y-6$ avec $y(0)=1$.
+
+\smallskip
+\textbf{Solution constante} : $0=3\ell-6\iff\ell=2$.
+
+\smallskip
+\textbf{Solution générale} : $y(x)=Ce^{3x}+2$.
+
+\smallskip
+\textbf{Condition initiale} : $y(0)=C+2=1\iff C=-1$.
+
+\smallskip
+\textbf{Conclusion} : $y(x)=2-e^{3x}$. \emph{Vérification} : $y'=-3e^{3x}$ et $3y-6=6-3e^{3x}-6=-3e^{3x}$. $\checkmark$
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{L'équation $y''+\omega^2y=0$}
+
+\begin{propriete}[Solutions de l'oscillateur harmonique]
+Soit $\omega\in\mathbb{R}^*$. Les solutions sur $\mathbb{R}$ de $y''+\omega^2y=0$ sont
+\[
+  y(x) = A\cos(\omega x)+B\sin(\omega x), \qquad A,B\in\mathbb{R}.
+\]
+Forme équivalente : $y(x)=R\cos(\omega x-\varphi)$ avec $R\geq0$, $\varphi\in\mathbb{R}$ (amplitude et phase). Une solution unique est déterminée par \textbf{deux} conditions initiales, par exemple $y(0)$ et $y'(0)$.
+\end{propriete}
+
+\begin{demo}[Vérification que ces fonctions sont solutions]
+Si $y(x)=A\cos(\omega x)+B\sin(\omega x)$ : $y'(x)=-A\omega\sin(\omega x)+B\omega\cos(\omega x)$ et $y''(x)=-A\omega^2\cos(\omega x)-B\omega^2\sin(\omega x)=-\omega^2y(x)$. Donc $y''+\omega^2y=0$. $\checkmark$ (L'unicité, c'est-à-dire que ce sont \emph{toutes} les solutions, est admise à ce niveau.)
+\end{demo}
+
+\begin{exemple}[Conditions initiales doubles]
+Résolvons $y''+4y=0$ avec $y(0)=1$, $y'(0)=2$.
+
+\smallskip
+Ici $\omega=2$ : solution générale $y(x)=A\cos2x+B\sin2x$.
+
+\smallskip
+$y(0)=A=1$. Comme $y'(x)=-2A\sin2x+2B\cos2x$, on a $y'(0)=2B=2\iff B=1$.
+
+\smallskip
+\textbf{Conclusion} : $y(x)=\cos2x+\sin2x$, que l'on peut écrire $\sqrt2\cos\left(2x-\frac\pi4\right)$.
+\end{exemple}
+
+\begin{remarque}[Lien avec la physique]
+Cette équation modélise les \textbf{oscillateurs harmoniques} : pendule élastique ($\ddot x+\frac km x=0$), circuit LC ($\ddot q+\frac1{LC}q=0$)\ldots La pulsation $\omega$ donne la période $T=\frac{2\pi}{\omega}$.
+\end{remarque}
+
+% ------------------- SECTION 4 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- résolution avec vérification]
+Vérifier que $y(x)=2e^{-x}+3$ est solution de $y'+y=3$, puis retrouver cette solution par la méthode générale.
+
+\smallskip
+\textbf{Corrigé.} \emph{Vérification} : $y'(x)=-2e^{-x}$, donc $y'+y=-2e^{-x}+2e^{-x}+3=3$. $\checkmark$
+
+\smallskip
+\emph{Méthode générale} : l'équation s'écrit $y'=-y+3$, soit $a=-1$, $b=3$. Solution constante : $\ell=\frac{-b}{a}=\frac{-3}{-1}=3$. Solution générale : $y(x)=Ce^{-x}+3$. Si $y(0)=5$ (donnée par $y(0)=2+3=5$ dans l'exemple), $C+3=5\iff C=2$, retrouvant $y(x)=2e^{-x}+3$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- modélisation : refroidissement (loi de Newton)]
+Un objet à température $\theta(t)$ (en $°C$) refroidit dans une pièce à $20°C$ selon la loi $\theta'(t)=-k(\theta(t)-20)$, où $k>0$ est une constante. Sachant $\theta(0)=90$, exprimer $\theta(t)$ en fonction de $t$ et $k$.
+
+\smallskip
+\textbf{Corrigé.} On développe : $\theta'=-k\theta+20k$, soit $a=-k$, $b=20k$. Solution constante : $\ell=\frac{-20k}{-k}=20$ (cohérent avec la température ambiante). Solution générale : $\theta(t)=Ce^{-kt}+20$.
+
+\smallskip
+$\theta(0)=C+20=90\iff C=70$.
+
+\smallskip
+\textbf{Conclusion} : $\theta(t)=70e^{-kt}+20$. Quand $t\to+\infty$, $\theta(t)\to20$ : l'objet se refroidit progressivement jusqu'à la température ambiante.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- fonction définie par une équation différentielle, étude complète]
+Soit $f$ la solution de $y'=2y-4$ telle que $f(0)=1$. Exprimer $f(x)$, puis étudier ses variations et sa limite en $+\infty$ et en $-\infty$.
+
+\smallskip
+\textbf{Corrigé.} $a=2$, $b=-4$ : $\ell=\frac{4}{2}=2$. Solution générale $y(x)=Ce^{2x}+2$. $f(0)=C+2=1\iff C=-1$.
+
+\smallskip
+\textbf{Conclusion} : $f(x)=2-e^{2x}$.
+
+\smallskip
+\emph{Variations} : $f'(x)=-2e^{2x}<0$ pour tout $x$ : $f$ est strictement décroissante sur $\mathbb{R}$.
+
+\smallskip
+\emph{Limites} : en $+\infty$, $e^{2x}\to+\infty$, donc $f(x)\to-\infty$. En $-\infty$, $e^{2x}\to0$, donc $f(x)\to2$ (asymptote horizontale $y=2$).
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- second ordre avec interprétation]
+Un point matériel oscille selon $x''(t)+9x(t)=0$, avec $x(0)=0$ et une vitesse initiale $x'(0)=6$ (m/s). Déterminer $x(t)$, la période, et l'amplitude du mouvement.
+
+\smallskip
+\textbf{Corrigé.} $\omega^2=9\Rightarrow\omega=3$. Solution générale $x(t)=A\cos3t+B\sin3t$.
+
+\smallskip
+$x(0)=A=0$. $x'(t)=-3A\sin3t+3B\cos3t$, donc $x'(0)=3B=6\iff B=2$.
+
+\smallskip
+\textbf{Conclusion} : $x(t)=2\sin3t$. \textbf{Période} : $T=\frac{2\pi}{3}$ s. \textbf{Amplitude} : $R=\sqrt{A^2+B^2}=2$ m.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Résoudre $y'=ay$ & Solution : $y(x)=Ce^{ax}$. \\
+Résoudre $y'=ay+b$ & Solution constante $\ell=-\frac ba$, puis $y(x)=Ce^{ax}+\ell$, puis déterminer $C$. \\
+\rowcolor{tealpale} Résoudre $y''+\omega^2y=0$ & $y(x)=A\cos(\omega x)+B\sin(\omega x)$, deux conditions initiales pour $A$ et $B$. \\
+Vérifier qu'une fonction est solution & Substituer $y$, $y'$ (et $y''$ si second ordre) dans l'équation, vérifier l'égalité. \\
+\rowcolor{tealpale} Modélisation (refroidissement, radioactivité) & Identifier $a$ et $b$ dans l'équation donnée, appliquer la méthode standard. \\
+Étudier la fonction solution obtenue & Une fois $y(x)$ explicité, dérivée, signe, limites classiques. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier le signe « $-$ » dans $\ell=-\frac ba$ (erreur de signe fréquente).
+  \item Confondre l'équation $y'=ay+b$ avec sa forme « à l'envers » $y'-ay=b$ : bien identifier $a$ et $b$ en isolant $y'$.
+  \item Pour le second ordre : n'utiliser qu'une seule condition initiale (il en faut \textbf{deux}, typiquement $y(0)$ et $y'(0)$).
+  \item Oublier de vérifier une solution trouvée en la réinjectant dans l'équation de départ.
+  \item Confondre pulsation $\omega$ et période $T$ : $T=\frac{2\pi}{\omega}$ (pas l'inverse).
+  \item Dans une modélisation physique, mal identifier la constante $\ell$ avec la grandeur physique attendue (ex. température ambiante, valeur d'équilibre).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $y'=ay$ \ $\Rightarrow$ \ $y=Ce^{ax}$ (démontré via $z=ye^{-ax}$ constante).
+  \item $y'=ay+b$ \ $\Rightarrow$ \ $y=Ce^{ax}-\frac ba$ (solution d'équilibre $+$ homogène).
+  \item $y''+\omega^2y=0$ \ $\Rightarrow$ \ $y=A\cos\omega x+B\sin\omega x=R\cos(\omega x-\varphi)$.
+  \item Une condition initiale fixe $C$ (1\up{er} ordre) ; il en faut \textbf{deux} pour le 2\up{nd} ordre.
+  \item Toujours vérifier la solution en la réinjectant dans l'équation de départ.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

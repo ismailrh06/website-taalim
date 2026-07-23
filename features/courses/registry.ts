@@ -3,9 +3,20 @@
 
 import type { Course } from "./types";
 import { COURS_SUITES_NUMERIQUES } from "./suites-numeriques";
+import { COURS_LIMITES_CONTINUITE_SM } from "./sm2-limites-continuite";
+import { COURS_DERIVATION_SM } from "./sm2-derivation";
+import { COURS_LOGARITHME_SM } from "./sm2-logarithme";
+import { COURS_EXPONENTIELLE_SM } from "./sm2-exponentielle";
 import { PROVISIONAL_COURSES } from "./provisional-courses";
 
-export const COURSES: Course[] = [COURS_SUITES_NUMERIQUES, ...PROVISIONAL_COURSES];
+export const COURSES: Course[] = [
+  COURS_LIMITES_CONTINUITE_SM,
+  COURS_DERIVATION_SM,
+  COURS_SUITES_NUMERIQUES,
+  COURS_LOGARITHME_SM,
+  COURS_EXPONENTIELLE_SM,
+  ...PROVISIONAL_COURSES,
+];
 
 export function getCourse(slug: string): Course | undefined {
   return COURSES.find((c) => c.slug === slug);

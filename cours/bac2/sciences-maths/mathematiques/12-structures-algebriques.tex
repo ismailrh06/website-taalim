@@ -1,0 +1,483 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Structures algébriques
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Structures algébriques}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Définir une loi de composition interne et étudier ses propriétés : associativité, commutativité, élément neutre, symétrique.
+  \item Reconnaître et démontrer qu'un ensemble muni d'une loi est un groupe, et manipuler les groupes usuels.
+  \item Étudier la structure d'anneau et de corps, et connaître les exemples fondamentaux ($\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, $\mathbb{C}$, $\mathbb{Z}/n\mathbb{Z}$).
+  \item Démontrer que $(\mathbb{Z}/n\mathbb{Z},+,\times)$ est un anneau, et un corps si et seulement si $n$ est premier.
+  \item Démontrer les propriétés d'un sous-groupe à l'aide de caractérisations pratiques.
+  \item Définir un morphisme de groupes, démontrer ses propriétés élémentaires, et caractériser son injectivité par le noyau.
+  \item Résoudre les exercices type examen national : tables de lois, vérification d'axiomes, morphismes simples.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Lois de composition interne}
+
+\begin{definition}[Loi de composition interne]
+Soit $E$ un ensemble non vide. Une \textbf{loi de composition interne} sur $E$ est une application $*:E\times E\to E$, qui à $(x,y)$ associe $x*y\in E$. « Interne » signifie que le résultat reste dans $E$.
+\end{definition}
+
+\begin{definition}[Propriétés d'une loi]
+Soit $*$ une loi sur $E$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $*$ est \textbf{associative} si $(\forall x,y,z\in E)\ (x*y)*z=x*(y*z)$.
+  \item $*$ est \textbf{commutative} si $(\forall x,y\in E)\ x*y=y*x$.
+  \item $e\in E$ est \textbf{élément neutre} pour $*$ si $(\forall x\in E)\ x*e=e*x=x$.
+  \item Si $*$ admet un neutre $e$, $x'\in E$ est \textbf{symétrique} de $x$ si $x*x'=x'*x=e$.
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Unicité du neutre et du symétrique]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $*$ admet un élément neutre, il est \textbf{unique}.
+  \item Si $*$ est associative et admet un neutre, le symétrique d'un élément, s'il existe, est \textbf{unique}.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+\emph{Unicité du neutre} : soient $e,e'$ deux neutres. Alors $e*e'=e$ (car $e'$ neutre) et $e*e'=e'$ (car $e$ neutre) : donc $e=e'$.
+
+\smallskip
+\emph{Unicité du symétrique} : soient $x',x''$ deux symétriques de $x$. Alors
+\[
+  x' = x'*e = x'*(x*x'') = (x'*x)*x'' = e*x'' = x''
+\]
+(en utilisant l'associativité et les définitions de $x'$, $x''$ comme symétriques).
+\end{demo}
+
+\begin{exemple}[Étude d'une loi non usuelle]
+Sur $E=\mathbb{R}$, on définit $x*y=x+y-1$. Étudions cette loi.
+
+\smallskip
+\emph{Interne} : $x*y\in\mathbb{R}$ pour tous $x,y\in\mathbb{R}$. $\checkmark$
+
+\smallskip
+\emph{Commutative} : $x*y=x+y-1=y+x-1=y*x$. $\checkmark$
+
+\smallskip
+\emph{Associative} : $(x*y)*z=(x+y-1)*z=(x+y-1)+z-1=x+y+z-2$ ; $x*(y*z)=x+(y+z-1)-1=x+y+z-2$. Égaux. $\checkmark$
+
+\smallskip
+\emph{Neutre} : cherchons $e$ tel que $x*e=x$ pour tout $x$ : $x+e-1=x\iff e=1$. Le neutre est $e=1$.
+
+\smallskip
+\emph{Symétrique} : pour $x$ fixé, cherchons $x'$ tel que $x*x'=1$ : $x+x'-1=1\iff x'=2-x$. Tout élément admet un symétrique.
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Structure de groupe}
+
+\begin{definition}[Groupe]
+$(G,*)$ est un \textbf{groupe} lorsque :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item $*$ est une loi de composition interne sur $G$ ;
+  \item $*$ est \textbf{associative} ;
+  \item $*$ admet un \textbf{élément neutre} $e$ dans $G$ ;
+  \item tout élément de $G$ admet un \textbf{symétrique} dans $G$ pour $*$.
+\end{enumerate}
+Si de plus $*$ est \textbf{commutative}, $(G,*)$ est un \textbf{groupe commutatif} (ou abélien).
+\end{definition}
+
+\begin{exemple}[Groupes usuels]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $(\mathbb{Z},+)$, $(\mathbb{Q},+)$, $(\mathbb{R},+)$, $(\mathbb{C},+)$ sont des groupes commutatifs (neutre $0$, symétrique de $x$ : $-x$).
+  \item $(\mathbb{Q}^*,\times)$, $(\mathbb{R}^*,\times)$, $(\mathbb{C}^*,\times)$ sont des groupes commutatifs (neutre $1$, symétrique de $x$ : $\frac1x$).
+  \item $(\mathbb{N},+)$ \textbf{n'est pas} un groupe : les éléments non nuls n'ont pas de symétrique dans $\mathbb{N}$ (ex. $3$ n'a pas d'opposé dans $\mathbb{N}$).
+  \item $(\mathbb{Z},\times)$ \textbf{n'est pas} un groupe : $2$ n'a pas d'inverse dans $\mathbb{Z}$ ($\frac12\notin\mathbb{Z}$).
+\end{itemize}
+\end{exemple}
+
+\begin{propriete}[Simplification dans un groupe]
+Dans un groupe $(G,*)$, pour $a,b,c\in G$ :
+\[
+  a*b=a*c \implies b=c \qquad \text{(et de même } b*a=c*a\implies b=c\text{)}.
+\]
+\end{propriete}
+
+\begin{demo}
+En composant à gauche par le symétrique $a'$ de $a$ : $a'*(a*b)=a'*(a*c)$, soit par associativité $(a'*a)*b=(a'*a)*c$, c'est-à-dire $e*b=e*c$, donc $b=c$.
+\end{demo}
+
+\begin{definition}[Sous-groupe]
+Soit $(G,*)$ un groupe et $H\subset G$, $H\ne\varnothing$. $H$ est un \textbf{sous-groupe} de $G$ lorsque $(H,*)$ est lui-même un groupe.
+\end{definition}
+
+\begin{propriete}[Caractérisation pratique d'un sous-groupe]
+$H\subset G$, $H\ne\varnothing$, est un sous-groupe de $(G,*)$ si et seulement si :
+\[
+  (\forall x,y\in H)\quad x*y'\in H
+\]
+où $y'$ désigne le symétrique de $y$ dans $G$ (formulation additive : $x-y\in H$).
+\end{propriete}
+
+\begin{exemple}[Exemple de sous-groupe]
+Montrons que $2\mathbb{Z}=\{2k : k\in\mathbb{Z}\}$ est un sous-groupe de $(\mathbb{Z},+)$.
+
+\smallskip
+$2\mathbb{Z}\ne\varnothing$ ($0\in2\mathbb{Z}$). Soient $x=2k$, $y=2k'\in2\mathbb{Z}$ : $x-y=2(k-k')\in2\mathbb{Z}$. Donc $2\mathbb{Z}$ est un sous-groupe de $(\mathbb{Z},+)$.
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Morphismes de groupes}
+
+\begin{definition}[Morphisme de groupes]
+Soient $(G,*)$ et $(G',\top)$ deux groupes. Une application $f:G\to G'$ est un \textbf{morphisme de groupes} (ou homomorphisme) lorsque
+\[
+  (\forall x,y\in G)\quad f(x*y) = f(x)\top f(y).
+\]
+Un morphisme \textbf{bijectif} est appelé \textbf{isomorphisme} ; un morphisme de $G$ dans lui-même est un \textbf{endomorphisme}.
+\end{definition}
+
+\begin{propriete}[Propriétés élémentaires]
+Soit $f:(G,*)\to(G',\top)$ un morphisme de groupes, de neutres respectifs $e$ et $e'$. Alors :
+\[
+  f(e) = e', \qquad (\forall x\in G)\ f(x^{-1}) = \bigl(f(x)\bigr)^{-1},
+\]
+où $x^{-1}$ désigne le symétrique de $x$ dans $(G,*)$.
+\end{propriete}
+
+\begin{demo}
+$f(e)=f(e*e)=f(e)\top f(e)$. En composant à gauche par le symétrique de $f(e)$ dans $G'$ (règle de simplification dans un groupe, vue en section 2) : $e'=f(e)$.
+
+\smallskip
+Ensuite, $f(x)\top f(x^{-1}) = f(x*x^{-1}) = f(e) = e'$, donc $f(x^{-1})$ est bien le symétrique de $f(x)$ dans $G'$, c'est-à-dire $f(x^{-1})=\bigl(f(x)\bigr)^{-1}$.
+\end{demo}
+
+\begin{definition}[Noyau et image]
+Le \textbf{noyau} de $f$ est $\ker f=\{x\in G : f(x)=e'\}$ ; l'\textbf{image} de $f$ est $\operatorname{Im}f=\{f(x) : x\in G\}$.
+\end{definition}
+
+\begin{propriete}[Caractérisation de l'injectivité, sous-groupes associés]
+$\ker f$ est un sous-groupe de $(G,*)$, $\operatorname{Im}f$ est un sous-groupe de $(G',\top)$, et
+\[
+  f \text{ est injectif} \iff \ker f=\{e\}.
+\]
+\end{propriete}
+
+\begin{demo}
+($\Rightarrow$) Si $f$ injectif et $x\in\ker f$ : $f(x)=e'=f(e)$, donc $x=e$ par injectivité : $\ker f=\{e\}$.
+
+\smallskip
+($\Leftarrow$) Si $\ker f=\{e\}$ et $f(x)=f(y)$ : alors $f(x)\top\bigl(f(y)\bigr)^{-1}=e'$, soit $f(x)\top f(y^{-1})=e'$, c'est-à-dire $f(x*y^{-1})=e'$ : donc $x*y^{-1}\in\ker f=\{e\}$, soit $x*y^{-1}=e$, d'où $x=y$.
+\end{demo}
+
+\begin{exemple}[Morphisme classique]
+L'application $\exp:(\mathbb{R},+)\to(\mathbb{R}_+^*,\times)$, $x\mapsto e^x$, est un morphisme de groupes : $\exp(x+y)=e^{x+y}=e^xe^y=\exp(x)\times\exp(y)$. C'est même un \textbf{isomorphisme} (bijection de $\mathbb{R}$ sur $\mathbb{R}_+^*$, vue au chapitre sur la fonction exponentielle) : $\ker(\exp)=\{0\}$, cohérent avec l'injectivité de $\exp$.
+\end{exemple}
+
+\begin{exemple}[Le module comme morphisme]
+L'application $|\cdot|:(\mathbb{C}^*,\times)\to(\mathbb{R}_+^*,\times)$, $z\mapsto|z|$, est un morphisme de groupes : $|zz'|=|z||z'|$ (propriété démontrée au chapitre sur les nombres complexes). Ce morphisme n'est \textbf{pas} injectif : $\ker(|\cdot|)=\{z\in\mathbb{C}^* : |z|=1\}=\mathbb{U}$, le sous-groupe des complexes de module $1$ (déjà rencontré comme exemple de sous-groupe de $(\mathbb{C}^*,\times)$).
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Structures d'anneau et de corps}
+
+\begin{definition}[Anneau]
+$(A,+,\times)$ est un \textbf{anneau} lorsque :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item $(A,+)$ est un \textbf{groupe commutatif} (neutre noté $0_A$) ;
+  \item $\times$ est \textbf{associative} et possède un élément \textbf{neutre} $1_A$ ;
+  \item $\times$ est \textbf{distributive} par rapport à $+$ : $x\times(y+z)=x\times y+x\times z$ et $(y+z)\times x=y\times x+z\times x$.
+\end{enumerate}
+Si de plus $\times$ est commutative, $A$ est un \textbf{anneau commutatif}.
+\end{definition}
+
+\begin{exemple}[Anneaux usuels]
+$(\mathbb{Z},+,\times)$, $(\mathbb{Q},+,\times)$, $(\mathbb{R},+,\times)$, $(\mathbb{C},+,\times)$ sont des anneaux commutatifs.
+\end{exemple}
+
+\begin{definition}[Corps]
+$(K,+,\times)$ est un \textbf{corps} lorsque $(K,+,\times)$ est un anneau \textbf{commutatif}, avec $0_K\ne1_K$, et tel que tout élément \textbf{non nul} admette un symétrique pour $\times$ (c'est-à-dire $(K^*,\times)$ est un groupe).
+\end{definition}
+
+\begin{exemple}[Corps et non-corps]
+$(\mathbb{Q},+,\times)$, $(\mathbb{R},+,\times)$, $(\mathbb{C},+,\times)$ sont des \textbf{corps}. En revanche $(\mathbb{Z},+,\times)$ \textbf{n'est pas} un corps : $2\in\mathbb{Z}^*$ n'a pas d'inverse dans $\mathbb{Z}$ pour $\times$.
+\end{exemple}
+
+\begin{propriete}[La structure $(\mathbb{Z}/n\mathbb{Z},+,\times)$ -- lien avec l'arithmétique]
+Munissons $\mathbb{Z}/n\mathbb{Z}=\{\overline0,\overline1,\ldots,\overline{n-1}\}$ (les classes de congruence modulo $n$, chapitre précédent) des opérations $\overline a+\overline b=\overline{a+b}$ et $\overline a\times\overline b=\overline{a\times b}$ (bien définies grâce à la compatibilité des congruences avec $+$ et $\times$). Alors :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $(\mathbb{Z}/n\mathbb{Z},+,\times)$ est toujours un \textbf{anneau commutatif}, quel que soit $n\geq2$.
+  \item C'est un \textbf{corps} si et seulement si $n$ est \textbf{premier}.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+\emph{Anneau} : $(\mathbb{Z}/n\mathbb{Z},+)$ est un groupe commutatif (neutre $\overline0$, symétrique de $\overline a$ : $\overline{-a}$) ; $\times$ est associative, commutative, de neutre $\overline1$, et distributive par rapport à $+$ (ces propriétés se transmettent directement de $(\mathbb{Z},+,\times)$ via le passage aux classes).
+
+\smallskip
+\emph{Corps si $n$ premier} : si $n=p$ premier, soit $\overline a\ne\overline0$, c'est-à-dire $p\nmid a$, donc $a\wedge p=1$ (car $p$ premier). Par Bézout, il existe $u,v$ tels que $au+pv=1$, soit $au\equiv1\,[p]$ : $\overline u$ est l'inverse de $\overline a$. Donc tout élément non nul est inversible : $\mathbb{Z}/p\mathbb{Z}$ est un corps.
+
+\smallskip
+\emph{Pas un corps si $n$ n'est pas premier} : si $n=ab$ avec $1<a,b<n$, alors $\overline a\times\overline b=\overline{ab}=\overline n=\overline0$, avec $\overline a\ne\overline0$ et $\overline b\ne\overline0$ : $\overline a$ n'est pas inversible (un élément inversible ne peut pas être facteur de $\overline0$ avec un facteur non nul), donc $\mathbb{Z}/n\mathbb{Z}$ n'est pas un corps.
+\end{demo}
+
+\begin{exemple}[Calcul dans $\mathbb{Z}/6\mathbb{Z}$ et $\mathbb{Z}/5\mathbb{Z}$]
+Dans $\mathbb{Z}/6\mathbb{Z}$ : $\overline2\times\overline3=\overline6=\overline0$, alors que $\overline2\ne\overline0$ et $\overline3\ne\overline0$ : $\mathbb{Z}/6\mathbb{Z}$ n'est pas un corps ($6=2\times3$ n'est pas premier).
+
+\smallskip
+Dans $\mathbb{Z}/5\mathbb{Z}$ (5 premier) : cherchons l'inverse de $\overline3$. Par Bézout, $3\times2-5\times1=1$, donc $\overline3\times\overline2=\overline1$ : l'inverse de $\overline3$ est $\overline2$.
+\end{exemple}
+
+\begin{remarque}[Hiérarchie des structures]
+Un corps est un anneau (commutatif, avec en plus l'inversibilité des éléments non nuls) ; un anneau contient un groupe commutatif $(A,+)$. La hiérarchie est : \textbf{groupe} $\subset$ \textbf{anneau} $\subset$ \textbf{corps} (au sens où chaque structure ajoute des axiomes).
+\end{remarque}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- vérification complète d'une structure de groupe]
+Sur $\mathbb{R}$, on définit $x*y=x+y+xy$. Montrer que $(\mathbb{R}\setminus\{-1\},*)$ est un groupe commutatif.
+
+\smallskip
+\textbf{Corrigé.} \emph{Interne} : pour $x,y\ne-1$, montrons $x*y\ne-1$. Supposons $x*y=-1$ : $x+y+xy=-1\iff(x+1)(y+1)=0$ (développement : $xy+x+y+1=(x+1)(y+1)$), ce qui contredit $x,y\ne-1$. Donc $x*y\ne-1$ : la loi est bien interne sur $\mathbb{R}\setminus\{-1\}$.
+
+\smallskip
+\emph{Commutative} : $x*y=x+y+xy=y+x+yx=y*x$. $\checkmark$
+
+\smallskip
+\emph{Associative} : $(x*y)*z=(x+y+xy)+z+(x+y+xy)z=x+y+z+xy+xz+yz+xyz$ ; par symétrie du calcul, $x*(y*z)$ donne la même expression. $\checkmark$ (admis par symétrie de l'expression développée).
+
+\smallskip
+\emph{Neutre} : $x*e=x\iff x+e+xe=x\iff e(1+x)=0$. Comme $x\ne-1$, on a $e=0$. Vérification : $0\in\mathbb{R}\setminus\{-1\}$. $\checkmark$
+
+\smallskip
+\emph{Symétrique} : $x*x'=0\iff x+x'+xx'=0\iff x'(1+x)=-x\iff x'=\dfrac{-x}{1+x}$ (licite car $x\ne-1$). Vérifions $x'\ne-1$ : $\frac{-x}{1+x}=-1\iff-x=-1-x\iff0=-1$, faux : donc $x'\ne-1$ toujours.
+
+\smallskip
+\textbf{Conclusion} : $(\mathbb{R}\setminus\{-1\},*)$ est un groupe commutatif, de neutre $0$ et de symétrique $x'=\dfrac{-x}{1+x}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- sous-groupe des racines de l'unité]
+Montrer que l'ensemble $\mathbb{U}=\{z\in\mathbb{C} : |z|=1\}$ est un sous-groupe de $(\mathbb{C}^*,\times)$.
+
+\smallskip
+\textbf{Corrigé.} $\mathbb{U}\ne\varnothing$ ($1\in\mathbb{U}$). Soient $z,z'\in\mathbb{U}$ : montrons $z\times\dfrac1{z'}\in\mathbb{U}$.
+\[
+  \left|\frac{z}{z'}\right| = \frac{|z|}{|z'|} = \frac11 = 1.
+\]
+Donc $\dfrac{z}{z'}\in\mathbb{U}$ : $\mathbb{U}$ est un sous-groupe de $(\mathbb{C}^*,\times)$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- table de loi sur un ensemble fini]
+Sur $E=\{1,-1,i,-i\}\subset\mathbb{C}$, on considère la multiplication usuelle des complexes. Dresser la table et vérifier que $(E,\times)$ est un groupe.
+
+\smallskip
+\textbf{Corrigé.}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c|cccc}
+$\times$ & $1$ & $-1$ & $i$ & $-i$ \\ \hline
+$1$ & $1$ & $-1$ & $i$ & $-i$ \\
+$-1$ & $-1$ & $1$ & $-i$ & $i$ \\
+$i$ & $i$ & $-i$ & $-1$ & $1$ \\
+$-i$ & $-i$ & $i$ & $1$ & $-1$ \\
+\end{tabular}
+\end{center}
+La table montre que le produit de deux éléments de $E$ reste dans $E$ (loi interne). Le neutre est $1$ (colonne/ligne identité). Chaque ligne contient $1$ : chaque élément a un symétrique ($1$ et $-1$ sont leur propre symétrique, $i$ et $-i$ sont symétriques l'un de l'autre). L'associativité vient de celle de $\times$ dans $\mathbb{C}$. Donc $(E,\times)$ est un groupe (commutatif, car la table est symétrique par rapport à la diagonale).
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- morphisme, noyau et injectivité]
+On munit $\mathbb{R}$ de $+$ et $\mathbb{U}=\{z\in\mathbb{C}:|z|=1\}$ de $\times$ (groupe, cf. exercice 2). Soit $f:(\mathbb{R},+)\to(\mathbb{U},\times)$ définie par $f(\theta)=e^{i\theta}$. Montrer que $f$ est un morphisme de groupes, déterminer $\ker f$, et dire si $f$ est injectif.
+
+\smallskip
+\textbf{Corrigé.} \emph{Morphisme} : pour $\theta,\theta'\in\mathbb{R}$, $f(\theta+\theta')=e^{i(\theta+\theta')}=e^{i\theta}e^{i\theta'}=f(\theta)\times f(\theta')$. $\checkmark$
+
+\smallskip
+\emph{Noyau} : $\ker f=\{\theta\in\mathbb{R} : e^{i\theta}=1\}=\{\theta\in\mathbb{R} : \theta\equiv0\ [2\pi]\}=2\pi\mathbb{Z}$.
+
+\smallskip
+\emph{Injectivité} : $\ker f\ne\{0\}$ (par exemple $2\pi\in\ker f$), donc d'après la caractérisation de l'injectivité, $f$ \textbf{n'est pas injectif} (cohérent : $f(0)=f(2\pi)=1$).
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Montrer qu'une loi est interne & Vérifier que le résultat de l'opération reste dans l'ensemble de départ. \\
+Trouver le neutre d'une loi & Résoudre $x*e=x$ (l'équation doit être vraie pour tout $x$, donc $e$ ne doit pas dépendre de $x$). \\
+\rowcolor{tealpale} Trouver le symétrique de $x$ & Résoudre $x*x'=e$ d'inconnue $x'$. \\
+Montrer que $(G,*)$ est un groupe & Vérifier dans l'ordre : loi interne, associativité, neutre, symétrique de chaque élément. \\
+\rowcolor{tealpale} Montrer que $H$ est un sous-groupe de $G$ & $H\ne\varnothing$, puis $\forall x,y\in H,\ x*y'\in H$ (caractérisation pratique). \\
+Montrer que $(K,+,\times)$ est un corps & Groupe commutatif pour $+$, anneau pour $\times$ avec neutre, tout élément non nul inversible. \\
+\rowcolor{tealpale} Montrer que $f$ est un morphisme de groupes & Vérifier $f(x*y)=f(x)\top f(y)$ pour tous $x,y$. \\
+Étudier l'injectivité de $f$ (morphisme) & Calculer $\ker f$ ; injectif $\iff\ker f=\{e\}$. \\
+\rowcolor{tealpale} Montrer que $\mathbb{Z}/n\mathbb{Z}$ est un corps & Vérifier que $n$ est \textbf{premier} (sinon, chercher deux facteurs non nuls de produit $\overline0$). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier de vérifier que la loi est \textbf{interne} avant toute autre propriété (souvent l'étape la plus délicate).
+  \item Confondre \textbf{neutre} (élément qui laisse invariant) et \textbf{symétrique} (élément qui « annule » un autre).
+  \item Oublier de vérifier que le neutre trouvé appartient bien à l'ensemble considéré (piège classique dans les exercices avec ensemble restreint, ex. $\mathbb{R}\setminus\{-1\}$).
+  \item Se contenter de vérifier l'associativité sur un exemple numérique au lieu de la démontrer en toute généralité.
+  \item Oublier qu'un anneau n'est \textbf{pas} nécessairement un corps ($\mathbb{Z}$ est un anneau, pas un corps).
+  \item Pour un sous-groupe : oublier de vérifier $H\ne\varnothing$ avant d'appliquer la caractérisation pratique.
+  \item Pour un morphisme : oublier de préciser les \textbf{deux} lois utilisées ($*$ dans $G$, $\top$ dans $G'$), ou confondre $\ker f$ (sous-ensemble de $G$) et $\operatorname{Im}f$ (sous-ensemble de $G'$).
+  \item Conclure à l'injectivité d'un morphisme sans avoir calculé $\ker f$ dans son intégralité.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Loi interne : associativité, commutativité, neutre (unique), symétrique (unique si associative).
+  \item Groupe : loi interne + associative + neutre + tout élément symétrisable ; commutatif si en plus $x*y=y*x$.
+  \item Sous-groupe : $H\ne\varnothing$ et $\forall x,y\in H,\ x*y'\in H$.
+  \item Morphisme $f:(G,*)\to(G',\top)$ : $f(x*y)=f(x)\top f(y)$ ; alors $f(e)=e'$, $f(x^{-1})=f(x)^{-1}$ ; injectif $\iff\ker f=\{e\}$.
+  \item Anneau : $(A,+)$ groupe commutatif, $\times$ associative avec neutre, distributivité.
+  \item Corps : anneau commutatif où tout élément non nul est inversible pour $\times$.
+  \item Exemples clés : $(\mathbb{Z},+)$, $(\mathbb{R}^*,\times)$ groupes ; $\mathbb{Z}$ anneau non corps ; $\mathbb{Q},\mathbb{R},\mathbb{C}$ corps.
+  \item $(\mathbb{Z}/n\mathbb{Z},+,\times)$ : toujours anneau commutatif ; \textbf{corps} $\iff n$ \textbf{premier} (sinon diviseurs de zéro non inversibles).
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

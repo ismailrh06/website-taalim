@@ -1,0 +1,881 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Limites et continuité
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Niveau renforcé SM : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Limites et continuité}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\newcommand{\E}{\mathrm{E}}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Manipuler la définition formelle (en $\varepsilon$) de la limite et l'utiliser dans des démonstrations simples.
+  \item Calculer des limites en levant les formes indéterminées (terme dominant, conjugué, limites trigonométriques, encadrement avec la partie entière).
+  \item Étudier la continuité en un point, sur un intervalle, et construire un prolongement par continuité.
+  \item Exploiter le lien entre suites et continuité, notamment pour les suites récurrentes $u_{n+1} = f(u_n)$.
+  \item Démontrer l'existence et l'unicité de solutions d'équations par le théorème des valeurs intermédiaires, et encadrer une solution par dichotomie avec une précision donnée.
+  \item Appliquer le théorème de la bijection, étudier une fonction réciproque, et maîtriser la fonction racine $n$-ième et les puissances rationnelles.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{La notion de limite : définitions formelles}
+
+\subsection{Limite finie en un point}
+
+\begin{definition}[Limite finie en un point (définition en $\varepsilon$)]
+Soit $f$ une fonction définie sur un intervalle ouvert contenant $a$, sauf peut-être en $a$, et soit $\ell \in \mathbb{R}$. On dit que $f$ \textbf{admet $\ell$ pour limite en $a$}, et on écrit $\lim\limits_{x \to a} f(x) = \ell$, lorsque :
+\[
+  (\forall \varepsilon > 0)\ (\exists \alpha > 0)\ (\forall x \in D_f)\quad
+  0 < |x - a| < \alpha \implies |f(x) - \ell| < \varepsilon.
+\]
+Autrement dit : on peut rendre $f(x)$ aussi proche de $\ell$ que l'on veut, à condition de prendre $x$ suffisamment proche de $a$.
+\end{definition}
+
+\begin{propriete}[Unicité de la limite]
+Si $f$ admet une limite en $a$, cette limite est \textbf{unique}.
+\end{propriete}
+
+\begin{demo}
+Supposons que $f$ admette deux limites $\ell \neq \ell'$ en $a$, et posons $\varepsilon = \frac{|\ell - \ell'|}{2} > 0$. Il existe $\alpha_1 > 0$ tel que $0 < |x - a| < \alpha_1 \Rightarrow |f(x) - \ell| < \varepsilon$, et $\alpha_2 > 0$ tel que $0 < |x - a| < \alpha_2 \Rightarrow |f(x) - \ell'| < \varepsilon$. Pour $0 < |x - a| < \min(\alpha_1, \alpha_2)$, l'inégalité triangulaire donne
+\[
+  |\ell - \ell'| \leq |\ell - f(x)| + |f(x) - \ell'| < 2\varepsilon = |\ell - \ell'|,
+\]
+ce qui est absurde. Donc $\ell = \ell'$.
+\end{demo}
+
+\begin{exemple}[Utiliser la définition en $\varepsilon$]
+Montrons avec la définition que $\lim\limits_{x \to 2} (3x - 1) = 5$.
+
+\smallskip
+Soit $\varepsilon > 0$. On a $|(3x - 1) - 5| = |3x - 6| = 3|x - 2|$. Ainsi, en choisissant $\alpha = \dfrac{\varepsilon}{3}$ :
+\[
+  0 < |x - 2| < \alpha \implies |(3x - 1) - 5| = 3|x - 2| < 3\alpha = \varepsilon.
+\]
+La définition est vérifiée : $\lim\limits_{x \to 2}(3x - 1) = 5$.
+\end{exemple}
+
+\subsection{Limites infinies, limites en l'infini, limites à droite et à gauche}
+
+\begin{definition}[Limites infinies et limites en l'infini]
+Avec les mêmes conventions :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $\lim\limits_{x \to a} f(x) = +\infty$ lorsque : $(\forall A > 0)(\exists \alpha > 0)$ : $0 < |x - a| < \alpha \implies f(x) > A$.
+  \item $\lim\limits_{x \to +\infty} f(x) = \ell$ lorsque : $(\forall \varepsilon > 0)(\exists B > 0)$ : $x > B \implies |f(x) - \ell| < \varepsilon$.
+  \item $\lim\limits_{x \to +\infty} f(x) = +\infty$ lorsque : $(\forall A > 0)(\exists B > 0)$ : $x > B \implies f(x) > A$.
+\end{itemize}
+Les définitions en $-\infty$ et pour $-\infty$ s'écrivent de façon analogue.
+\end{definition}
+
+\begin{definition}[Limites à droite et à gauche]
+$\lim\limits_{x \to a^+} f(x) = \ell$ (limite \textbf{à droite}) lorsque la condition de la définition est exigée seulement pour $a < x < a + \alpha$ ; de même à gauche avec $a - \alpha < x < a$.
+\[
+  \lim_{x \to a} f(x) = \ell
+  \iff
+  \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = \ell.
+\]
+\end{definition}
+
+\begin{exemple}[Limites latérales distinctes]
+Soit $f(x) = \dfrac{|x - 1|}{x - 1}$ pour $x \neq 1$. Pour $x > 1$, $f(x) = 1$ ; pour $x < 1$, $f(x) = -1$. Donc
+\[
+  \lim_{x \to 1^+} f(x) = 1 \neq -1 = \lim_{x \to 1^-} f(x) :
+\]
+$f$ n'admet pas de limite en $1$.
+\end{exemple}
+
+\begin{remarque}[La fonction partie entière]
+La fonction \textbf{partie entière} $\E$ associe à $x$ l'unique entier $\E(x)$ tel que $\E(x) \leq x < \E(x) + 1$. En tout point entier $n$, elle vérifie $\lim\limits_{x \to n^-} \E(x) = n - 1$ et $\lim\limits_{x \to n^+} \E(x) = n$ : elle n'a pas de limite en $n$ (et n'y est pas continue). L'encadrement fondamental $x - 1 < \E(x) \leq x$ est l'outil clé pour toutes les limites faisant intervenir $\E$.
+\end{remarque}
+
+% ------------------- SECTION 2 -------------------
+\section{Calcul des limites : opérations, ordre, composition}
+
+\subsection{Opérations et composition}
+
+\begin{propriete}[Opérations sur les limites]
+Si $\lim f = \ell$ et $\lim g = \ell'$ (limites finies, au même endroit), alors :
+\[
+  \lim (f + g) = \ell + \ell', \qquad
+  \lim (fg) = \ell\,\ell', \qquad
+  \lim \frac{f}{g} = \frac{\ell}{\ell'} \ (\ell' \neq 0),
+\]
+\[
+  \lim |f| = |\ell|, \qquad
+  \lim \sqrt{f} = \sqrt{\ell} \ (\ell \geq 0).
+\]
+Les règles s'étendent aux limites infinies avec les conventions usuelles ($\ell + \infty = \infty$, etc.), \textbf{sauf} pour les quatre \textbf{formes indéterminées} :
+\[
+  \text{« } \infty - \infty \text{ »}, \qquad
+  \text{« } 0 \times \infty \text{ »}, \qquad
+  \text{« } \tfrac{\infty}{\infty} \text{ »}, \qquad
+  \text{« } \tfrac{0}{0} \text{ »}.
+\]
+\end{propriete}
+
+\begin{propriete}[Limite d'une fonction composée]
+Si $\lim\limits_{x \to a} f(x) = b$ et $\lim\limits_{t \to b} g(t) = c$ (où $a$, $b$, $c$ sont finis ou infinis), alors
+\[
+  \lim_{x \to a} (g \circ f)(x) = c.
+\]
+\end{propriete}
+
+\begin{exemple}[Composée]
+Calculons $\displaystyle\lim_{x \to +\infty} \sqrt{\frac{4x^2 + 1}{x^2 + 3}}$.
+
+\smallskip
+D'abord la limite interne (forme $\frac{\infty}{\infty}$, on factorise par $x^2$) :
+\[
+  \frac{4x^2 + 1}{x^2 + 3} = \frac{4 + \frac{1}{x^2}}{1 + \frac{3}{x^2}}
+  \xrightarrow[x \to +\infty]{} 4.
+\]
+Puis, par composition avec $t \mapsto \sqrt{t}$ continue en $4$ : la limite cherchée vaut $\sqrt{4} = 2$.
+\end{exemple}
+
+\subsection{Limites et ordre}
+
+\begin{propriete}[Théorèmes de comparaison et d'encadrement]
+Au voisinage considéré (en $\pm\infty$ ou en un point $a$) :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item si $f \geq g$ et $g \to +\infty$, alors $f \to +\infty$ ; si $f \leq g$ et $g \to -\infty$, alors $f \to -\infty$ ;
+  \item \textbf{(encadrement, « théorème des gendarmes »)} si $g \leq f \leq h$ et si $g$ et $h$ tendent vers la \emph{même} limite finie $\ell$, alors $f \to \ell$ ;
+  \item si $|f - \ell| \leq g$ et $g \to 0$, alors $f \to \ell$ ;
+  \item \textbf{(passage à la limite dans une inégalité)} si $f \leq g$ et si les deux limites existent, alors $\lim f \leq \lim g$.
+\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+Démontrons le point 3 en un point $a$. Soit $\varepsilon > 0$. Comme $g \to 0$, il existe $\alpha > 0$ tel que $0 < |x - a| < \alpha \Rightarrow |g(x)| < \varepsilon$. Pour ces $x$ :
+\[
+  |f(x) - \ell| \leq g(x) \leq |g(x)| < \varepsilon,
+\]
+ce qui est exactement la définition de $\lim\limits_{x \to a} f(x) = \ell$. Le point 2 s'en déduit en remarquant que $|f - \ell| \leq \max(|g - \ell|, |h - \ell|) \to 0$.
+\end{demo}
+
+\begin{exemple}[Limite avec la partie entière -- niveau SM]
+Calculons $\displaystyle\lim_{x \to 0^+} x\,\E\!\left(\frac{1}{x}\right)$.
+
+\smallskip
+Pour $x > 0$, l'encadrement $\frac{1}{x} - 1 < \E\!\left(\frac{1}{x}\right) \leq \frac{1}{x}$, multiplié par $x > 0$, donne
+\[
+  1 - x < x\,\E\!\left(\frac{1}{x}\right) \leq 1.
+\]
+Quand $x \to 0^+$, $1 - x \to 1$ : par le théorème des gendarmes,
+$\displaystyle\lim_{x \to 0^+} x\,\E\!\left(\frac{1}{x}\right) = 1$.
+\end{exemple}
+
+\subsection{Limites trigonométriques}
+
+\begin{propriete}[Limites trigonométriques usuelles]
+\[
+  \lim_{x \to 0} \frac{\sin x}{x} = 1, \qquad
+  \lim_{x \to 0} \frac{\tan x}{x} = 1, \qquad
+  \lim_{x \to 0} \frac{1 - \cos x}{x^2} = \frac{1}{2}.
+\]
+\end{propriete}
+
+\begin{demo}
+On admet l'encadrement géométrique classique, valable pour $0 < x < \frac{\pi}{2}$ (comparaison d'aires dans le cercle trigonométrique) : $\sin x < x < \tan x$. En divisant par $\sin x > 0$ : $1 < \frac{x}{\sin x} < \frac{1}{\cos x}$, d'où $\cos x < \frac{\sin x}{x} < 1$. Comme $\cos x \to 1$ en $0$, les gendarmes donnent $\frac{\sin x}{x} \to 1$ (la fonction étant paire, la limite vaut aussi à gauche).
+
+Ensuite $\frac{\tan x}{x} = \frac{\sin x}{x} \cdot \frac{1}{\cos x} \to 1 \times 1 = 1$.
+
+Enfin, avec $1 - \cos x = 2\sin^2\frac{x}{2}$ :
+\[
+  \frac{1 - \cos x}{x^2} = \frac{2\sin^2\frac{x}{2}}{x^2}
+  = \frac{1}{2}\left(\frac{\sin\frac{x}{2}}{\frac{x}{2}}\right)^{\!2}
+  \xrightarrow[x \to 0]{} \frac{1}{2} \times 1^2 = \frac{1}{2}.
+\]
+\end{demo}
+
+\begin{exemple}[Deux calculs types]
+\textbf{a)} $\displaystyle\lim_{x \to 0} \frac{\sin 5x}{\sin 2x}$ : on écrit
+\[
+  \frac{\sin 5x}{\sin 2x}
+  = \frac{\sin 5x}{5x} \cdot \frac{2x}{\sin 2x} \cdot \frac{5}{2}
+  \xrightarrow[x \to 0]{} 1 \times 1 \times \frac{5}{2} = \frac{5}{2}.
+\]
+\textbf{b)} $\displaystyle\lim_{x \to 0} \frac{1 - \cos x}{x \sin x}$ : on écrit
+\[
+  \frac{1 - \cos x}{x \sin x}
+  = \frac{1 - \cos x}{x^2} \cdot \frac{x}{\sin x}
+  \xrightarrow[x \to 0]{} \frac{1}{2} \times 1 = \frac{1}{2}.
+\]
+\end{exemple}
+
+\begin{exemple}[Conjugué + racine]
+Calculons $\displaystyle\lim_{x \to +\infty} \left(\sqrt{x^2 + x} - x\right)$ (forme « $\infty - \infty$ »).
+\[
+  \sqrt{x^2 + x} - x
+  = \frac{(x^2 + x) - x^2}{\sqrt{x^2 + x} + x}
+  = \frac{x}{x\left(\sqrt{1 + \frac{1}{x}} + 1\right)}
+  = \frac{1}{\sqrt{1 + \frac{1}{x}} + 1}
+  \xrightarrow[x \to +\infty]{} \frac{1}{2}.
+\]
+\emph{Attention en $-\infty$} : pour $x < 0$, $\sqrt{x^2} = |x| = -x$ ; toute factorisation sous une racine doit en tenir compte.
+\end{exemple}
+
+\subsection{Lever les formes indéterminées : toutes les méthodes}
+
+\begin{propriete}[Polynômes et fractions rationnelles en l'infini]
+En $+\infty$ et en $-\infty$, un polynôme a la limite de son \textbf{terme de plus haut degré}, et une fraction rationnelle la limite du \textbf{quotient des termes de plus haut degré} :
+\[
+  \lim_{x \to \pm\infty} \bigl(a_n x^n + \cdots + a_0\bigr) = \lim_{x \to \pm\infty} a_n x^n,
+  \qquad
+  \lim_{x \to \pm\infty} \frac{a_n x^n + \cdots}{b_m x^m + \cdots} = \lim_{x \to \pm\infty} \frac{a_n x^n}{b_m x^m}.
+\]
+(Résultat obtenu en factorisant par $x^n$ et $x^m$ ; à \textbf{redémontrer} par factorisation si l'énoncé l'exige.)
+\end{propriete}
+
+\begin{exemple}[Rationnelle en l'infini : les trois cas]
+\textbf{a)} Degrés égaux : $\displaystyle\lim_{x \to +\infty} \frac{2x^2 - 5x + 1}{3x^2 + 4} = \lim_{x \to +\infty}\frac{2x^2}{3x^2} = \frac{2}{3}$.
+
+\smallskip
+\textbf{b)} Degré du haut plus grand : $\displaystyle\lim_{x \to -\infty} \frac{x^3 + 1}{x + 2} = \lim_{x \to -\infty}\frac{x^3}{x} = \lim_{x \to -\infty} x^2 = +\infty$.
+
+\smallskip
+\textbf{c)} Degré du bas plus grand : $\displaystyle\lim_{x \to +\infty} \frac{5x + 3}{x^2 + 1} = \lim_{x \to +\infty}\frac{5x}{x^2} = \lim_{x \to +\infty}\frac{5}{x} = 0$.
+\end{exemple}
+
+\begin{exemple}[Forme $0/0$ rationnelle : factoriser la racine commune]
+Calculons $\displaystyle\lim_{x \to 3} \frac{x^2 - 9}{x^2 - 5x + 6}$ (numérateur et dénominateur s'annulent en $3$).
+\[
+  \frac{x^2 - 9}{x^2 - 5x + 6}
+  = \frac{(x - 3)(x + 3)}{(x - 3)(x - 2)}
+  = \frac{x + 3}{x - 2}
+  \xrightarrow[x \to 3]{} \frac{6}{1} = 6.
+\]
+\emph{Règle} : quand $a$ annule les deux membres d'un quotient de polynômes, $(x - a)$ se factorise en haut et en bas.
+\end{exemple}
+
+\begin{exemple}[En $-\infty$ avec racine : le piège du signe]
+Calculons $\displaystyle\lim_{x \to -\infty} \left(\sqrt{x^2 + 1} + x\right)$ (forme « $\infty - \infty$ » car $\sqrt{x^2+1} \to +\infty$ et $x \to -\infty$).
+
+\smallskip
+Conjugué :
+\[
+  \sqrt{x^2 + 1} + x = \frac{(x^2 + 1) - x^2}{\sqrt{x^2 + 1} - x} = \frac{1}{\sqrt{x^2 + 1} - x}.
+\]
+Quand $x \to -\infty$ : $-x \to +\infty$ et $\sqrt{x^2+1} \to +\infty$, donc le dénominateur tend vers $+\infty$ et la \textbf{limite vaut $0$}.
+
+\smallskip
+\emph{Variante par factorisation} : pour $x < 0$, $\sqrt{x^2 + 1} = |x|\sqrt{1 + \frac{1}{x^2}} = -x\sqrt{1 + \frac{1}{x^2}}$, d'où $\sqrt{x^2+1} + x = -x\left(\sqrt{1 + \frac{1}{x^2}} - 1\right)$ : produit d'un facteur $\to +\infty$ par un facteur $\to 0$, à traiter alors par conjugué. La factorisation avec le \textbf{signe correct} de $|x|$ est le point le plus surveillé par les correcteurs.
+\end{exemple}
+
+\begin{exemple}[Changement de variable]
+Calculons $\displaystyle\lim_{x \to +\infty} x \sin\frac{1}{x}$ (forme « $\infty \times 0$ »).
+
+\smallskip
+Posons $t = \frac{1}{x}$ : quand $x \to +\infty$, $t \to 0^+$, et
+\[
+  x \sin\frac{1}{x} = \frac{\sin t}{t} \xrightarrow[t \to 0^+]{} 1.
+\]
+\end{exemple}
+
+\begin{remarque}[Tableau des réflexes selon la forme rencontrée]
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{6.2cm} >{\raggedright\arraybackslash}p{8.6cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Situation & \color{white}\bfseries Méthode \\
+\rowcolor{tealpale} Polynôme ou rationnelle en $\pm\infty$ & Termes de plus haut degré (factorisation). \\
+« $0/0$ » avec des polynômes & Factoriser la racine commune $(x - a)$. \\
+\rowcolor{tealpale} « $\infty - \infty$ » ou « $0/0$ » avec $\sqrt{\phantom{x}}$ & Expression conjuguée (attention au signe de $|x|$ en $-\infty$). \\
+« $0/0$ » trigonométrique en $0$ & Se ramener à $\frac{\sin X}{X}$, $\frac{\tan X}{X}$, $\frac{1 - \cos X}{X^2}$. \\
+\rowcolor{tealpale} « $0 \times \infty$ » & Réécrire en quotient ou changement de variable $t = \frac{1}{x}$. \\
+Présence de $\E(x)$ & Encadrement $x - 1 < \E(x) \leq x$ puis gendarmes. \\
+\rowcolor{tealpale} Présence de $\cos$, $\sin$ bornés & Encadrer entre $-1$ et $1$ puis gendarmes ou point 3. \\
+Racine $n$-ième en « $0/0$ » & Changement de variable $t = \sqrt[n]{x}$ ou conjugué cubique. \\
+\end{tabular}
+\end{center}
+\end{remarque}
+
+% ------------------- SECTION 3 -------------------
+\section{Continuité en un point et prolongement par continuité}
+
+\begin{definition}[Continuité en un point]
+Soit $f$ définie sur un intervalle ouvert contenant $a$. On dit que $f$ est \textbf{continue en $a$} lorsque $\lim\limits_{x \to a} f(x) = f(a)$, c'est-à-dire :
+\[
+  (\forall \varepsilon > 0)\ (\exists \alpha > 0)\ (\forall x \in D_f)\quad
+  |x - a| < \alpha \implies |f(x) - f(a)| < \varepsilon.
+\]
+$f$ est \textbf{continue à droite} en $a$ si $\lim\limits_{x \to a^+} f(x) = f(a)$, \textbf{continue à gauche} si $\lim\limits_{x \to a^-} f(x) = f(a)$ ; elle est continue en $a$ si et seulement si elle l'est à droite et à gauche.
+\end{definition}
+
+\begin{propriete}[Opérations]
+Si $f$ et $g$ sont continues en $a$, alors $f + g$, $\lambda f$, $fg$, $|f|$ sont continues en $a$ ; $\frac{f}{g}$ l'est si $g(a) \neq 0$ ; $\sqrt{f}$ l'est si $f(a) > 0$ (ou $f \geq 0$ au voisinage). Si $f$ est continue en $a$ et $g$ continue en $f(a)$, alors $g \circ f$ est continue en $a$.
+
+\smallskip
+Conséquences : les polynômes sont continus sur $\mathbb{R}$, les fonctions rationnelles sur leur domaine, $\sin$, $\cos$ sur $\mathbb{R}$, $\tan$ sur son domaine, $x \mapsto \sqrt{x}$ sur $[0\,;+\infty[$.
+\end{propriete}
+
+\begin{definition}[Prolongement par continuité]
+Soit $f$ définie sur un intervalle ouvert contenant $a$, \textbf{sauf en $a$}, telle que $\lim\limits_{x \to a} f(x) = \ell \in \mathbb{R}$. La fonction $\tilde{f}$ définie par
+\[
+  \tilde{f}(x) =
+  \begin{cases}
+    f(x) & \text{si } x \neq a,\\[1mm]
+    \ell & \text{si } x = a,
+  \end{cases}
+\]
+est continue en $a$ : on l'appelle le \textbf{prolongement par continuité} de $f$ en $a$.
+\end{definition}
+
+\begin{exemple}[Construire un prolongement par continuité]
+Soit $f(x) = \dfrac{\sqrt{x + 1} - 1}{x}$, définie sur $]-1\,;0[\ \cup\ ]0\,;+\infty[$. $f$ est-elle prolongeable par continuité en $0$ ?
+
+\smallskip
+Multiplions par le conjugué :
+\[
+  f(x) = \frac{(x + 1) - 1}{x\left(\sqrt{x+1} + 1\right)} = \frac{1}{\sqrt{x + 1} + 1}
+  \xrightarrow[x \to 0]{} \frac{1}{2}.
+\]
+La limite existe et est finie : $f$ est prolongeable par continuité en $0$, avec $\tilde{f}(0) = \frac{1}{2}$.
+\end{exemple}
+
+\begin{exemple}[Continuité d'une fonction définie par morceaux]
+Soit $f(x) = \dfrac{\sin x}{x}$ si $x \neq 0$ et $f(0) = 1$. Comme $\lim\limits_{x \to 0} \frac{\sin x}{x} = 1 = f(0)$, $f$ est continue en $0$ ; ailleurs elle est continue comme quotient de fonctions continues à dénominateur non nul. Conclusion : $f$ est continue sur $\mathbb{R}$.
+\end{exemple}
+
+\begin{exemple}[Déterminer des paramètres pour rendre $f$ continue]
+Soit $f$ définie sur $\mathbb{R}$ par :
+\[
+  f(x) =
+  \begin{cases}
+    x + a & \text{si } x < 0,\\
+    x^2 + 1 & \text{si } 0 \leq x \leq 1,\\
+    bx + 2 & \text{si } x > 1.
+  \end{cases}
+\]
+Déterminons $a$ et $b$ pour que $f$ soit continue sur $\mathbb{R}$.
+
+\smallskip
+Sur chacun des trois intervalles ouverts, $f$ est polynomiale donc continue : seuls les points de raccordement $0$ et $1$ sont à étudier.
+
+\smallskip
+\textbf{En $0$} : $f(0) = 1$ ; $\lim\limits_{x \to 0^-} f(x) = a$ ; $\lim\limits_{x \to 0^+} f(x) = 1$. Continuité en $0$ $\iff a = 1$.
+
+\smallskip
+\textbf{En $1$} : $f(1) = 2$ ; $\lim\limits_{x \to 1^-} f(x) = 2$ ; $\lim\limits_{x \to 1^+} f(x) = b + 2$. Continuité en $1$ $\iff b + 2 = 2 \iff b = 0$.
+
+\smallskip
+\textbf{Conclusion} : $a = 1$ et $b = 0$.
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Suites et continuité}
+
+\begin{propriete}[Image d'une suite convergente]
+Soit $(u_n)$ une suite telle que $u_n \to a$, et $f$ une fonction \textbf{continue en $a$} (avec $u_n \in D_f$). Alors
+\[
+  \lim_{n \to +\infty} f(u_n) = f(a).
+\]
+\end{propriete}
+
+\begin{propriete}[Limite d'une suite récurrente]
+Soit $(u_n)$ définie par $u_{n+1} = f(u_n)$. Si $(u_n)$ \textbf{converge} vers $\ell$ et si $f$ est \textbf{continue en $\ell$}, alors $\ell$ est un \textbf{point fixe} de $f$ :
+\[
+  f(\ell) = \ell.
+\]
+\end{propriete}
+
+\begin{demo}
+Puisque $u_n \to \ell$ et $f$ est continue en $\ell$, on a $f(u_n) \to f(\ell)$. Or $f(u_n) = u_{n+1}$, et la suite $(u_{n+1})$ converge vers la même limite $\ell$ que $(u_n)$. Par unicité de la limite, $f(\ell) = \ell$.
+\end{demo}
+
+\begin{exemple}[Schéma type bac SM]
+Soit $u_0 = 1$ et $u_{n+1} = \sqrt{u_n + 2}$. On suppose démontré (par récurrence) que $0 \leq u_n \leq 2$ et que $(u_n)$ est croissante. Justifions la convergence et déterminons la limite.
+
+\smallskip
+$(u_n)$ est croissante et majorée par $2$ : elle converge vers un réel $\ell \in [0\,;2]$ (théorème de la convergence monotone). La fonction $f(t) = \sqrt{t + 2}$ est continue sur $[0\,;2]$, donc $\ell$ vérifie $\ell = \sqrt{\ell + 2}$, soit $\ell^2 - \ell - 2 = 0$, c'est-à-dire $(\ell - 2)(\ell + 1) = 0$. Comme $\ell \geq 0$ : $\boxed{\ell = 2}$.
+\end{exemple}
+
+\begin{remarque}[Erreur à éviter]
+L'équation $f(\ell) = \ell$ ne donne la limite \emph{que si l'on a déjà prouvé la convergence}. Résoudre le point fixe sans justifier la convergence (monotonie + borne, ou $|f'| \leq k < 1$) ne rapporte aucun point.
+\end{remarque}
+
+% ------------------- SECTION 5 -------------------
+\section{Continuité sur un intervalle et théorème des valeurs intermédiaires}
+
+\begin{definition}
+$f$ est \textbf{continue sur} $]a\,;b[$ si elle est continue en tout point de $]a\,;b[$ ; \textbf{continue sur} $[a\,;b]$ si elle est de plus continue à droite en $a$ et à gauche en $b$.
+\end{definition}
+
+\begin{propriete}[{Image d'un intervalle, image d'un segment}]
+L'image d'un \textbf{intervalle} par une fonction continue est un \textbf{intervalle}. L'image d'un \textbf{segment} $[a\,;b]$ est un \textbf{segment} $[m\,;M]$, où $m$ et $M$ sont le minimum et le maximum de $f$ sur $[a\,;b]$ (une fonction continue sur un segment est bornée et atteint ses bornes).
+\end{propriete}
+
+\begin{remarque}[Lecture directe pour $f$ strictement monotone]
+$f$ croissante : $f([a\,;b]) = [f(a)\,;f(b)]$ ; $f\bigl(\,]a\,;b]\,\bigr) = \bigl]\lim_{a^+} f\,;f(b)\bigr]$, etc. -- on remplace chaque borne par la valeur ou la limite correspondante, en respectant le caractère ouvert/fermé. $f$ décroissante : les bornes s'échangent.
+\end{remarque}
+
+\begin{propriete}[Théorème des valeurs intermédiaires (TVI)]
+Soit $f$ \textbf{continue} sur $[a\,;b]$. Pour tout $k$ compris entre $f(a)$ et $f(b)$, il existe au moins un $c \in [a\,;b]$ tel que $f(c) = k$.
+
+\smallskip
+\textbf{Corollaire 1} : si $f$ est continue sur $[a\,;b]$ et $f(a)\,f(b) < 0$, l'équation $f(x) = 0$ admet au moins une solution dans $]a\,;b[$.
+
+\smallskip
+\textbf{Corollaire 2 (unicité)} : si de plus $f$ est \textbf{strictement monotone} sur $[a\,;b]$, cette solution est unique.
+\end{propriete}
+
+\begin{demo}
+Idée de la preuve du corollaire 1 par \textbf{dichotomie}. Supposons $f(a) < 0 < f(b)$. On construit deux suites $(a_n)$ et $(b_n)$ : on part de $a_0 = a$, $b_0 = b$ ; à chaque étape, on considère le milieu $m_n = \frac{a_n + b_n}{2}$ : si $f(m_n) \leq 0$ on pose $a_{n+1} = m_n$, $b_{n+1} = b_n$, sinon $a_{n+1} = a_n$, $b_{n+1} = m_n$. Par construction $f(a_n) \leq 0 \leq f(b_n)$ et $b_n - a_n = \frac{b - a}{2^n} \to 0$ : les suites sont adjacentes et convergent vers un même réel $c$. Par continuité de $f$ et passage à la limite dans les inégalités, $f(c) \leq 0$ et $f(c) \geq 0$, donc $f(c) = 0$.
+\end{demo}
+
+\begin{exemple}[TVI + dichotomie avec précision imposée]
+Montrons que l'équation $x^3 + x - 3 = 0$ admet une unique solution $\alpha$ dans $]1\,;2[$, puis donnons un encadrement de $\alpha$ d'amplitude $0{,}25$.
+
+\smallskip
+Posons $f(x) = x^3 + x - 3$, continue sur $[1\,;2]$ (polynôme), avec $f'(x) = 3x^2 + 1 > 0$ donc $f$ strictement croissante ; $f(1) = -1 < 0$ et $f(2) = 7 > 0$. Par le TVI et la stricte monotonie, $\alpha$ existe et est unique dans $]1\,;2[$.
+
+\smallskip
+\textbf{Dichotomie} : $f(1{,}5) = 3{,}375 + 1{,}5 - 3 = 1{,}875 > 0 \Rightarrow \alpha \in\, ]1\,;1{,}5[$. Puis $f(1{,}25) \approx 1{,}953 + 1{,}25 - 3 = 0{,}203 > 0 \Rightarrow \alpha \in\, ]1\,;1{,}25[$.
+
+\smallskip
+\textbf{Conclusion} : $1 < \alpha < 1{,}25$, encadrement d'amplitude $0{,}25$ obtenu en $2$ étapes (l'amplitude après $n$ étapes est $\frac{b - a}{2^n}$ ; pour une précision $10^{-2}$ il faudrait $\frac{1}{2^n} \leq 10^{-2}$, soit $n = 7$ étapes).
+\end{exemple}
+
+\begin{remarque}[Rédaction attendue à l'examen]
+Pour appliquer le TVI, cite \emph{toujours} : \textbf{continuité} sur l'intervalle, \textbf{valeurs aux bornes} (ou changement de signe), et pour l'unicité la \textbf{stricte monotonie}. Précise ensuite l'intervalle ouvert ou fermé où vit la solution.
+\end{remarque}
+
+\begin{propriete}[Variantes du TVI à connaître absolument]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Équation $f(x) = k$} : appliquer le TVI à $g(x) = f(x) - k$, ou vérifier directement que $k$ est compris entre $f(a)$ et $f(b)$.
+  \item \textbf{Équation $g(x) = h(x)$} : poser $f = g - h$ et chercher un changement de signe de $f$.
+  \item \textbf{Intervalle non borné} : si $f$ est continue et strictement croissante sur $[a\,;+\infty[$ avec $f(a) < 0$ et $\lim\limits_{x \to +\infty} f(x) = +\infty$, alors $f(x) = 0$ admet une unique solution dans $]a\,;+\infty[$ (on remplace la valeur à la borne par la \textbf{limite}).
+  \item \textbf{Polynôme de degré impair} : tout polynôme de degré impair admet \textbf{au moins une racine réelle}.
+\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+Point 4 : soit $P$ de degré impair, de coefficient dominant $a_n > 0$ (sinon considérer $-P$). Alors $\lim\limits_{x \to -\infty} P(x) = -\infty$ et $\lim\limits_{x \to +\infty} P(x) = +\infty$ : il existe donc $a$ avec $P(a) < 0$ et $b$ avec $P(b) > 0$. $P$ étant continu sur $[a\,;b]$, le TVI fournit une racine dans $]a\,;b[$.
+\end{demo}
+
+\begin{exemple}[Équation $g(x) = h(x)$ sur un intervalle non borné]
+Montrons que l'équation $x^3 = 3 - x$ admet une unique solution réelle $\alpha$, puis que $\alpha \in\, ]1\,;\frac{3}{2}[$.
+
+\smallskip
+Posons $f(x) = x^3 + x - 3$ sur $\mathbb{R}$ : $f$ est continue (polynôme) et $f'(x) = 3x^2 + 1 > 0$, donc $f$ est strictement croissante sur $\mathbb{R}$. De plus $\lim\limits_{x \to -\infty} f(x) = -\infty$ et $\lim\limits_{x \to +\infty} f(x) = +\infty$ : $f$ réalise une bijection de $\mathbb{R}$ sur $\mathbb{R}$, donc $f(x) = 0$ admet une \textbf{unique} solution $\alpha$.
+
+\smallskip
+Localisation : $f(1) = -1 < 0$ et $f\!\left(\frac{3}{2}\right) = \frac{27}{8} + \frac{3}{2} - 3 = \frac{15}{8} > 0$, donc $\alpha \in\, \bigl]1\,;\frac{3}{2}\bigr[$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Fonction réciproque d'une fonction continue strictement monotone}
+
+\begin{propriete}[Théorème de la bijection]
+Soit $f$ \textbf{continue et strictement monotone} sur un intervalle $I$. Alors :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item $f$ réalise une \textbf{bijection} de $I$ sur l'intervalle $J = f(I)$ ;
+  \item la \textbf{réciproque} $f^{-1} : J \to I$, définie par $\bigl(y = f(x) \iff x = f^{-1}(y)\bigr)$, est continue sur $J$ et strictement monotone, de \textbf{même sens de variation} que $f$ ;
+  \item dans un repère \textbf{orthonormé}, les courbes $\mathcal{C}_f$ et $\mathcal{C}_{f^{-1}}$ sont symétriques par rapport à la première bissectrice $y = x$.
+\end{enumerate}
+De plus, pour tout $x \in I$ : $f^{-1}(f(x)) = x$, et pour tout $y \in J$ : $f(f^{-1}(y)) = y$.
+\end{propriete}
+
+\begin{demo}
+Démontrons le sens de variation (cas $f$ strictement croissante). Soient $y_1 < y_2$ dans $J$, et $x_1 = f^{-1}(y_1)$, $x_2 = f^{-1}(y_2)$. Si l'on avait $x_1 \geq x_2$, la croissance stricte de $f$ donnerait $y_1 = f(x_1) \geq f(x_2) = y_2$, contradiction. Donc $x_1 < x_2$ : $f^{-1}$ est strictement croissante. (La continuité de $f^{-1}$ est admise.)
+\end{demo}
+
+\begin{exemple}[Étude complète d'une réciproque]
+Soit $f(x) = x^2 + 2x$ sur $I = [-1\,;+\infty[$.
+
+\smallskip
+\textbf{Bijection} : $f$ est dérivable et $f'(x) = 2x + 2 = 2(x + 1) \geq 0$, nulle seulement en $-1$ : $f$ est continue et strictement croissante sur $I$. Or $f(-1) = -1$ et $\lim\limits_{x \to +\infty} f(x) = +\infty$, donc $f$ réalise une bijection de $[-1\,;+\infty[$ sur $J = [-1\,;+\infty[$.
+
+\smallskip
+\textbf{Expression de $f^{-1}$} : pour $y \geq -1$, on résout $y = x^2 + 2x$ avec $x \geq -1$. On écrit $y = (x + 1)^2 - 1$, d'où $(x + 1)^2 = y + 1$ et, comme $x + 1 \geq 0$ : $x = -1 + \sqrt{y + 1}$.
+\[
+  f^{-1} : [-1\,;+\infty[\ \to\ [-1\,;+\infty[, \qquad f^{-1}(y) = \sqrt{y + 1} - 1.
+\]
+\textbf{Vérification} : $f\bigl(f^{-1}(y)\bigr) = (\sqrt{y+1} - 1)^2 + 2(\sqrt{y+1} - 1) = (y + 1) - 2\sqrt{y+1} + 1 + 2\sqrt{y+1} - 2 = y$. $\checkmark$
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Racine $n$-ième et puissances rationnelles}
+
+\begin{definition}[Fonction racine $n$-ième]
+Soit $n \in \mathbb{N}^*$. La fonction $x \mapsto x^n$ est continue et strictement croissante sur $[0\,;+\infty[$, donc bijective de $[0\,;+\infty[$ sur $[0\,;+\infty[$. Sa réciproque est la \textbf{fonction racine $n$-ième} :
+\[
+  y = \sqrt[n]{x} \iff y^n = x \qquad (x \geq 0,\ y \geq 0).
+\]
+Elle est continue et strictement croissante sur $[0\,;+\infty[$, avec $\lim\limits_{x \to +\infty} \sqrt[n]{x} = +\infty$.
+\end{definition}
+
+\begin{propriete}[Équation $x^n = a$]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $n$ \textbf{impair} : pour tout $a \in \mathbb{R}$, l'équation $x^n = a$ admet une \textbf{unique} solution réelle, notée $\sqrt[n]{a}$ (avec $\sqrt[n]{a} = -\sqrt[n]{|a|}$ si $a < 0$).
+  \item $n$ \textbf{pair} : si $a > 0$, deux solutions $\pm\sqrt[n]{a}$ ; si $a = 0$, la seule solution est $0$ ; si $a < 0$, \textbf{aucune} solution réelle.
+\end{itemize}
+\end{propriete}
+
+\begin{propriete}[Règles de calcul]
+Pour tous $a, b \geq 0$ et $n, p \in \mathbb{N}^*$, $m \in \mathbb{N}$ :
+\[
+  \sqrt[n]{ab} = \sqrt[n]{a}\,\sqrt[n]{b}, \qquad
+  \sqrt[n]{\frac{a}{b}} = \frac{\sqrt[n]{a}}{\sqrt[n]{b}}\ (b \neq 0), \qquad
+  \sqrt[n]{\sqrt[p]{a}} = \sqrt[np]{a},
+\]
+\[
+  \bigl(\sqrt[n]{a}\bigr)^m = \sqrt[n]{a^m}, \qquad
+  \sqrt[np]{a^{mp}} = \sqrt[n]{a^m}.
+\]
+\end{propriete}
+
+\begin{demo}
+Montrons la première : posons $u = \sqrt[n]{a}$ et $v = \sqrt[n]{b}$, donc $u, v \geq 0$, $u^n = a$, $v^n = b$. Alors $(uv)^n = u^n v^n = ab$ et $uv \geq 0$ : par \emph{unicité} de la racine $n$-ième de $ab$, $uv = \sqrt[n]{ab}$. Les autres règles se démontrent sur le même schéma (élever à la bonne puissance et invoquer l'unicité).
+\end{demo}
+
+\begin{definition}[Puissances rationnelles]
+Pour $a > 0$ et $r = \frac{p}{q} \in \mathbb{Q}$ ($p \in \mathbb{Z}$, $q \in \mathbb{N}^*$) :
+\[
+  a^{r} = a^{p/q} = \sqrt[q]{a^p}.
+\]
+Les règles usuelles des puissances restent valables : $a^r a^{r'} = a^{r + r'}$, $(a^r)^{r'} = a^{rr'}$, $(ab)^r = a^r b^r$.
+\end{definition}
+
+\begin{exemple}[Calculs et équation]
+\textbf{a)} Simplifions $A = \sqrt[3]{16} \times \sqrt[3]{4}$ : $A = \sqrt[3]{64} = 4$.
+
+\smallskip
+\textbf{b)} Simplifions $B = \dfrac{\sqrt[4]{81} \times \sqrt{3}}{\sqrt[4]{9}}$ : on écrit tout en base $3$ : $\sqrt[4]{81} = 3$, $\sqrt{3} = 3^{1/2}$, $\sqrt[4]{9} = 3^{2/4} = 3^{1/2}$. Donc $B = \dfrac{3 \times 3^{1/2}}{3^{1/2}} = 3$.
+
+\smallskip
+\textbf{c)} Résolvons $x^5 = -32$ : $n = 5$ impair, solution unique $x = -\sqrt[5]{32} = -2$.
+
+\smallskip
+\textbf{d)} Résolvons $\sqrt[3]{x - 1} = 2$ : en élevant au cube, $x - 1 = 8$, soit $x = 9$ (pas de condition de signe à vérifier, le cube étant bijectif sur $\mathbb{R}$).
+\end{exemple}
+
+\begin{exemple}[Limite avec racine $n$-ième]
+Calculons $\displaystyle\lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{x - 1}$ (forme « $0/0$ »).
+
+\smallskip
+Posons $t = \sqrt[3]{x}$, donc $x = t^3$ et $t \to 1$ quand $x \to 1$ :
+\[
+  \frac{\sqrt[3]{x} - 1}{x - 1}
+  = \frac{t - 1}{t^3 - 1}
+  = \frac{t - 1}{(t - 1)(t^2 + t + 1)}
+  = \frac{1}{t^2 + t + 1}
+  \xrightarrow[t \to 1]{} \frac{1}{3}.
+\]
+\end{exemple}
+
+\begin{propriete}[{Ordre, équations et limites avec les racines $n$-ièmes}]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{Stricte croissance} : pour $a, b \geq 0$ : $a < b \iff \sqrt[n]{a} < \sqrt[n]{b}$. On résout donc les équations et inéquations en \textbf{élevant à la puissance $n$} (après contrôle du domaine).
+  \item \textbf{Continuité et limites} : la fonction $\sqrt[n]{\phantom{x}}$ est continue sur $[0\,;+\infty[$ ; si $f \geq 0$ et $\lim f = \ell$ (fini ou $+\infty$), alors $\lim \sqrt[n]{f} = \sqrt[n]{\ell}$ (avec $\sqrt[n]{+\infty} = +\infty$).
+  \item \textbf{Identité du conjugué cubique} : $a^3 - b^3 = (a - b)(a^2 + ab + b^2)$, qui permet de lever les « $0/0$ » contenant des racines cubiques.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Inéquations avec racines $n$-ièmes]
+\textbf{a)} Résolvons $\sqrt[3]{2x - 1} \leq 3$. La racine cubique est définie sur $\mathbb{R}$ et strictement croissante : l'inéquation équivaut à $2x - 1 \leq 27$, soit $x \leq 14$. $S = \,]-\infty\,;14]$.
+
+\smallskip
+\textbf{b)} Résolvons $\sqrt[4]{x} > 2$. \textbf{Domaine} : $x \geq 0$. Par stricte croissance, l'inéquation équivaut à $x > 2^4 = 16$. $S = \,]16\,;+\infty[$.
+\end{exemple}
+
+\begin{exemple}[Conjugué cubique]
+Calculons $\displaystyle\lim_{x \to 0} \frac{\sqrt[3]{1 + x} - 1}{x}$ (forme « $0/0$ »).
+
+\smallskip
+Avec $a = \sqrt[3]{1+x}$ et $b = 1$, on multiplie par $a^2 + ab + b^2$ :
+\[
+  \frac{\sqrt[3]{1+x} - 1}{x}
+  = \frac{(1 + x) - 1}{x\left(\sqrt[3]{(1+x)^2} + \sqrt[3]{1+x} + 1\right)}
+  = \frac{1}{\sqrt[3]{(1+x)^2} + \sqrt[3]{1+x} + 1}
+  \xrightarrow[x \to 0]{} \frac{1}{3}.
+\]
+\end{exemple}
+
+% ------------------- SECTION 8 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- limite trigonométrique complète]
+Calculer $\displaystyle\lim_{x \to 0} \frac{\sqrt{1 + \sin x} - \sqrt{1 - \sin x}}{x}$.
+
+\smallskip
+\textbf{Corrigé.} Conjugué au numérateur :
+\[
+  \frac{(1 + \sin x) - (1 - \sin x)}{x\left(\sqrt{1 + \sin x} + \sqrt{1 - \sin x}\right)}
+  = \frac{2\sin x}{x\left(\sqrt{1 + \sin x} + \sqrt{1 - \sin x}\right)}
+  = \frac{\sin x}{x} \cdot \frac{2}{\sqrt{1 + \sin x} + \sqrt{1 - \sin x}}.
+\]
+Quand $x \to 0$ : $\frac{\sin x}{x} \to 1$ et le second facteur tend vers $\frac{2}{1 + 1} = 1$. \textbf{Limite : $1$.}
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- continuité avec paramètre]
+Soit $f(x) = \dfrac{x^2 - 4}{x - 2}$ si $x \neq 2$ et $f(2) = m$. Pour quelle valeur du paramètre $m$ la fonction $f$ est-elle continue en $2$ ?
+
+\smallskip
+\textbf{Corrigé.} Pour $x \neq 2$ : $f(x) = \dfrac{(x-2)(x+2)}{x - 2} = x + 2$, donc $\lim\limits_{x \to 2} f(x) = 4$. $f$ est continue en $2$ si et seulement si $m = 4$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- TVI sur une équation non polynomiale]
+Montrer que l'équation $\cos x = x$ admet une unique solution dans $\left[0\,;\frac{\pi}{2}\right]$.
+
+\smallskip
+\textbf{Corrigé.} Posons $g(x) = \cos x - x$, continue sur $\left[0\,;\frac{\pi}{2}\right]$ (différence de fonctions continues). $g$ est dérivable et $g'(x) = -\sin x - 1 < 0$ sur $\left]0\,;\frac{\pi}{2}\right[$ : $g$ est strictement décroissante. De plus $g(0) = 1 > 0$ et $g\!\left(\frac{\pi}{2}\right) = -\frac{\pi}{2} < 0$. Par le TVI et la stricte monotonie, l'équation $g(x) = 0$, c'est-à-dire $\cos x = x$, admet une unique solution dans $\left]0\,;\frac{\pi}{2}\right[$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- bijection et image d'intervalle]
+Soit $f(x) = \dfrac{2x}{x + 1}$ sur $I = \,]-1\,;+\infty[$. Montrer que $f$ réalise une bijection de $I$ sur un intervalle $J$ à déterminer, et expliciter $f^{-1}$.
+
+\smallskip
+\textbf{Corrigé.} $f$ est dérivable sur $I$ et
+\[
+  f'(x) = \frac{2(x + 1) - 2x}{(x + 1)^2} = \frac{2}{(x + 1)^2} > 0 :
+\]
+$f$ est continue et strictement croissante sur $I$. Aux bornes : $\lim\limits_{x \to (-1)^+} f(x) = -\infty$ (numérateur $\to -2$, dénominateur $\to 0^+$) et $\lim\limits_{x \to +\infty} f(x) = 2$. Donc $f$ est une bijection de $I$ sur $J = \,]-\infty\,;2[$.
+
+\smallskip
+Pour $y \in J$, résolvons $y = \frac{2x}{x+1}$ : $y(x + 1) = 2x \iff x(y - 2) = -y \iff x = \frac{y}{2 - y}$ (licite car $y \neq 2$).
+\[
+  f^{-1} : \,]-\infty\,;2[\ \to\ ]-1\,;+\infty[, \qquad f^{-1}(y) = \frac{y}{2 - y}.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- limite en $-\infty$ avec racine (piège du signe)]
+Calculer $\displaystyle\lim_{x \to -\infty} \left(\sqrt{x^2 - x + 1} + x\right)$.
+
+\smallskip
+\textbf{Corrigé.} Forme « $\infty - \infty$ ». Conjugué :
+\[
+  \sqrt{x^2 - x + 1} + x = \frac{(x^2 - x + 1) - x^2}{\sqrt{x^2 - x + 1} - x}
+  = \frac{-x + 1}{\sqrt{x^2 - x + 1} - x}.
+\]
+Pour $x < 0$, on factorise par $-x > 0$ : au numérateur $-x + 1 = -x\left(1 - \frac{1}{x}\right)$ ; au dénominateur $\sqrt{x^2 - x + 1} = -x\sqrt{1 - \frac{1}{x} + \frac{1}{x^2}}$, donc
+\[
+  \frac{-x\left(1 - \frac{1}{x}\right)}{-x\left(\sqrt{1 - \frac{1}{x} + \frac{1}{x^2}} + 1\right)}
+  = \frac{1 - \frac{1}{x}}{\sqrt{1 - \frac{1}{x} + \frac{1}{x^2}} + 1}
+  \xrightarrow[x \to -\infty]{} \frac{1}{1 + 1} = \frac{1}{2}.
+\]
+\textbf{Limite : $\dfrac{1}{2}$.}
+\end{exemple}
+
+\begin{exemple}[Exercice 6 -- limite avec partie entière]
+Calculer $\displaystyle\lim_{x \to +\infty} \frac{\E(x)}{x}$.
+
+\smallskip
+\textbf{Corrigé.} Pour $x > 0$, l'encadrement $x - 1 < \E(x) \leq x$ donne, en divisant par $x > 0$ :
+\[
+  1 - \frac{1}{x} < \frac{\E(x)}{x} \leq 1.
+\]
+Comme $1 - \frac{1}{x} \to 1$, le théorème des gendarmes donne $\displaystyle\lim_{x \to +\infty} \frac{\E(x)}{x} = 1$.
+\end{exemple}
+
+\begin{exemple}[Exercice 7 -- bijection avec racine cubique]
+Soit $f(x) = \sqrt[3]{x - 1} + 2$. Montrer que $f$ est une bijection de $\mathbb{R}$ sur $\mathbb{R}$ et expliciter $f^{-1}$.
+
+\smallskip
+\textbf{Corrigé.} $f$ est la composée de $x \mapsto x - 1$ (continue, strictement croissante sur $\mathbb{R}$), de la racine cubique (continue, strictement croissante sur $\mathbb{R}$) et d'une translation : $f$ est continue et strictement croissante sur $\mathbb{R}$. Ses limites en $\mp\infty$ valent $\mp\infty$, donc $f(\mathbb{R}) = \mathbb{R}$ : $f$ est une bijection de $\mathbb{R}$ sur $\mathbb{R}$.
+
+\smallskip
+Pour $y \in \mathbb{R}$ : $y = \sqrt[3]{x - 1} + 2 \iff \sqrt[3]{x - 1} = y - 2 \iff x - 1 = (y - 2)^3$, d'où
+\[
+  f^{-1}(y) = (y - 2)^3 + 1.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 8 -- TVI et dichotomie avec précision imposée]
+Montrer que l'équation $\sin x = 1 - x$ admet une unique solution $\alpha$ dans $[0\,;1]$, puis donner un encadrement de $\alpha$ d'amplitude $0{,}25$.
+
+\smallskip
+\textbf{Corrigé.} Posons $g(x) = \sin x + x - 1$, continue sur $[0\,;1]$. $g$ est dérivable et $g'(x) = \cos x + 1 > 0$ sur $]0\,;1[$ (car $\cos x > 0$ sur cet intervalle) : $g$ est strictement croissante. $g(0) = -1 < 0$ et $g(1) = \sin 1 \approx 0{,}84 > 0$. Par le TVI et la stricte monotonie, $\alpha$ existe et est unique dans $]0\,;1[$.
+
+\smallskip
+\textbf{Dichotomie} : $g(0{,}5) = \sin(0{,}5) - 0{,}5 \approx 0{,}479 - 0{,}5 < 0 \Rightarrow \alpha \in\, ]0{,}5\,;1[$. Puis $g(0{,}75) \approx 0{,}682 - 0{,}25 > 0 \Rightarrow \alpha \in\, ]0{,}5\,;0{,}75[$ : encadrement d'amplitude $0{,}25$.
+\end{exemple}
+
+% ------------------- SECTION 9 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Limite d'une rationnelle en $\pm\infty$ & Quotient des termes de plus haut degré. \\
+Limite « $0/0$ » avec racines carrées & Conjugué ($a^2 - b^2$) ; cubiques : $a^3 - b^3$. \\
+\rowcolor{tealpale} Limite trigonométrique en $0$ & Se ramener à $\frac{\sin X}{X} \to 1$. \\
+Limite avec $\E(x)$, $\cos$, $\sin$ & Encadrement puis gendarmes. \\
+\rowcolor{tealpale} Continuité en un point de raccordement & Limites à droite et à gauche $= f(a)$. \\
+Prolongement par continuité en $a$ & Calculer $\lim_{x \to a} f$ ; si finie, poser $\tilde{f}(a) = \ell$. \\
+\rowcolor{tealpale} Solution unique de $f(x) = k$ & TVI (continuité + valeurs/limites aux bornes) + stricte monotonie. \\
+Encadrer $\alpha$ à la précision $p$ & Dichotomie : amplitude $\frac{b - a}{2^n} \leq p$. \\
+\rowcolor{tealpale} Montrer que $f$ est une bijection de $I$ sur $J$ & Continuité + stricte monotonie + calcul de $J = f(I)$ par valeurs/limites. \\
+Expliciter $f^{-1}$ & Résoudre $y = f(x)$ d'inconnue $x$, en gardant la contrainte $x \in I$. \\
+\rowcolor{tealpale} Limite d'une suite $u_{n+1} = f(u_n)$ & 1) Prouver la convergence. 2) Résoudre $f(\ell) = \ell$. \\
+Équation/inéquation avec $\sqrt[n]{\phantom{x}}$ & Domaine d'abord, puis élever à la puissance $n$ (stricte croissance). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item En $-\infty$ : écrire $\sqrt{x^2} = x$ au lieu de $\sqrt{x^2} = -x$ (pour $x < 0$).
+  \item Conclure par le point fixe $f(\ell) = \ell$ \textbf{sans avoir prouvé la convergence} de la suite.
+  \item Appliquer le TVI sans citer la \textbf{continuité}, ou conclure à l'unicité sans \textbf{stricte monotonie}.
+  \item Prolonger par continuité alors que la limite est \textbf{infinie} ou n'existe pas : impossible.
+  \item Oublier le \textbf{domaine} avant d'élever une inéquation à une puissance paire ($\sqrt[4]{x} > 2$ exige $x \geq 0$).
+  \item Écrire $\sqrt[n]{a^n} = a$ pour $a < 0$ et $n$ pair : c'est $|a|$.
+  \item Pour un quotient tendant vers « $\frac{\ell}{0}$ » : oublier d'étudier le \textbf{signe du dénominateur} à droite et à gauche (limites $+\infty$ ou $-\infty$ différentes).
+  \item Confondre $f^{-1}(x)$ et $\frac{1}{f(x)}$.
+  \item Traiter « $\infty - \infty$ » ou « $\frac{\infty}{\infty}$ » comme si cela valait $0$ ou $1$ : ce sont des \textbf{formes indéterminées}.
+  \item Étudier la continuité de $\E$ en un entier sans séparer limite à gauche ($n - 1$) et à droite ($n$).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Définition formelle : $\lim_{x\to a} f = \ell \iff (\forall\varepsilon>0)(\exists\alpha>0):\ 0<|x-a|<\alpha \Rightarrow |f(x)-\ell|<\varepsilon$ ; la limite est unique.
+  \item Outils de calcul : opérations, composition, gendarmes, $|f - \ell| \leq g \to 0$ ; partie entière : $x - 1 < \E(x) \leq x$.
+  \item Trigonométrie en $0$ : $\frac{\sin x}{x} \to 1$, $\frac{\tan x}{x} \to 1$, $\frac{1 - \cos x}{x^2} \to \frac{1}{2}$ (démonstration par encadrement).
+  \item Prolongement par continuité : possible en $a$ dès que la limite en $a$ existe et est finie.
+  \item Suites : $u_n \to a$ et $f$ continue en $a$ $\Rightarrow f(u_n) \to f(a)$ ; suite récurrente convergente $\Rightarrow$ la limite est un point fixe ($f(\ell) = \ell$), \emph{après} avoir prouvé la convergence.
+  \item TVI : continuité + changement de signe $\Rightarrow$ existence ; + stricte monotonie $\Rightarrow$ unicité ; dichotomie : amplitude $\frac{b-a}{2^n}$ après $n$ étapes.
+  \item Bijection : $f$ continue strictement monotone sur $I$ $\Rightarrow$ $f^{-1}$ continue, même monotonie, courbes symétriques par rapport à $y = x$.
+  \item Racine $n$-ième : $y = \sqrt[n]{x} \iff y^n = x$ ($x, y \geq 0$) ; $x^n = a$ : $1$ solution si $n$ impair, $0$ ou $2$ si $n$ pair ; $a^{p/q} = \sqrt[q]{a^p}$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

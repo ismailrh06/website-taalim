@@ -1,0 +1,612 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Arithmétique dans Z
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Arithmétique dans $\mathbb{Z}$}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Maîtriser la divisibilité dans $\mathbb{Z}$ et démontrer ses propriétés fondamentales.
+  \item Effectuer et justifier la division euclidienne, calculer PGCD et PPCM, et démontrer leurs propriétés.
+  \item Appliquer l'algorithme d'Euclide et le théorème de Bézout, résoudre des équations diophantiennes $ax+by=c$.
+  \item Démontrer et utiliser le théorème de Gauss, caractériser les nombres premiers entre eux.
+  \item Manipuler les congruences modulo $n$, résoudre des équations et démontrer des critères de divisibilité.
+  \item Écrire un entier dans un système de numération donné, convertir entre bases, et effectuer des opérations dans une base donnée.
+  \item Connaître et appliquer le petit théorème de Fermat pour accélérer un calcul de reste modulo un nombre premier.
+  \item Traiter les exercices type examen national : résolution d'équations diophantiennes, systèmes de congruences.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Divisibilité dans $\mathbb{Z}$}
+
+\begin{definition}[Divisibilité]
+Soient $a,b\in\mathbb{Z}$. On dit que $b$ \textbf{divise} $a$ (ou que $a$ est un \textbf{multiple} de $b$, ou que $b$ est un \textbf{diviseur} de $a$), noté $b\mid a$, lorsqu'il existe $k\in\mathbb{Z}$ tel que $a=kb$.
+\end{definition}
+
+\begin{propriete}[Propriétés de la divisibilité]
+Pour $a,b,c\in\mathbb{Z}$ :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{Réflexivité} : $a\mid a$. \quad Tout entier divise $0$ ; $1$ divise tout entier.
+  \item \textbf{Transitivité} : si $a\mid b$ et $b\mid c$, alors $a\mid c$.
+  \item Si $a\mid b$ et $a\mid c$, alors $a\mid(ub+vc)$ pour tous $u,v\in\mathbb{Z}$ (\textbf{combinaison linéaire}).
+  \item Si $a\mid b$ et $b\mid a$ (avec $a,b\ne0$), alors $a=\pm b$.
+  \item Si $a\mid b$ et $a,b\ne0$, alors $|a|\leq|b|$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+\emph{Transitivité} : $a\mid b\Rightarrow b=ka$ ; $b\mid c\Rightarrow c=k'b=k'ka$ : donc $a\mid c$ avec le coefficient $kk'$.
+
+\smallskip
+\emph{Combinaison linéaire} : $a\mid b\Rightarrow b=ka$ ; $a\mid c\Rightarrow c=k'a$. Alors $ub+vc=uka+vk'a=(uk+vk')a$ : $a$ divise bien $ub+vc$.
+
+\smallskip
+\emph{$a\mid b$ et $b\mid a\Rightarrow a=\pm b$} : $b=ka$ et $a=k'b=k'ka$, donc (si $a\ne0$) $kk'=1$, soit $k=k'=1$ ou $k=k'=-1$ (entiers de produit $1$) : $b=a$ ou $b=-a$.
+\end{demo}
+
+% ------------------- SECTION 2 -------------------
+\section{Division euclidienne}
+
+\begin{propriete}[Théorème de la division euclidienne]
+Soient $a\in\mathbb{Z}$, $b\in\mathbb{N}^*$. Il existe un \textbf{unique} couple $(q,r)\in\mathbb{Z}\times\mathbb{N}$ tel que
+\[
+  a = bq+r, \qquad 0\leq r<b.
+\]
+$q$ est le \textbf{quotient}, $r$ le \textbf{reste} de la division euclidienne de $a$ par $b$.
+\end{propriete}
+
+\begin{demo}[Idée de la preuve]
+\emph{Existence} : considérons l'ensemble $E=\{a-bk : k\in\mathbb{Z},\ a-bk\geq0\}$, non vide (pour $k$ assez négatif ou positif selon le signe de $a$). $E\subset\mathbb{N}$ possède donc un plus petit élément $r=a-bq$. Montrons $r<b$ : sinon $r-b=a-b(q+1)\geq0$ appartiendrait à $E$ et serait strictement plus petit que $r$, contredisant la minimalité de $r$.
+
+\smallskip
+\emph{Unicité} : si $a=bq+r=bq'+r'$ avec $0\leq r,r'<b$, alors $b(q-q')=r'-r$, avec $|r'-r|<b$. Comme $b\mid(r'-r)$ et $|r'-r|<b$, nécessairement $r'-r=0$, donc $r=r'$ puis $q=q'$.
+\end{demo}
+
+\begin{exemple}[Division euclidienne]
+$29=6\times4+5$ (quotient $4$, reste $5$) ; $-17=6\times(-3)+1$ (attention : quotient $-3$, reste $1$, \textbf{pas} $-17=6\times(-2)-5$ car le reste doit être positif).
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Systèmes de numération}
+
+\begin{definition}[Écriture d'un entier en base $b$]
+Soit $b\in\mathbb{N}$, $b\geq2$. Tout entier $n\in\mathbb{N}^*$ s'écrit de façon \textbf{unique} sous la forme
+\[
+  n = a_p\,b^p + a_{p-1}\,b^{p-1} + \cdots + a_1\,b + a_0, \qquad
+  a_p\ne0,\ \ 0\leq a_i\leq b-1 \text{ pour tout } i.
+\]
+On note alors $n = \overline{a_p a_{p-1}\cdots a_1 a_0}^{\,(b)}$, l'\textbf{écriture de $n$ en base $b$} (les $a_i$ sont les \textbf{chiffres} de $n$ en base $b$). Pour $b=10$ (base décimale usuelle), on omet en général l'exposant.
+\end{definition}
+
+\begin{propriete}[Obtention des chiffres par divisions euclidiennes successives]
+Les chiffres $a_0,a_1,\ldots,a_p$ de l'écriture de $n$ en base $b$ s'obtiennent en effectuant des \textbf{divisions euclidiennes successives par $b$} : $a_0$ est le reste de $n$ par $b$, $a_1$ est le reste du quotient obtenu par $b$, et ainsi de suite jusqu'à un quotient nul.
+\end{propriete}
+
+\begin{exemple}[Conversion décimale $\to$ base $b$]
+Écrivons $n=45$ en base $2$ (binaire).
+\[
+  45 = 2\times22+1, \quad 22=2\times11+0, \quad 11=2\times5+1, \quad 5=2\times2+1, \quad 2=2\times1+0, \quad 1=2\times0+1.
+\]
+En lisant les restes du dernier au premier : $45=\overline{101101}^{(2)}$.
+
+\smallskip
+\emph{Vérification} : $32+0+8+4+0+1=45$. $\checkmark$ (car $\overline{101101}^{(2)}=1\times2^5+0\times2^4+1\times2^3+1\times2^2+0\times2+1$).
+\end{exemple}
+
+\begin{propriete}[Conversion base $b$ $\to$ décimale]
+Pour convertir $\overline{a_pa_{p-1}\cdots a_0}^{(b)}$ en base $10$, on calcule directement $\displaystyle\sum_{i=0}^pa_i\,b^i$.
+\end{propriete}
+
+\begin{exemple}[Conversion base $b$ $\to$ décimale, et opérations en base $b$]
+Le nombre $\overline{2301}^{(4)}$ vaut, en base $10$ :
+\[
+  2\times4^3+3\times4^2+0\times4+1 = 128+48+0+1 = 177.
+\]
+
+\smallskip
+\emph{Addition en base $b$} : pour additionner directement en base $b$ (sans repasser par la base $10$), on additionne chiffre par chiffre en \textbf{retenant} dès qu'une somme atteint $b$ (exactement comme la retenue en base $10$ dès qu'on atteint $10$). Par exemple, en base $5$ : $\overline{43}^{(5)}+\overline{24}^{(5)}$ : unités $3+4=7=1\times5+2$, on pose $2$ et retient $1$ ; dizaines $4+2+1=7=1\times5+2$, on pose $2$ et retient $1$. Résultat : $\overline{122}^{(5)}$ (vérification en base $10$ : $23+14=37=\overline{122}^{(5)}$ car $1\times25+2\times5+2=37$ $\checkmark$).
+\end{exemple}
+
+\begin{remarque}[Comparer deux nombres en base $b$]
+Pour comparer deux entiers écrits dans la \textbf{même base} $b$, on compare d'abord leur nombre de chiffres (plus de chiffres $\Rightarrow$ plus grand), puis, à nombre de chiffres égal, on compare chiffre par chiffre depuis la gauche (poids fort), exactement comme en base $10$.
+\end{remarque}
+
+% ------------------- SECTION 4 -------------------
+\section{PGCD, PPCM, algorithme d'Euclide}
+
+\begin{definition}[PGCD]
+Pour $a,b\in\mathbb{Z}$ non tous deux nuls, le \textbf{PGCD} (plus grand commun diviseur) de $a$ et $b$, noté $a\wedge b$ ou $\text{pgcd}(a,b)$, est le plus grand entier naturel qui divise à la fois $a$ et $b$.
+\end{definition}
+
+\begin{propriete}[Propriété fondamentale de l'algorithme d'Euclide]
+Pour $a\in\mathbb{Z}$, $b\in\mathbb{N}^*$, si $a=bq+r$ (division euclidienne), alors
+\[
+  a\wedge b = b\wedge r.
+\]
+\end{propriete}
+
+\begin{demo}
+Montrons que l'ensemble des diviseurs communs de $a$ et $b$ coïncide avec celui de $b$ et $r$. Si $d\mid a$ et $d\mid b$, alors $d\mid(a-bq)=r$ : $d$ est un diviseur commun de $b$ et $r$. Réciproquement, si $d\mid b$ et $d\mid r$, alors $d\mid(bq+r)=a$ : $d$ est un diviseur commun de $a$ et $b$. Les deux paires ont donc exactement les mêmes diviseurs communs, donc le même plus grand.
+\end{demo}
+
+\begin{propriete}[Algorithme d'Euclide]
+Pour calculer $a\wedge b$ : on effectue des divisions euclidiennes successives ($a$ par $b$, puis $b$ par le reste, etc.) jusqu'à obtenir un reste nul. Le \textbf{dernier reste non nul} est le PGCD.
+\end{propriete}
+
+\begin{exemple}[Calcul par l'algorithme d'Euclide]
+Calculons $252\wedge108$.
+\[
+  252 = 108\times2+36, \qquad 108 = 36\times3+0.
+\]
+Le dernier reste non nul est $36$ : $\boxed{252\wedge108=36}$.
+\end{exemple}
+
+\begin{definition}[PPCM]
+Le \textbf{PPCM} (plus petit commun multiple) de $a,b\in\mathbb{Z}^*$, noté $a\vee b$, est le plus petit entier naturel non nul multiple à la fois de $a$ et de $b$.
+\end{definition}
+
+\begin{propriete}[Relation PGCD-PPCM]
+Pour $a,b\in\mathbb{N}^*$ :
+\[
+  (a\wedge b)\times(a\vee b) = a\times b.
+\]
+\end{propriete}
+
+\begin{exemple}[Calcul de PPCM]
+Avec $a=252$, $b=108$, $a\wedge b=36$ (calculé ci-dessus) :
+\[
+  a\vee b = \frac{252\times108}{36} = 252\times3 = 756.
+\]
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Théorème de Bézout et théorème de Gauss}
+
+\begin{definition}[Entiers premiers entre eux]
+$a,b\in\mathbb{Z}$ sont \textbf{premiers entre eux} lorsque $a\wedge b=1$.
+\end{definition}
+
+\begin{propriete}[Théorème de Bézout]
+Pour $a,b\in\mathbb{Z}$ non tous deux nuls, il existe $u,v\in\mathbb{Z}$ tels que
+\[
+  au+bv = a\wedge b.
+\]
+\textbf{Cas particulier (Bézout)} : $a$ et $b$ sont premiers entre eux si et seulement s'il existe $u,v\in\mathbb{Z}$ tels que $au+bv=1$.
+\end{propriete}
+
+\begin{remarque}[Algorithme d'Euclide étendu]
+Les coefficients $u,v$ (identité de Bézout) s'obtiennent en \textbf{remontant} les étapes de l'algorithme d'Euclide.
+\end{remarque}
+
+\begin{exemple}[Détermination des coefficients de Bézout]
+Trouvons $u,v\in\mathbb{Z}$ tels que $17u+5v=1$.
+
+\smallskip
+\textbf{Euclide} : $17=5\times3+2$ ; $5=2\times2+1$ ; $2=1\times2+0$.
+
+\smallskip
+\textbf{Remontée} : $1=5-2\times2$. Or $2=17-5\times3$, donc
+\[
+  1 = 5-(17-5\times3)\times2 = 5-17\times2+5\times6 = 5\times7-17\times2.
+\]
+\textbf{Conclusion} : $u=-2$, $v=7$ (vérification : $17\times(-2)+5\times7=-34+35=1$ $\checkmark$).
+\end{exemple}
+
+\begin{propriete}[Théorème de Gauss]
+Si $a\mid bc$ et $a\wedge b=1$, alors $a\mid c$.
+\end{propriete}
+
+\begin{demo}
+Par Bézout, comme $a\wedge b=1$, il existe $u,v$ tels que $au+bv=1$. En multipliant par $c$ : $auc+bvc=c$. Or $a\mid auc$ (facteur $a$) et $a\mid bvc$ (car $a\mid bc$ par hypothèse, donc $a\mid bcv$). Donc $a$ divise la somme $auc+bvc=c$.
+\end{demo}
+
+\begin{propriete}[Conséquences du théorème de Gauss]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $a\mid c$, $b\mid c$ et $a\wedge b=1$, alors $ab\mid c$.
+  \item Si $p$ est premier et $p\mid ab$, alors $p\mid a$ ou $p\mid b$ (lemme d'Euclide, cas particulier de Gauss).
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Résoudre une équation diophantienne $ax+by=c$]
+Résolvons dans $\mathbb{Z}^2$ : $17x+5y=3$.
+
+\smallskip
+\textbf{Solution particulière} : d'après l'exemple précédent, $17\times(-2)+5\times7=1$, donc en multipliant par $3$ : $17\times(-6)+5\times21=3$. Une solution particulière est $(x_0,y_0)=(-6,21)$.
+
+\smallskip
+\textbf{Solution générale} : si $(x,y)$ est une autre solution, alors $17(x-x_0)=-5(y-y_0)$, soit $17(x-x_0)=5(y_0-y)$. Comme $17\wedge5=1$, par Gauss, $17\mid(y_0-y)$, donc $y_0-y=17k$, $k\in\mathbb{Z}$, d'où $y=21-17k$ et $x=x_0+5k=-6+5k$.
+
+\smallskip
+\textbf{Conclusion} : $S=\{(-6+5k\,;21-17k) : k\in\mathbb{Z}\}$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Nombres premiers}
+
+\begin{definition}[Nombre premier]
+$p\in\mathbb{N}$, $p\geq2$, est \textbf{premier} lorsque ses seuls diviseurs positifs sont $1$ et $p$.
+\end{definition}
+
+\begin{propriete}[Décomposition en facteurs premiers -- admis]
+Tout entier $n\geq2$ se décompose de façon \textbf{unique} (à l'ordre près) en produit de nombres premiers :
+\[
+  n = p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_k^{\alpha_k}.
+\]
+\end{propriete}
+
+\begin{propriete}[Infinité des nombres premiers -- Euclide]
+L'ensemble des nombres premiers est \textbf{infini}.
+\end{propriete}
+
+\begin{demo}
+Par l'absurde : supposons qu'il n'existe qu'un nombre fini de premiers $p_1,\ldots,p_k$. Posons $N=p_1p_2\cdots p_k+1$. $N$ n'est divisible par aucun des $p_i$ (le reste de la division de $N$ par $p_i$ vaut $1$). Or $N\geq2$ admet un diviseur premier $p$ (par la décomposition en facteurs premiers) : $p$ ne peut être aucun des $p_i$, contredisant l'hypothèse qu'il n'y en avait que $k$.
+\end{demo}
+
+% ------------------- SECTION 7 -------------------
+\section{Congruences modulo $n$}
+
+\begin{definition}[Congruence]
+Pour $n\in\mathbb{N}^*$, $a,b\in\mathbb{Z}$, on dit que $a$ est \textbf{congru à $b$ modulo $n$}, noté $a\equiv b\ [n]$, lorsque $n\mid(a-b)$, c'est-à-dire lorsque $a$ et $b$ ont le \textbf{même reste} dans la division euclidienne par $n$.
+\end{definition}
+
+\begin{propriete}[Propriétés des congruences]
+La relation $\equiv[n]$ est \textbf{réflexive, symétrique, transitive}. De plus, si $a\equiv b\,[n]$ et $c\equiv d\,[n]$ :
+\[
+  a+c \equiv b+d\ [n], \qquad ac \equiv bd\ [n], \qquad a^k \equiv b^k\ [n]\ (k\in\mathbb{N}).
+\]
+\end{propriete}
+
+\begin{demo}
+\emph{Compatibilité avec le produit} : $a\equiv b\,[n]\Rightarrow a-b=kn$ ; $c\equiv d\,[n]\Rightarrow c-d=k'n$. Alors $ac-bd=ac-bc+bc-bd=c(a-b)+b(c-d)=ckn+bk'n=n(ck+bk')$, donc $n\mid(ac-bd)$, soit $ac\equiv bd\,[n]$.
+\end{demo}
+
+\begin{exemple}[Critère de divisibilité par $9$]
+Montrons qu'un entier est divisible par $9$ si et seulement si la somme de ses chiffres l'est.
+
+\smallskip
+Comme $10\equiv1\,[9]$, on a $10^k\equiv1^k=1\,[9]$ pour tout $k$. Si $N=\overline{a_pa_{p-1}\ldots a_1a_0}=\displaystyle\sum_{i=0}^pa_i10^i$, alors
+\[
+  N \equiv \sum_{i=0}^pa_i\times1 = \sum_{i=0}^pa_i \ [9].
+\]
+Donc $N\equiv0\,[9] \iff \sum a_i\equiv0\,[9]$, ce qui est exactement le critère annoncé.
+\end{exemple}
+
+\begin{exemple}[Résoudre une équation de congruence]
+Résolvons $3x\equiv2\,[7]$ dans $\mathbb{Z}$.
+
+\smallskip
+Comme $3\wedge7=1$, $3$ est inversible modulo $7$. On cherche $u$ tel que $3u\equiv1\,[7]$ : $3\times5=15\equiv1\,[7]$ ($15=2\times7+1$). Donc l'inverse de $3$ modulo $7$ est $5$.
+
+\smallskip
+En multipliant l'équation par $5$ : $15x\equiv10\,[7]$, soit $x\equiv10\equiv3\,[7]$ (car $15\equiv1\,[7]$).
+
+\smallskip
+\textbf{Conclusion} : $S=\{3+7k : k\in\mathbb{Z}\}$.
+\end{exemple}
+
+\begin{exemple}[Calcul de reste par puissance modulaire]
+Déterminons le reste de $2^{100}$ dans la division euclidienne par $7$.
+
+\smallskip
+Puissances de $2$ modulo $7$ : $2^1\equiv2$, $2^2\equiv4$, $2^3\equiv1\,[7]$ (car $8=7+1$). L'ordre de $2$ modulo $7$ est donc $3$ (période).
+
+\smallskip
+$100=3\times33+1$, donc $2^{100}=(2^3)^{33}\times2^1\equiv1^{33}\times2=2\,[7]$.
+
+\smallskip
+\textbf{Conclusion} : le reste de $2^{100}$ par $7$ est $2$.
+\end{exemple}
+
+\begin{propriete}[Petit théorème de Fermat]
+Soit $p$ un nombre \textbf{premier} et $a\in\mathbb{Z}$ tel que $p\nmid a$ (c'est-à-dire $a\wedge p=1$). Alors
+\[
+  a^{p-1} \equiv 1 \ [p].
+\]
+Sous une forme équivalente, valable pour \textbf{tout} $a\in\mathbb{Z}$ (y compris si $p\mid a$) :
+\[
+  a^p \equiv a \ [p].
+\]
+\end{propriete}
+
+\begin{demo}[Idée de la preuve -- admis dans le détail]
+On admet ce résultat au niveau du bac (sa démonstration standard utilise le fait que les restes non nuls modulo $p$, multipliés par $a$, redonnent une permutation des mêmes restes, puis on simplifie un produit). L'important est de savoir \textbf{l'utiliser} pour accélérer un calcul de reste modulo un nombre premier.
+\end{demo}
+
+\begin{exemple}[Application directe de Fermat]
+Déterminons le reste de $2^{100}$ modulo $7$ en utilisant le petit théorème de Fermat (à comparer avec la méthode de l'exemple précédent).
+
+\smallskip
+$7$ est premier et $7\nmid2$, donc par Fermat : $2^{6}\equiv1\,[7]$.
+
+\smallskip
+$100 = 6\times16+4$, donc $2^{100}=\left(2^6\right)^{16}\times2^4\equiv1^{16}\times2^4=16\equiv2\,[7]$ (car $16=2\times7+2$).
+
+\smallskip
+\textbf{Conclusion} : on retrouve bien un reste de $2$, obtenu ici directement à partir de l'ordre $p-1=6$ donné par Fermat, sans avoir à chercher la période « à la main ».
+\end{exemple}
+
+\begin{remarque}[Quand utiliser Fermat plutôt que chercher la période soi-même]
+Le petit théorème de Fermat donne \textbf{immédiatement} un exposant $p-1$ qui fonctionne (dès que $p$ est premier et $p\nmid a$), sans avoir à calculer les premières puissances pour repérer la période. Attention : la \textbf{période réelle} peut être un diviseur strict de $p-1$ (ex. ci-dessus, la période de $2$ modulo $7$ est $3$, diviseur de $6=p-1$) ; les deux méthodes sont donc valables, Fermat étant plus rapide à mettre en pratique sans calcul préalable.
+\end{remarque}
+
+% ------------------- SECTION 8 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- diviseurs communs et PGCD]
+Déterminer tous les couples $(x,y)\in(\mathbb{N}^*)^2$ tels que $x\wedge y=6$ et $x+y=36$.
+
+\smallskip
+\textbf{Corrigé.} Posons $x=6a$, $y=6b$ avec $a\wedge b=1$ (propriété de la division par le PGCD). Alors $6a+6b=36\iff a+b=6$.
+
+\smallskip
+Couples $(a,b)$ avec $a+b=6$ et $a\wedge b=1$ : $(1,5)$, $(5,1)$ conviennent ($1\wedge5=1$) ; $(2,4)$ ne convient pas ($2\wedge4=2$) ; $(3,3)$ ne convient pas ($3\wedge3=3$).
+
+\smallskip
+\textbf{Conclusion} : $(x,y)\in\{(6,30)\,;(30,6)\}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- équation diophantienne avec contrainte]
+Une boutique vend des stylos à $12$ DH et des cahiers à $17$ DH. Un client dépense exactement $200$ DH. Combien de stylos et de cahiers a-t-il pu acheter ?
+
+\smallskip
+\textbf{Corrigé.} On cherche $(x,y)\in\mathbb{N}^2$ tels que $12x+17y=200$.
+
+\smallskip
+$12\wedge17=1$ (consécutifs dans l'algorithme, ou vérification directe), donc l'équation a des solutions entières. Par tâtonnement/Bézout : $12\times(-7)+17\times5=-84+85=1$, donc $12\times(-1400)+17\times1000=200$ est une solution particulière (peu pratique) ; cherchons directement par essais bornés : $y$ doit vérifier $17y\leq200$, soit $y\leq11$, et $200-17y\equiv0\,[12]$.
+
+\smallskip
+En testant : $y=4\Rightarrow200-68=132=12\times11$. Solution $(x,y)=(11,4)$.
+
+\smallskip
+\textbf{Conclusion} : le client a acheté $11$ stylos et $4$ cahiers (solution dans $\mathbb{N}^2$ ; la solution générale entière est $(11-17k\,;4+12k)$, dont seul $k=0$ donne des valeurs positives raisonnables ici).
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- démonstration avec Gauss]
+Montrer que pour tout $n\in\mathbb{Z}$, $n(n+1)(2n+1)$ est divisible par $6$.
+
+\smallskip
+\textbf{Corrigé.} \emph{Divisibilité par $2$} : parmi $n$ et $n+1$, l'un est pair : $2\mid n(n+1)$, donc $2\mid n(n+1)(2n+1)$.
+
+\smallskip
+\emph{Divisibilité par $3$} : étudions les restes modulo $3$. Si $n\equiv0\,[3]$ : $3\mid n$. Si $n\equiv1\,[3]$ : $2n+1\equiv3\equiv0\,[3]$. Si $n\equiv2\,[3]$ : $n+1\equiv3\equiv0\,[3]$. Dans tous les cas, $3$ divise l'un des trois facteurs.
+
+\smallskip
+Comme $2\wedge3=1$ et $2\mid N$, $3\mid N$ (où $N=n(n+1)(2n+1)$), par la conséquence du théorème de Gauss : $6=2\times3\mid N$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- système de congruences]
+Résoudre le système $\begin{cases} x\equiv2\,[5] \\ x\equiv3\,[7] \end{cases}$.
+
+\smallskip
+\textbf{Corrigé.} $x\equiv2\,[5]\Rightarrow x=5k+2$. En substituant dans la seconde : $5k+2\equiv3\,[7]\iff5k\equiv1\,[7]$.
+
+\smallskip
+Inverse de $5$ modulo $7$ : $5\times3=15\equiv1\,[7]$, donc l'inverse est $3$. D'où $k\equiv3\,[7]$, soit $k=7m+3$.
+
+\smallskip
+Alors $x=5(7m+3)+2=35m+17$.
+
+\smallskip
+\textbf{Conclusion} : $S=\{17+35m : m\in\mathbb{Z}\}$, soit $x\equiv17\,[35]$ (théorème des restes chinois, $5\times7=35$).
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- reste par Fermat]
+Déterminer le reste de la division euclidienne de $7^{2024}$ par $13$.
+
+\smallskip
+\textbf{Corrigé.} $13$ est premier et $13\nmid7$ : par Fermat, $7^{12}\equiv1\,[13]$.
+
+\smallskip
+$2024 = 12\times168+8$, donc $7^{2024}=\left(7^{12}\right)^{168}\times7^8\equiv7^8\,[13]$.
+
+\smallskip
+Calculons $7^8$ modulo $13$ par carrés successifs : $7^2=49\equiv10\,[13]$ (car $49=3\times13+10$) ; $7^4\equiv10^2=100\equiv9\,[13]$ (car $100=7\times13+9$) ; $7^8\equiv9^2=81\equiv3\,[13]$ (car $81=6\times13+3$).
+
+\smallskip
+\textbf{Conclusion} : le reste de $7^{2024}$ par $13$ est $3$.
+\end{exemple}
+
+\begin{exemple}[Exercice 6 -- système de numération et divisibilité]
+Soit $n=223$ (en base $10$). Écrire $n$ en base $7$, puis dire si $n$ est divisible par $3$.
+
+\smallskip
+\textbf{Corrigé.} \emph{Conversion en base $7$} : divisions euclidiennes successives par $7$.
+\[
+  223=7\times31+6, \qquad 31=7\times4+3, \qquad 4=7\times0+4.
+\]
+En lisant les restes du dernier quotient au premier reste obtenu : $n=\overline{436}^{(7)}$.
+
+\smallskip
+\emph{Vérification} : $4\times7^2+3\times7+6 = 196+21+6 = 223$. $\checkmark$
+
+\smallskip
+\emph{Divisibilité par $3$} : $223=3\times74+1$, donc $223\equiv1\,[3]$ : $n$ n'est \textbf{pas} divisible par $3$.
+\end{exemple}
+
+% ------------------- SECTION 9 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Calculer un PGCD & Algorithme d'Euclide (divisions successives), dernier reste non nul. \\
+Trouver $u,v$ tels que $au+bv=d$ & Euclide pour obtenir $d$, puis remonter les calculs (Bézout). \\
+\rowcolor{tealpale} Résoudre $ax+by=c$ dans $\mathbb{Z}^2$ & Vérifier $a\wedge b\mid c$, trouver une solution particulière (Bézout), écrire la solution générale via Gauss. \\
+Prouver $a\wedge b=1$ & Bézout (trouver $u,v$) ou Euclide (dernier reste $=1$). \\
+\rowcolor{tealpale} Démontrer une divisibilité par un produit ($6$, $12$...) & Décomposer en facteurs premiers entre eux, prouver chaque divisibilité séparément, conclure par Gauss. \\
+Calculer un reste de grande puissance & Chercher la période des puissances modulo $n$, réduire l'exposant. \\
+\rowcolor{tealpale} Résoudre $ax\equiv b\,[n]$ & Trouver l'inverse de $a$ modulo $n$ (Bézout), multiplier les deux membres. \\
+Critère de divisibilité (par $9$, $11$...) & Utiliser $10\equiv1\,[9]$ ou $10\equiv-1\,[11]$ et sommer/alterner les chiffres. \\
+\rowcolor{tealpale} Calculer un reste de grande puissance modulo un nombre \textbf{premier} $p$ & Petit théorème de Fermat : $a^{p-1}\equiv1\,[p]$ si $p\nmid a$, réduire l'exposant modulo $p-1$. \\
+Convertir un entier en base $b$ (ou l'inverse) & Divisions euclidiennes successives par $b$ (lire les restes du dernier au premier) ; ou $\sum a_ib^i$ pour l'inverse. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Dans la division euclidienne d'un nombre \textbf{négatif}, oublier que le reste doit rester dans $[0\,;b[$ (pas de reste négatif).
+  \item Confondre $a\wedge b$ (PGCD) et $a\vee b$ (PPCM) dans une formule.
+  \item Appliquer le théorème de Gauss sans vérifier l'hypothèse $a\wedge b=1$.
+  \item Oublier de vérifier que $a\wedge b$ divise $c$ avant de chercher à résoudre $ax+by=c$ (condition nécessaire d'existence de solutions).
+  \item Écrire une solution générale d'équation diophantienne sans avoir d'abord soustrait la solution particulière (étape de la preuve par Gauss).
+  \item Oublier de vérifier les coefficients de Bézout trouvés (toujours vérifier $au+bv=d$ numériquement).
+  \item Appliquer le petit théorème de Fermat avec un $p$ \textbf{non premier}, ou sans vérifier $p\nmid a$.
+  \item Dans une conversion de base, oublier qu'un chiffre $a_i$ doit vérifier $0\leq a_i\leq b-1$ (jamais un chiffre $\geq b$).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Division euclidienne : $a=bq+r$, $0\leq r<b$, unique.
+  \item Euclide : $a\wedge b=b\wedge r$ ; calcul par divisions successives, dernier reste non nul.
+  \item Bézout : $\exists u,v,\ au+bv=a\wedge b$ ; $a\wedge b=1\iff\exists u,v,\ au+bv=1$.
+  \item Gauss : $a\mid bc$ et $a\wedge b=1\Rightarrow a\mid c$ ; conséquence : $a\mid c$, $b\mid c$, $a\wedge b=1\Rightarrow ab\mid c$.
+  \item Équation $ax+by=c$ : solutions ssi $(a\wedge b)\mid c$ ; solution générale via Gauss à partir d'une solution particulière.
+  \item Congruences : $a\equiv b\,[n]$ compatible avec $+,\times,$ puissances ; utile pour restes et critères de divisibilité.
+  \item Fermat : $p$ premier, $p\nmid a$ $\Rightarrow a^{p-1}\equiv1\,[p]$ (et $a^p\equiv a\,[p]$ pour tout $a$).
+  \item Base $b$ : $n=\sum a_ib^i$ avec $0\leq a_i<b$ ; chiffres obtenus par divisions euclidiennes successives par $b$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

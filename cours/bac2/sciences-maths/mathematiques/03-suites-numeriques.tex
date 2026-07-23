@@ -1,0 +1,625 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Suites numériques
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Suites numériques}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Définir rigoureusement une suite, sa monotonie, ses bornes, à l'aide de quantificateurs.
+  \item Maîtriser complètement les suites arithmétiques, géométriques et arithmético-géométriques (terme général, somme, limite).
+  \item Démontrer et utiliser le théorème de la convergence monotone, le théorème des gendarmes et le théorème des suites adjacentes.
+  \item Étudier une suite définie par récurrence $u_{n+1} = f(u_n)$ : intervalle stable, monotonie, convergence, limite.
+  \item Utiliser la définition formelle de la convergence (en $\varepsilon$) et distinguer convergence / divergence vers $\pm\infty$ / divergence sans limite.
+  \item Résoudre tous les types d'exercices type examen national sur les suites, y compris les suites couplées et les sommes télescopiques.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Généralités : définitions formelles}
+
+\begin{definition}[Suite numérique]
+Une \textbf{suite numérique} est une fonction $u : \mathbb{N} \to \mathbb{R}$ (ou définie à partir d'un certain rang $n_0$). L'image de $n$ par $u$ se note $u_n$ (plutôt que $u(n)$) et s'appelle le \textbf{terme général} (ou terme d'indice $n$) de la suite, notée $(u_n)_{n \geq n_0}$ ou simplement $(u_n)$.
+\end{definition}
+
+\begin{propriete}[Deux modes de définition]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Définition explicite} : $u_n = f(n)$, formule directe permettant de calculer n'importe quel terme sans connaître les précédents.
+  \item \textbf{Définition par récurrence} : donnée du premier terme $u_0$ (ou $u_{n_0}$) et d'une relation $u_{n+1} = f(u_n)$ permettant de calculer chaque terme à partir du précédent.
+\end{enumerate}
+\end{propriete}
+
+\begin{propriete}[Principe de récurrence]
+Soit $P(n)$ une propriété dépendant de l'entier $n$, et $n_0\in\mathbb{N}$. Si :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{Initialisation} : $P(n_0)$ est vraie ;
+  \item \textbf{Hérédité} : pour tout $n\geq n_0$, $\bigl(P(n) \text{ vraie}\bigr) \implies \bigl(P(n+1) \text{ vraie}\bigr)$ ;
+\end{itemize}
+alors $P(n)$ est vraie pour \textbf{tout} $n\geq n_0$.
+\end{propriete}
+
+\begin{remarque}[L'outil central de ce chapitre]
+Le raisonnement par récurrence est \emph{la} méthode pour établir une propriété portant sur \textbf{tous} les termes d'une suite : formule explicite, encadrement, intervalle stable, monotonie... Il revient dans la quasi-totalité des démonstrations et exercices de ce chapitre ; assure-toi de toujours rédiger clairement les deux étapes (initialisation, hérédité) et de conclure explicitement.
+\end{remarque}
+
+\begin{definition}[Monotonie -- définitions avec quantificateurs]
+La suite $(u_n)$ est :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item \textbf{croissante} si $(\forall n \in \mathbb{N})\ u_{n+1} \geq u_n$ ; \textbf{strictement croissante} si $(\forall n)\ u_{n+1} > u_n$ ;
+  \item \textbf{décroissante} si $(\forall n)\ u_{n+1} \leq u_n$ ; \textbf{strictement décroissante} si $(\forall n)\ u_{n+1} < u_n$ ;
+  \item \textbf{constante} si $(\forall n)\ u_{n+1} = u_n$ ; \textbf{monotone} si elle est croissante ou décroissante.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Suites majorées, minorées, bornées]
+$(u_n)$ est \textbf{majorée} s'il existe $M \in \mathbb{R}$ tel que $(\forall n)\ u_n \leq M$ ; \textbf{minorée} s'il existe $m \in \mathbb{R}$ tel que $(\forall n)\ u_n \geq m$ ; \textbf{bornée} si elle est à la fois majorée et minorée, c'est-à-dire s'il existe $K \geq 0$ tel que $(\forall n)\ |u_n| \leq K$.
+\end{definition}
+
+\begin{propriete}[Trois méthodes pour étudier le sens de variation]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Signe de $u_{n+1} - u_n$} : méthode universelle. Si $u_{n+1} - u_n \geq 0$ pour tout $n$, la suite est croissante ; si $\leq 0$, décroissante.
+  \item \textbf{Comparaison du rapport $\dfrac{u_{n+1}}{u_n}$ à $1$} : valable \textbf{uniquement} si tous les termes sont strictement positifs (ou tous strictement négatifs, avec inégalité inversée).
+  \item \textbf{Étude de la fonction associée} : si $u_n = f(n)$ avec $f$ monotone sur $[0\,;+\infty[$, la suite a le même sens de variation que $f$.
+\end{enumerate}
+\end{propriete}
+
+\begin{exemple}[Les trois méthodes en pratique]
+\textbf{a)} $u_n = n^2 - 5n$ : $u_{n+1} - u_n = (n+1)^2 - 5(n+1) - n^2 + 5n = 2n - 4$. Ce signe dépend de $n$ (négatif si $n < 2$, positif si $n \geq 2$) : $(u_n)$ n'est \textbf{pas monotone} sur $\mathbb{N}$ entier, mais décroissante puis croissante (minimum en $n=2$).
+
+\smallskip
+\textbf{b)} $u_n = \dfrac{3^n}{n!}$ (tous strictement positifs) : $\dfrac{u_{n+1}}{u_n} = \dfrac{3}{n+1}$. Pour $n \geq 3$, ce rapport est $\leq 1$ : $(u_n)$ est décroissante à partir de $n = 3$.
+
+\smallskip
+\textbf{c)} $u_n = \sqrt{n+1}$ : $f(x) = \sqrt{x+1}$ est croissante sur $[0\,;+\infty[$, donc $(u_n)$ est croissante.
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Suites arithmétiques et géométriques}
+
+\subsection{Suites arithmétiques}
+
+\begin{definition}
+$(u_n)$ est \textbf{arithmétique} de raison $r \in \mathbb{R}$ si $(\forall n)\ u_{n+1} = u_n + r$.
+\end{definition}
+
+\begin{propriete}[Terme général et somme]
+\[
+  u_n = u_0 + n\,r \qquad\text{(plus généralement } u_n = u_p + (n-p)\,r\text{)}.
+\]
+\end{propriete}
+
+\begin{demo}
+Par récurrence sur $n$. \textbf{Initialisation} : $u_0 = u_0 + 0 \times r$, vrai. \textbf{Hérédité} : supposons $u_n = u_0 + nr$. Alors $u_{n+1} = u_n + r = u_0 + nr + r = u_0 + (n+1)r$. La propriété est vraie au rang $n+1$, donc pour tout $n \in \mathbb{N}$.
+\end{demo}
+
+\begin{propriete}[Somme de termes consécutifs]
+\[
+  S = u_p + u_{p+1} + \cdots + u_q = (q - p + 1) \times \frac{u_p + u_q}{2}
+\]
+(nombre de termes $\times$ moyenne du premier et du dernier). Cas particulier fondamental : $1 + 2 + \cdots + n = \dfrac{n(n+1)}{2}$.
+\end{propriete}
+
+\begin{demo}
+Notons $S = u_p + u_{p+1} + \cdots + u_q$. En écrivant la somme à l'envers, $S = u_q + u_{q-1} + \cdots + u_p$, puis en additionnant terme à terme les deux écritures :
+\[
+  2S = \sum_{k=p}^{q} (u_k + u_{q+p-k}) = (q - p + 1)(u_p + u_q),
+\]
+car chaque paire $u_k + u_{q+p-k}$ vaut $u_p + u_q$ (les termes étant en progression arithmétique). D'où $S = (q-p+1)\dfrac{u_p+u_q}{2}$.
+\end{demo}
+
+\subsection{Suites géométriques}
+
+\begin{definition}
+$(u_n)$ est \textbf{géométrique} de raison $q \in \mathbb{R}$ si $(\forall n)\ u_{n+1} = q\,u_n$.
+\end{definition}
+
+\begin{propriete}[Terme général et somme]
+\[
+  u_n = u_0 \cdot q^n \qquad\text{(plus généralement } u_n = u_p \cdot q^{\,n-p}\text{)}.
+\]
+Pour $q \neq 1$ : \[S = u_p + u_{p+1} + \cdots + u_q = u_p \times \frac{1 - q^{\,q-p+1}}{1 - q}.\]
+Si $q = 1$ : $S = (q - p + 1)\,u_p$ (tous les termes sont égaux).
+\end{propriete}
+
+\begin{demo}
+Notons $S = u_p(1 + q + \cdots + q^{q-p})$. En posant $n = q - p$ et $T = 1 + q + \cdots + q^n$ :
+\[
+  T - qT = (1 + q + \cdots + q^n) - (q + q^2 + \cdots + q^{n+1}) = 1 - q^{n+1},
+\]
+donc $T(1-q) = 1 - q^{n+1}$, d'où $T = \dfrac{1-q^{n+1}}{1-q}$ si $q \neq 1$, et $S = u_p T$.
+\end{demo}
+
+\begin{exemple}[Reconnaître et calculer]
+Soit $u_0 = 3$ et $u_{n+1} = -2u_n$. Calculons $S = u_0 + u_1 + \cdots + u_5$.
+
+\smallskip
+$(u_n)$ est géométrique de raison $q = -2$, premier terme $u_0 = 3$ :
+\[
+  S = 3 \times \frac{1 - (-2)^6}{1 - (-2)} = 3 \times \frac{1 - 64}{3} = 1 - 64 = -63.
+\]
+\end{exemple}
+
+\subsection{Suites arithmético-géométriques}
+
+\begin{propriete}[Méthode du point fixe -- $u_{n+1} = a\,u_n + b$ avec $a \neq 1$]
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item \textbf{Point fixe} : résoudre $\ell = a\ell + b$, soit $\ell = \dfrac{b}{1-a}$.
+  \item \textbf{Suite auxiliaire} : poser $v_n = u_n - \ell$. Alors $v_{n+1} = u_{n+1} - \ell = au_n + b - \ell = a(u_n - \ell) = a\,v_n$ (car $\ell = a\ell+b$) : $(v_n)$ est géométrique de raison $a$.
+  \item \textbf{Terme général} : $v_n = v_0\,a^n$, d'où $u_n = \ell + (u_0 - \ell)\,a^n$.
+  \item \textbf{Limite} : si $|a| < 1$, $a^n \to 0$ donc $u_n \to \ell$.
+\end{enumerate}
+\end{propriete}
+
+\begin{exemple}[Application complète]
+Soit $u_0 = 5$, $u_{n+1} = \dfrac{1}{2}u_n + 3$. Exprimer $u_n$ en fonction de $n$ et calculer $\lim u_n$.
+
+\smallskip
+Point fixe : $\ell = \frac{1}{2}\ell + 3 \Rightarrow \ell = 6$. Suite auxiliaire $v_n = u_n - 6$ : géométrique de raison $\frac{1}{2}$, $v_0 = -1$. Donc $v_n = -\left(\frac{1}{2}\right)^n$, et $u_n = 6 - \left(\frac{1}{2}\right)^n$. Comme $\left|\frac{1}{2}\right| < 1$ : $\lim u_n = 6$.
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Convergence : définition formelle et propriétés}
+
+\begin{definition}[Limite finie d'une suite -- définition en $\varepsilon$]
+$(u_n)$ \textbf{converge} vers $\ell \in \mathbb{R}$, noté $\lim\limits_{n \to +\infty} u_n = \ell$, lorsque :
+\[
+  (\forall \varepsilon > 0)\ (\exists N \in \mathbb{N})\ (\forall n \geq N)\quad |u_n - \ell| < \varepsilon.
+\]
+Une suite non convergente est dite \textbf{divergente} (elle tend vers $+\infty$, vers $-\infty$, ou n'a pas de limite).
+\end{definition}
+
+\begin{propriete}[Unicité de la limite]
+Si $(u_n)$ converge, sa limite est \textbf{unique}.
+\end{propriete}
+
+\begin{demo}
+Identique à la preuve pour les fonctions : si $u_n \to \ell$ et $u_n \to \ell'$ avec $\ell \neq \ell'$, on pose $\varepsilon = \frac{|\ell-\ell'|}{2}$ ; pour $n$ assez grand, $|u_n - \ell| < \varepsilon$ et $|u_n - \ell'| < \varepsilon$, donc $|\ell - \ell'| \leq |\ell - u_n| + |u_n - \ell'| < 2\varepsilon = |\ell - \ell'|$, absurde.
+\end{demo}
+
+\begin{propriete}[Limites infinies]
+\[
+  \lim_{n \to +\infty} u_n = +\infty \iff (\forall A > 0)(\exists N)(\forall n \geq N)\ u_n > A,
+\]
+et de façon analogue pour $-\infty$.
+\end{propriete}
+
+\begin{propriete}[Opérations sur les limites]
+Les mêmes règles que pour les fonctions en $+\infty$ s'appliquent : somme, produit, quotient des limites (avec les mêmes conventions et les mêmes \textbf{formes indéterminées} $\infty-\infty$, $0\times\infty$, $\frac{\infty}{\infty}$, $\frac{0}{0}$). Toute suite convergente est \textbf{bornée} (réciproque fausse : $u_n = (-1)^n$ est bornée mais divergente).
+\end{propriete}
+
+\begin{exemple}[Limites de référence pour $q^n$]
+\begin{itemize}[leftmargin=8mm, itemsep=0.5mm]
+  \item si $-1 < q < 1$ : $q^n \to 0$ ;
+  \item si $q > 1$ : $q^n \to +\infty$ ;
+  \item si $q = 1$ : $q^n = 1$ pour tout $n$ ;
+  \item si $q \leq -1$ : $(q^n)$ diverge sans limite (oscillations d'amplitude croissante ou constante).
+\end{itemize}
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Théorèmes de convergence}
+
+\begin{propriete}[Théorème de la convergence monotone -- admis]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Toute suite \textbf{croissante et majorée} converge (vers un réel $\ell \leq$ tout majorant).
+  \item Toute suite \textbf{décroissante et minorée} converge.
+  \item Toute suite \textbf{croissante et non majorée} tend vers $+\infty$.
+  \item Toute suite \textbf{décroissante et non minorée} tend vers $-\infty$.
+\end{itemize}
+\emph{Ce théorème garantit l'\textbf{existence} de la limite, mais ne donne pas sa valeur.}
+\end{propriete}
+
+\begin{propriete}[Théorème des gendarmes pour les suites]
+Si $v_n \leq u_n \leq w_n$ à partir d'un certain rang, et si $\lim v_n = \lim w_n = \ell$, alors $\lim u_n = \ell$.
+
+\smallskip
+\textbf{Variante utile} : si $|u_n - \ell| \leq v_n$ et $v_n \to 0$, alors $u_n \to \ell$.
+\end{propriete}
+
+\begin{propriete}[Théorème de comparaison]
+Si $u_n \geq v_n$ à partir d'un certain rang et $v_n \to +\infty$, alors $u_n \to +\infty$. De même, si $u_n \leq v_n$ et $v_n \to -\infty$, alors $u_n \to -\infty$.
+\end{propriete}
+
+\begin{exemple}[Convergence monotone -- schéma complet]
+Soit $u_0 = 0$ et $u_{n+1} = \sqrt{2 + u_n}$. Montrons que $(u_n)$ converge et calculons sa limite.
+
+\smallskip
+\textbf{Étape 1 (intervalle stable)} : montrons par récurrence que $0 \leq u_n \leq 2$ pour tout $n$. Initialisation : $u_0 = 0 \in [0\,;2]$. Hérédité : si $0 \leq u_n \leq 2$, alors $2 \leq u_n + 2 \leq 4$, donc $\sqrt{2} \leq u_{n+1} \leq 2$, en particulier $0 \leq u_{n+1} \leq 2$.
+
+\smallskip
+\textbf{Étape 2 (monotonie)} : $u_{n+1} - u_n = \sqrt{2+u_n} - u_n$. On étudie $g(x) = \sqrt{2+x} - x$ sur $[0\,;2]$ : $g'(x) = \frac{1}{2\sqrt{2+x}} - 1 < 0$ (car $2\sqrt{2+x} \geq 2\sqrt{2} > 1$), donc $g$ est décroissante, et $g(2) = \sqrt{4} - 2 = 0$. Ainsi $g(x) \geq g(2) = 0$ pour $x \leq 2$ : $u_{n+1} - u_n = g(u_n) \geq 0$, la suite est \textbf{croissante}.
+
+\smallskip
+\textbf{Étape 3 (convergence)} : $(u_n)$ est croissante et majorée par $2$ : elle converge vers un réel $\ell \in [0\,;2]$.
+
+\smallskip
+\textbf{Étape 4 (calcul de $\ell$)} : $f(x) = \sqrt{2+x}$ est continue sur $[0\,;2]$, donc $\ell = \sqrt{2+\ell}$, soit $\ell^2 = 2 + \ell$ (car $\ell \geq 0$), c'est-à-dire $\ell^2 - \ell - 2 = 0$, $(\ell-2)(\ell+1)=0$. Comme $\ell \geq 0$ : $\boxed{\ell = 2}$.
+\end{exemple}
+
+\begin{remarque}[Rédaction attendue -- les 4 étapes obligatoires]
+Pour une suite récurrente $u_{n+1} = f(u_n)$, la rédaction complète exige \textbf{toujours} : 1) un intervalle stable par $f$ contenant tous les $u_n$ (par récurrence) ; 2) le sens de variation ; 3) l'application du théorème de convergence monotone ; 4) la résolution de $f(\ell) = \ell$ \emph{après} avoir justifié l'existence de $\ell$. Sauter une étape fait perdre des points, même si le résultat final est correct.
+\end{remarque}
+
+% ------------------- SECTION 5 -------------------
+\section{Suites adjacentes}
+
+\begin{definition}[Suites adjacentes]
+Deux suites $(u_n)$ et $(v_n)$ sont \textbf{adjacentes} lorsque :
+\begin{enumerate}[leftmargin=7mm, itemsep=0.5mm]
+  \item l'une est croissante et l'autre décroissante (disons $(u_n)$ croissante et $(v_n)$ décroissante) ;
+  \item $\lim\limits_{n\to+\infty}(v_n-u_n)=0$.
+\end{enumerate}
+\end{definition}
+
+\begin{propriete}[Théorème des suites adjacentes]
+Si $(u_n)$ et $(v_n)$ sont adjacentes ($(u_n)$ croissante, $(v_n)$ décroissante), alors :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item pour tout $n$ : $u_n\leq v_n$ (et même $u_0\leq u_n\leq v_n\leq v_0$) ;
+  \item $(u_n)$ et $(v_n)$ \textbf{convergent}, et vers la \textbf{même limite} $\ell$, avec $u_n\leq\ell\leq v_n$ pour tout $n$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+Posons $w_n=v_n-u_n$. Alors $w_{n+1}-w_n=(v_{n+1}-v_n)-(u_{n+1}-u_n)\leq0$ (car $v_{n+1}-v_n\leq0$ et $u_{n+1}-u_n\geq0$) : $(w_n)$ est \textbf{décroissante}. Comme de plus $w_n\to0$, une suite décroissante converge vers sa borne inférieure, donc $w_n\geq\lim w_n=0$ pour tout $n$ : ainsi $v_n\geq u_n$ pour tout $n$.
+
+\smallskip
+Puisque $u_n\leq v_n\leq v_0$ (car $(v_n)$ décroissante), $(u_n)$ est croissante et \textbf{majorée} par $v_0$ : elle converge vers un réel $\ell_1$ (théorème de la convergence monotone). De même, $(v_n)$ est décroissante et minorée par $u_0$ : elle converge vers $\ell_2$.
+
+\smallskip
+Or $v_n-u_n\to\ell_2-\ell_1$ (limite d'une différence de suites convergentes) et $v_n-u_n\to0$ par hypothèse : par unicité de la limite, $\ell_2-\ell_1=0$, soit $\ell_1=\ell_2=\ell$.
+
+\smallskip
+Enfin, $(u_n)$ étant croissante vers $\ell$ : $u_n\leq\ell$ pour tout $n$ ; $(v_n)$ étant décroissante vers $\ell$ : $\ell\leq v_n$ pour tout $n$. D'où $u_n\leq\ell\leq v_n$.
+\end{demo}
+
+\begin{remarque}[Pourquoi ce théorème est puissant]
+Il permet de prouver la convergence de \textbf{deux} suites \textbf{simultanément}, sans connaître à l'avance leur limite commune, et fournit à chaque rang un \textbf{encadrement} $u_n\leq\ell\leq v_n$ -- exactement le principe de la \textbf{dichotomie} vue au chapitre « Limites et continuité » : les suites $(a_n)$ et $(b_n)$ construites par dichotomie pour approcher une solution de $f(x)=0$ sont en fait deux suites \textbf{adjacentes} (l'une croissante, l'autre décroissante, d'écart $\frac{b-a}{2^n}\to0$).
+\end{remarque}
+
+\begin{exemple}[Exemple classique de suites adjacentes]
+Soient $u_n=\displaystyle\sum_{k=1}^n\frac{1}{k^2}$ et $v_n=u_n+\dfrac1n$, pour $n\geq1$. Montrons qu'elles sont adjacentes.
+
+\smallskip
+\emph{Monotonie de $(u_n)$} : $u_{n+1}-u_n=\dfrac{1}{(n+1)^2}>0$ : $(u_n)$ est strictement croissante.
+
+\smallskip
+\emph{Monotonie de $(v_n)$} :
+\[
+  v_{n+1}-v_n = \underbrace{u_{n+1}-u_n}_{\frac{1}{(n+1)^2}} + \frac{1}{n+1}-\frac1n
+  = \frac1{(n+1)^2} + \frac{n-(n+1)}{n(n+1)}
+  = \frac1{(n+1)^2} - \frac1{n(n+1)}.
+\]
+En réduisant au même dénominateur : $v_{n+1}-v_n=\dfrac{n-(n+1)}{n(n+1)^2}=\dfrac{-1}{n(n+1)^2}<0$ : $(v_n)$ est strictement décroissante.
+
+\smallskip
+\emph{Écart} : $v_n-u_n=\dfrac1n\xrightarrow[n\to+\infty]{}0$.
+
+\smallskip
+\textbf{Conclusion} : $(u_n)$ et $(v_n)$ sont adjacentes, donc convergent vers une même limite $\ell$, avec $u_n\leq\ell\leq v_n$ pour tout $n$ (on démontre, hors-programme, que $\ell=\frac{\pi^2}{6}$).
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Convergence par l'inégalité des accroissements finis}
+
+\begin{propriete}[Méthode alternative de convergence]
+Soit $(u_n)$ définie par $u_{n+1} = f(u_n)$, $\ell$ un point fixe de $f$ ($f(\ell)=\ell$), et $I$ un intervalle stable par $f$ contenant tous les $u_n$ et $\ell$. Si $f$ est dérivable sur $I$ avec $|f'(x)| \leq k < 1$ pour tout $x \in I$, alors :
+\[
+  |u_n - \ell| \leq k^n\,|u_0 - \ell| \xrightarrow[n \to +\infty]{} 0,
+  \qquad\text{donc } u_n \to \ell.
+\]
+\end{propriete}
+
+\begin{demo}
+Par l'inégalité des accroissements finis entre $u_n$ et $\ell$ (tous deux dans $I$) :
+\[
+  |u_{n+1} - \ell| = |f(u_n) - f(\ell)| \leq k\,|u_n - \ell|.
+\]
+Par récurrence immédiate : $|u_n - \ell| \leq k^n |u_0 - \ell|$. Comme $0 \leq k < 1$, $k^n \to 0$, donc par encadrement $|u_n - \ell| \to 0$, c'est-à-dire $u_n \to \ell$.
+\end{demo}
+
+\begin{remarque}[Avantage de cette méthode]
+Elle \textbf{évite} d'étudier la monotonie de $(u_n)$ (parfois délicate) et donne \textbf{en prime} une majoration de la vitesse de convergence, utile pour les questions du type « déterminer $n$ tel que $|u_n - \ell| < 10^{-p}$ ».
+\end{remarque}
+
+% ------------------- SECTION 7 -------------------
+\section{Sommes télescopiques et suites couplées}
+
+\begin{propriete}[Somme télescopique]
+Si $u_n = a_{n+1} - a_n$ pour une suite auxiliaire $(a_n)$, alors :
+\[
+  \sum_{k=0}^{n} u_k = \sum_{k=0}^{n} (a_{k+1} - a_k) = a_{n+1} - a_0
+\]
+(tous les termes intermédiaires s'annulent deux à deux).
+\end{propriete}
+
+\begin{exemple}[Somme télescopique classique]
+Calculons $S_n = \displaystyle\sum_{k=1}^{n} \frac{1}{k(k+1)}$.
+
+\smallskip
+Décomposition : $\dfrac{1}{k(k+1)} = \dfrac{1}{k} - \dfrac{1}{k+1}$ (à vérifier par réduction au même dénominateur). Donc
+\[
+  S_n = \sum_{k=1}^{n} \left(\frac{1}{k} - \frac{1}{k+1}\right) = \frac{1}{1} - \frac{1}{n+1} = 1 - \frac{1}{n+1} \xrightarrow[n \to +\infty]{} 1.
+\]
+\end{exemple}
+
+\begin{remarque}[Suites couplées]
+Certains exercices définissent deux suites liées, par exemple $u_{n+1} = \frac{u_n+v_n}{2}$ et $v_{n+1} = \sqrt{u_n v_n}$ (moyenne arithmético-géométrique), ou $u_{n+1} = 2u_n - v_n$, $v_{n+1} = u_n$. La méthode consiste souvent à étudier une combinaison $w_n = u_n - v_n$ ou $w_n = u_n + v_n$ pour se ramener à une suite arithmétique ou géométrique connue.
+\end{remarque}
+
+% ------------------- SECTION 8 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- arithmético-géométrique complète]
+Soit $u_0 = 1$ et $u_{n+1} = 3u_n - 4$. Montrer que $v_n = u_n - 2$ est géométrique, exprimer $u_n$, étudier la monotonie et la limite.
+
+\smallskip
+\textbf{Corrigé.} $v_{n+1} = u_{n+1} - 2 = 3u_n - 6 = 3(u_n - 2) = 3v_n$ : $(v_n)$ géométrique de raison $3$, $v_0 = -1$, donc $v_n = -3^n$, d'où $u_n = 2 - 3^n$.
+
+\smallskip
+Monotonie : $u_{n+1} - u_n = -3^{n+1} + 3^n = 3^n(1 - 3) = -2\times 3^n < 0$ : $(u_n)$ est strictement décroissante.
+
+\smallskip
+Limite : $3^n \to +\infty$, donc $u_n = 2 - 3^n \to -\infty$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- suite définie par une somme]
+Soit $S_n = \displaystyle\sum_{k=0}^{n} \frac{1}{2^k}$. Calculer $S_n$ en fonction de $n$, puis $\lim S_n$.
+
+\smallskip
+\textbf{Corrigé.} $S_n$ est la somme des $n+1$ premiers termes d'une suite géométrique de premier terme $1$ et de raison $\frac{1}{2}$ :
+\[
+  S_n = \frac{1 - \left(\frac{1}{2}\right)^{n+1}}{1 - \frac{1}{2}} = 2\left(1 - \left(\frac{1}{2}\right)^{n+1}\right) = 2 - \left(\frac{1}{2}\right)^n.
+\]
+Comme $\left(\frac{1}{2}\right)^n \to 0$ : $\lim S_n = 2$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- convergence monotone avec fonction homographique]
+Soit $u_0 = 2$ et $u_{n+1} = \dfrac{2u_n + 1}{u_n + 2}$. Montrer que $(u_n)$ est bien définie, à valeurs dans $[1\,;2]$, décroissante, et calculer sa limite.
+
+\smallskip
+\textbf{Corrigé.} Posons $f(x) = \dfrac{2x+1}{x+2}$ sur $[1\,;2]$ ($x + 2 \neq 0$, la suite est bien définie tant que $u_n \neq -2$, ce qui sera garanti par $u_n \in [1\,;2]$).
+
+\smallskip
+\emph{Intervalle stable} : $f(1) = 1$, $f(2) = \frac{5}{4}$ ; $f'(x) = \frac{2(x+2)-(2x+1)}{(x+2)^2} = \frac{3}{(x+2)^2} > 0$ : $f$ est croissante sur $[1\,;2]$, donc $f([1\,;2]) = [f(1)\,;f(2)] = [1\,;1{,}25] \subset [1\,;2]$. Par récurrence, $u_n \in [1\,;2]$ pour tout $n$.
+
+\smallskip
+\emph{Monotonie} : $u_{n+1} - u_n = f(u_n) - u_n = \dfrac{2u_n+1 - u_n(u_n+2)}{u_n+2} = \dfrac{1 - u_n^2}{u_n+2}$. Pour $u_n \in [1\,;2]$ : $1 - u_n^2 \leq 0$ et $u_n + 2 > 0$, donc $u_{n+1} - u_n \leq 0$ : $(u_n)$ est décroissante.
+
+\smallskip
+\emph{Convergence} : décroissante et minorée par $1$ : converge vers $\ell \in [1\,;2]$. $f$ continue en $\ell$ : $\ell = \dfrac{2\ell+1}{\ell+2}$, soit $\ell(\ell+2) = 2\ell+1$, $\ell^2 = 1$, donc $\ell = \pm 1$. Comme $\ell \geq 1$ : $\boxed{\ell = 1}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- deux suites couplées, adjacentes]
+Soit $(u_n)$ et $(v_n)$ définies par $u_0=1$, $v_0=7$, et pour tout $n$ : $u_{n+1} = \dfrac{u_n+v_n}{2}$, $v_{n+1} = \dfrac{u_n+3v_n}{4}$. Montrer que $(u_n)$ et $(v_n)$ sont adjacentes, puis déterminer leur limite commune.
+
+\smallskip
+\textbf{Corrigé.} \emph{Écart} : posons $w_n=v_n-u_n$.
+\[
+  w_{n+1} = v_{n+1} - u_{n+1} = \frac{u_n+3v_n}{4} - \frac{u_n+v_n}{2} = \frac{u_n+3v_n - 2u_n - 2v_n}{4} = \frac{v_n - u_n}{4} = \frac14w_n.
+\]
+$(w_n)$ est géométrique de raison $\frac14$, $w_0=7-1=6$, donc $w_n=6\left(\frac14\right)^n\to0$ ; de plus $w_n>0$ pour tout $n$ (produit de termes positifs), donc $v_n>u_n$ pour tout $n$.
+
+\smallskip
+\emph{Monotonie de $(u_n)$} : $u_{n+1}-u_n=\dfrac{u_n+v_n}{2}-u_n=\dfrac{v_n-u_n}{2}=\dfrac{w_n}{2}>0$ : $(u_n)$ est \textbf{croissante}.
+
+\smallskip
+\emph{Monotonie de $(v_n)$} : $v_{n+1}-v_n=\dfrac{u_n+3v_n}{4}-v_n=\dfrac{u_n-v_n}{4}=\dfrac{-w_n}{4}<0$ : $(v_n)$ est \textbf{décroissante}.
+
+\smallskip
+Comme $(u_n)$ croissante, $(v_n)$ décroissante et $v_n-u_n=w_n\to0$ : $(u_n)$ et $(v_n)$ sont \textbf{adjacentes}, donc convergent vers une \textbf{même limite} $\ell$.
+
+\smallskip
+\emph{Détermination de $\ell$} : cherchons une combinaison $au_n+bv_n$ constante. On veut $a\cdot\dfrac{u_n+v_n}{2}+b\cdot\dfrac{u_n+3v_n}{4}=au_n+bv_n$, soit $\dfrac{2a+b}{4}=a$ et $\dfrac{2a+3b}{4}=b$, ce qui donne $b=2a$ dans les deux cas. Avec $a=1$, $b=2$ : $u_n+2v_n$ est \textbf{constante}.
+\[
+  u_n+2v_n = u_0+2v_0 = 1+14 = 15 \qquad \text{pour tout } n.
+\]
+Par passage à la limite ($u_n\to\ell$, $v_n\to\ell$) : $\ell+2\ell=15$, soit $\boxed{\ell=5}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- majoration de la vitesse de convergence]
+Reprenons $u_0=0$, $u_{n+1}=\sqrt{2+u_n}$ (limite $\ell=2$ trouvée plus haut). Montrer que $|u_{n+1}-2| \leq \frac{1}{2}|u_n - 2|$, puis déterminer un entier $n$ tel que $|u_n - 2| < 10^{-3}$.
+
+\smallskip
+\textbf{Corrigé.} $f(x) = \sqrt{2+x}$, $f'(x) = \dfrac{1}{2\sqrt{2+x}}$. Sur $[0\,;2]$, $2+x \in [2\,;4]$, donc $\sqrt{2+x} \geq \sqrt{2}$, d'où $f'(x) \leq \dfrac{1}{2\sqrt{2}} < \dfrac{1}{2}$.
+
+\smallskip
+Par l'inégalité des accroissements finis : $|u_{n+1}-2| = |f(u_n)-f(2)| \leq \frac{1}{2}|u_n-2|$, donc $|u_n - 2| \leq \left(\frac{1}{2}\right)^n |u_0-2| = 2\left(\frac{1}{2}\right)^n$.
+
+\smallskip
+On veut $2\left(\frac{1}{2}\right)^n < 10^{-3}$, soit $\left(\frac{1}{2}\right)^{n-1} < 10^{-3}$, soit $n - 1 > \dfrac{3\ln 10}{\ln 2} \approx 9{,}97$, donc $n \geq 11$ convient.
+\end{exemple}
+
+\begin{exemple}[Exercice 6 -- suite non monotone, encadrement direct]
+Soit $u_n = \dfrac{(-1)^n}{n} + 3$ pour $n \geq 1$. Montrer que $(u_n)$ converge vers $3$ sans étudier sa monotonie (elle n'est pas monotone).
+
+\smallskip
+\textbf{Corrigé.} Pour tout $n \geq 1$ : $|u_n - 3| = \left|\dfrac{(-1)^n}{n}\right| = \dfrac{1}{n} \to 0$. Par la variante du théorème des gendarmes ($|u_n - \ell| \leq v_n \to 0 \Rightarrow u_n \to \ell$) : $\lim u_n = 3$.
+\end{exemple}
+
+% ------------------- SECTION 9 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Montrer qu'une suite est arithmétique/géométrique & Calculer $u_{n+1}-u_n$ (constant $\Rightarrow$ arithm.) ou $\frac{u_{n+1}}{u_n}$ (constant $\Rightarrow$ géom.). \\
+Suite arithmético-géométrique $u_{n+1}=au_n+b$ & Point fixe $\ell=\frac{b}{1-a}$, puis $v_n=u_n-\ell$ géométrique de raison $a$. \\
+\rowcolor{tealpale} Étudier la monotonie & Signe de $u_{n+1}-u_n$ (universel) ; rapport si termes positifs ; fonction associée si $u_n=f(n)$. \\
+Prouver la convergence d'une récurrente & 4 étapes : intervalle stable, monotonie, convergence monotone, résoudre $f(\ell)=\ell$. \\
+\rowcolor{tealpale} Convergence sans étudier la monotonie & Inégalité des accroissements finis : $|f'|\leq k<1$ sur un intervalle stable. \\
+Trouver $n$ tel que $|u_n-\ell|<10^{-p}$ & Utiliser la majoration $|u_n-\ell|\leq k^n|u_0-\ell|$, résoudre l'inéquation avec $\ln$. \\
+\rowcolor{tealpale} Prouver la convergence de 2 suites liées sans connaître $\ell$ & Montrer qu'elles sont \textbf{adjacentes} (monotonies opposées + écart $\to0$). \\
+Trouver la limite commune de 2 suites adjacentes & Chercher une combinaison linéaire $au_n+bv_n$ \textbf{constante}, puis passer à la limite. \\
+\rowcolor{tealpale} Calculer une somme $\sum u_k$ & Reconnaître arithmétique/géométrique, ou chercher une écriture télescopique $a_{k+1}-a_k$. \\
+Suites couplées $(u_n),(v_n)$ & Étudier une combinaison $w_n = u_n \pm v_n$ ou $u_n - v_n$ pour retrouver une suite connue (souvent adjacentes). \\
+\rowcolor{tealpale} Suite non monotone qui converge quand même & Encadrer $|u_n - \ell|$ par une suite qui tend vers $0$ (gendarmes). \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Conclure $\lim u_n = \ell$ en résolvant $f(\ell)=\ell$ \textbf{sans avoir prouvé la convergence} au préalable (monotonie+borne, ou AF).
+  \item Utiliser le \textbf{rapport} $\frac{u_{n+1}}{u_n}$ pour la monotonie alors que les termes ne sont pas tous positifs.
+  \item Oublier de démontrer par \textbf{récurrence} que la suite reste dans l'intervalle stable (l'affirmer sans preuve).
+  \item Confondre « $(u_n)$ bornée » et « $(u_n)$ convergente » : une suite bornée peut diverger (ex. $(-1)^n$).
+  \item Appliquer la formule de somme géométrique avec $q=1$ (division par $0$) : traiter ce cas à part.
+  \item Oublier le facteur $(q-p+1)$ (nombre de termes) dans la somme arithmétique ou géométrique entre les indices $p$ et $q$.
+  \item Pour l'inégalité des accroissements finis : oublier de vérifier que $k<1$ \textbf{strictement} (sinon $k^n$ ne tend pas vers $0$).
+  \item Pour les suites adjacentes : oublier de préciser \textbf{laquelle} est croissante et laquelle est décroissante, ou conclure « adjacentes » sans avoir vérifié \textbf{les deux} conditions (monotonies opposées \emph{et} écart tendant vers $0$).
+  \item Croire que le théorème des suites adjacentes donne la \textbf{valeur} de la limite commune : il ne donne que son \textbf{existence} et l'encadrement $u_n\leq\ell\leq v_n$ ; il faut un argument supplémentaire (combinaison linéaire constante, etc.) pour calculer $\ell$.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Arithmétique : $u_n=u_0+nr$, somme $=(\text{nb termes})\times\frac{\text{premier}+\text{dernier}}{2}$. Géométrique : $u_n=u_0q^n$, somme $=$ premier$\times\frac{1-q^{\text{nb}}}{1-q}$.
+  \item Arithmético-géométrique $u_{n+1}=au_n+b$ : $\ell=\frac{b}{1-a}$, $v_n=u_n-\ell$ géométrique de raison $a$.
+  \item Convergence monotone : croissante+majorée (ou décroissante+minorée) $\Rightarrow$ converge ; ne donne pas la valeur.
+  \item Suites adjacentes : $(u_n)$ croissante, $(v_n)$ décroissante, $v_n-u_n\to0$ $\Rightarrow$ elles convergent vers une \textbf{même} limite $\ell$, avec $u_n\leq\ell\leq v_n$.
+  \item Méthode alternative : $|f'|\leq k<1$ sur intervalle stable $\Rightarrow |u_n-\ell|\leq k^n|u_0-\ell|\to 0$.
+  \item Rédaction d'une suite récurrente : intervalle stable (récurrence) $\to$ monotonie $\to$ convergence $\to$ résoudre $f(\ell)=\ell$.
+  \item Sommes télescopiques : $\sum(a_{k+1}-a_k) = a_{n+1}-a_0$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

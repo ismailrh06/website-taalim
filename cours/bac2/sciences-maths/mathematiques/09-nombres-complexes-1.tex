@@ -1,0 +1,458 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Nombres complexes (1) — forme algébrique
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Nombres complexes (1) -- forme algébrique}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Construire $\mathbb{C}$ et maîtriser la forme algébrique, les opérations et l'unicité de l'écriture $a+ib$.
+  \item Calculer avec le conjugué et le module, démontrer et utiliser leurs propriétés algébriques.
+  \item Résoudre dans $\mathbb{C}$ toute équation du second degré à coefficients réels, y compris à discriminant négatif.
+  \item Utiliser les nombres complexes en géométrie plane : affixe d'un point, d'un vecteur, distance, translation.
+  \item Résoudre des équations complexes plus élaborées (systèmes, équations bicarrées, racines $n$-ièmes de l'unité en lien avec le chapitre 2).
+  \item Traiter les exercices type examen national : calculs algébriques, second degré, lieux géométriques simples.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Construction et forme algébrique}
+
+\begin{definition}[Ensemble des nombres complexes]
+On admet l'existence d'un ensemble $\mathbb{C}$, contenant $\mathbb{R}$, muni d'une addition et d'une multiplication prolongeant celles de $\mathbb{R}$, et d'un élément $i\in\mathbb{C}$ tel que $i^2=-1$, vérifiant : tout élément $z\in\mathbb{C}$ s'écrit de manière \textbf{unique}
+\[
+  z = a+ib, \qquad a,b\in\mathbb{R}.
+\]
+Cette écriture est la \textbf{forme algébrique} de $z$. Le réel $a=\operatorname{Re}(z)$ est la \textbf{partie réelle}, $b=\operatorname{Im}(z)$ la \textbf{partie imaginaire} (un réel, pas un complexe !).
+\end{definition}
+
+\begin{propriete}[Unicité de l'écriture algébrique]
+Pour $a,b,a',b'\in\mathbb{R}$ :
+\[
+  a+ib = a'+ib' \iff a=a' \text{ et } b=b'.
+\]
+En particulier : $z=0\iff\operatorname{Re}(z)=0$ et $\operatorname{Im}(z)=0$.
+\end{propriete}
+
+\begin{demo}
+Si $a+ib=a'+ib'$, alors $(a-a')=i(b'-b)$. Si $b\ne b'$, on aurait $i=\dfrac{a-a'}{b'-b}\in\mathbb{R}$, ce qui contredirait $i^2=-1$ (un réel au carré est positif ou nul, alors que $i^2=-1<0$). Donc $b=b'$, puis $a-a'=0$, soit $a=a'$.
+\end{demo}
+
+\begin{definition}[Vocabulaire]
+$z=a+ib$ est \textbf{réel} si $b=0$ ; \textbf{imaginaire pur} si $a=0$ (noté $z\in i\mathbb{R}$). L'ensemble des imaginaires purs est noté $i\mathbb{R}$.
+\end{definition}
+
+\begin{propriete}[Opérations en forme algébrique]
+Pour $z=a+ib$ et $z'=a'+ib'$ :
+\[
+  z+z' = (a+a')+i(b+b'), \qquad
+  z\times z' = (aa'-bb')+i(ab'+a'b)
+\]
+(on développe normalement en utilisant $i^2=-1$).
+\end{propriete}
+
+\begin{exemple}[Calculs de base]
+Soient $z_1=3-2i$, $z_2=-1+4i$.
+\[
+  z_1+z_2 = 2+2i, \qquad
+  z_1z_2 = (3)(-1)-(-2)(4)+i\bigl[(3)(4)+(-1)(-2)\bigr] = -3+8+i(12+2) = 5+14i.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Conjugué}
+
+\begin{definition}[Conjugué]
+Le \textbf{conjugué} de $z=a+ib$ ($a,b\in\mathbb{R}$) est $\bar z = a-ib$.
+\end{definition}
+
+\begin{propriete}[Propriétés du conjugué]
+Pour tous $z,z'\in\mathbb{C}$ :
+\[
+  \overline{z+z'} = \bar z+\bar z', \qquad
+  \overline{zz'} = \bar z\,\bar z', \qquad
+  \overline{\left(\frac1z\right)} = \frac1{\bar z}\ (z\ne0), \qquad
+  \overline{\bar z} = z,
+\]
+\[
+  z+\bar z = 2\operatorname{Re}(z), \qquad
+  z-\bar z = 2i\operatorname{Im}(z), \qquad
+  z\bar z = a^2+b^2 \in\mathbb{R}_+.
+\]
+\emph{Caractérisations} : $z\in\mathbb{R}\iff z=\bar z$ ; \quad $z\in i\mathbb{R}\iff z=-\bar z$ (ou $\bar z=-z$).
+\end{propriete}
+
+\begin{demo}
+$\overline{zz'}=\bar z\bar z'$ : posons $z=a+ib$, $z'=a'+ib'$. $zz'=(aa'-bb')+i(ab'+a'b)$, donc $\overline{zz'}=(aa'-bb')-i(ab'+a'b)$. D'autre part, $\bar z\bar z'=(a-ib)(a'-ib')=(aa'-bb')-i(ab'+a'b)$ (même calcul avec $-i$). Les deux expressions coïncident.
+
+\smallskip
+$z\in\mathbb{R}\iff z=\bar z$ : si $z=a+ib$, $z=\bar z\iff a+ib=a-ib\iff 2ib=0\iff b=0\iff z\in\mathbb{R}$.
+\end{demo}
+
+\begin{exemple}[Utiliser le conjugué pour diviser]
+Écrivons $\dfrac{3+2i}{1-i}$ sous forme algébrique.
+
+\smallskip
+On multiplie par le conjugué du dénominateur :
+\[
+  \frac{3+2i}{1-i} = \frac{(3+2i)(1+i)}{(1-i)(1+i)} = \frac{3+3i+2i+2i^2}{1-i^2} = \frac{3+5i-2}{1+1} = \frac{1+5i}{2} = \frac12+\frac52i.
+\]
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Module}
+
+\begin{definition}[Module]
+Le \textbf{module} de $z=a+ib$ est $|z|=\sqrt{a^2+b^2}=\sqrt{z\bar z}$.
+\end{definition}
+
+\begin{propriete}[Propriétés du module]
+\[
+  |z|\geq0, \quad |z|=0\iff z=0, \qquad |\bar z|=|z|, \qquad |zz'|=|z||z'|, \qquad \left|\frac1z\right|=\frac1{|z|}\ (z\ne0),
+\]
+\[
+  \left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}\ (z'\ne0), \qquad
+  |z^n| = |z|^n\ (n\in\mathbb{N}), \qquad
+  |z+z'| \leq |z|+|z'| \quad\text{(inégalité triangulaire)}.
+\]
+Si $z\in\mathbb{R}$, $|z|$ coïncide avec la valeur absolue usuelle.
+\end{propriete}
+
+\begin{demo}
+$|zz'|=|z||z'|$ : $|zz'|^2 = (zz')\overline{(zz')} = zz'\bar z\bar z' = (z\bar z)(z'\bar z') = |z|^2|z'|^2$. Comme les modules sont positifs, on obtient $|zz'|=|z||z'|$ en prenant la racine carrée.
+\end{demo}
+
+\begin{propriete}[Résolution de $z\bar z$ et calcul de l'inverse]
+Pour $z=a+ib\ne0$ :
+\[
+  \frac1z = \frac{\bar z}{z\bar z} = \frac{\bar z}{|z|^2} = \frac{a-ib}{a^2+b^2}.
+\]
+\end{propriete}
+
+\begin{exemple}[Calcul de module et inverse]
+Soit $z=4-3i$. $|z|=\sqrt{16+9}=\sqrt{25}=5$. Inverse :
+\[
+  \frac1z = \frac{4+3i}{25} = \frac4{25}+\frac3{25}i.
+\]
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Équations du second degré dans $\mathbb{C}$}
+
+\begin{propriete}[Racines carrées d'un réel négatif]
+Pour $a>0$, l'équation $z^2=-a$ admet exactement deux solutions dans $\mathbb{C}$ : $z=i\sqrt a$ et $z=-i\sqrt a$ (car $\left(i\sqrt a\right)^2=i^2a=-a$).
+\end{propriete}
+
+\begin{propriete}[Résolution de $az^2+bz+c=0$, $a,b,c\in\mathbb{R}$, $a\ne0$]
+Posons $\Delta=b^2-4ac$.
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $\Delta>0$ : deux solutions réelles $z_{1,2}=\dfrac{-b\pm\sqrt\Delta}{2a}$.
+  \item Si $\Delta=0$ : une solution double $z_0=\dfrac{-b}{2a}$.
+  \item Si $\Delta<0$ : deux solutions \textbf{complexes conjuguées} $z_{1,2}=\dfrac{-b\pm i\sqrt{|\Delta|}}{2a}$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+On met sous forme canonique : $az^2+bz+c = a\left[\left(z+\dfrac{b}{2a}\right)^2-\dfrac{\Delta}{4a^2}\right]$. L'équation équivaut à $\left(z+\dfrac{b}{2a}\right)^2=\dfrac{\Delta}{4a^2}$.
+
+\smallskip
+Si $\Delta\geq0$ : $\dfrac{\Delta}{4a^2}$ est un carré réel positif, donc $z+\dfrac{b}{2a}=\pm\dfrac{\sqrt\Delta}{2a}$, ce qui redonne les formules usuelles.
+
+\smallskip
+Si $\Delta<0$ : $\dfrac{\Delta}{4a^2}=\left(\dfrac{i\sqrt{|\Delta|}}{2a}\right)^2$ (racine carrée complexe d'un négatif), donc $z+\dfrac{b}{2a}=\pm\dfrac{i\sqrt{|\Delta|}}{2a}$, d'où le résultat.
+\end{demo}
+
+\begin{propriete}[Somme et produit des racines]
+Si $z_1,z_2$ sont les racines de $az^2+bz+c=0$ ($a\ne0$) :
+\[
+  z_1+z_2 = -\frac ba, \qquad z_1z_2 = \frac ca.
+\]
+\end{propriete}
+
+\begin{exemple}[Résolution avec $\Delta<0$]
+Résolvons $z^2-2z+5=0$.
+\[
+  \Delta = 4-20 = -16 < 0, \qquad \sqrt{|\Delta|}=4.
+\]
+\[
+  z_{1,2} = \frac{2\pm4i}{2} = 1\pm2i.
+\]
+\textbf{Conclusion} : $S=\{1-2i\,;1+2i\}$ (racines conjuguées, cohérent car $\Delta<0$).
+\end{exemple}
+
+\begin{remarque}[Coefficients réels $\Rightarrow$ racines conjuguées]
+Si $a,b,c\in\mathbb{R}$ et $\Delta<0$, les deux racines sont \textbf{nécessairement conjuguées} l'une de l'autre. Ceci se généralise : pour tout polynôme à \textbf{coefficients réels}, si $z_0$ est une racine complexe non réelle, alors $\bar z_0$ est aussi une racine.
+\end{remarque}
+
+% ------------------- SECTION 5 -------------------
+\section{Interprétation géométrique : affixes}
+
+\begin{definition}[Affixe d'un point, d'un vecteur]
+Dans un plan muni d'un repère orthonormé direct $(O,\vec u,\vec v)$, à tout point $M(x,y)$ on associe l'\textbf{affixe} $z_M=x+iy$ ; réciproquement, tout $z=x+iy$ définit un unique point $M(x,y)$, dit \textbf{image} de $z$. De même, l'affixe du vecteur $\vec w(x,y)$ est $z_{\vec w}=x+iy$.
+\end{definition}
+
+\begin{propriete}[Traduction complexe des opérations géométriques]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Affixe de $\overrightarrow{AB}$ : $z_{\overrightarrow{AB}} = z_B-z_A$.
+  \item Affixe du milieu $I$ de $[AB]$ : $z_I=\dfrac{z_A+z_B}{2}$.
+  \item $|z_B-z_A| = AB$ (le module de l'affixe de $\overrightarrow{AB}$ est la distance $AB$).
+  \item Translation de vecteur $\vec w$ (affixe $b$) : $M'=t_{\vec w}(M) \iff z_{M'}=z_M+b$.
+\end{itemize}
+\end{propriete}
+
+\begin{exemple}[Calcul de distance et milieu]
+Soient $A(1+2i)$, $B(4-2i)$. Calculons $AB$ et l'affixe du milieu $I$.
+\[
+  AB = |z_B-z_A| = |3-4i| = \sqrt{9+16}=5, \qquad
+  z_I = \frac{(1+2i)+(4-2i)}{2} = \frac52.
+\]
+\end{exemple}
+
+\begin{exemple}[Lieu géométrique simple]
+Déterminons l'ensemble des points $M$ d'affixe $z$ tels que $|z-2|=|z+i|$.
+
+\smallskip
+Cette égalité signifie $AM=BM$ où $A(2)$ et $B(-i)$ : l'ensemble cherché est la \textbf{médiatrice} du segment $[AB]$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- calcul complet forme algébrique]
+Mettre sous forme algébrique $Z=\dfrac{(1+i)^3}{2-i}$.
+
+\smallskip
+\textbf{Corrigé.} $(1+i)^2=1+2i+i^2=2i$, donc $(1+i)^3=(1+i)(2i)=2i+2i^2=-2+2i$.
+\[
+  Z = \frac{-2+2i}{2-i} = \frac{(-2+2i)(2+i)}{(2-i)(2+i)} = \frac{-4-2i+4i+2i^2}{4+1} = \frac{-6+2i}{5} = -\frac65+\frac25i.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- équation bicarrée]
+Résoudre dans $\mathbb{C}$ : $z^4-z^2-6=0$.
+
+\smallskip
+\textbf{Corrigé.} Posons $t=z^2$ : $t^2-t-6=0 \iff (t-3)(t+2)=0$, donc $t=3$ ou $t=-2$.
+
+\smallskip
+Pour $t=3$ : $z^2=3\iff z=\pm\sqrt3$. Pour $t=-2$ : $z^2=-2\iff z=\pm i\sqrt2$.
+
+\smallskip
+\textbf{Conclusion} : $S=\{\sqrt3\,;-\sqrt3\,;i\sqrt2\,;-i\sqrt2\}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- polynôme à coefficients réels de degré 3]
+Soit $P(z)=z^3-3z^2+7z-5$. Vérifier que $1$ est racine, puis résoudre $P(z)=0$ dans $\mathbb{C}$.
+
+\smallskip
+\textbf{Corrigé.} $P(1)=1-3+7-5=0$ : $1$ est racine. On factorise $P(z)=(z-1)(z^2+bz+c)$. En développant : $(z-1)(z^2+bz+c)=z^3+bz^2+cz-z^2-bz-c=z^3+(b-1)z^2+(c-b)z-c$.
+
+\smallskip
+Par identification : $b-1=-3\Rightarrow b=-2$ ; $-c=-5\Rightarrow c=5$ ; vérification $c-b=5+2=7$. $\checkmark$
+
+\smallskip
+Donc $P(z)=(z-1)(z^2-2z+5)$. On résout $z^2-2z+5=0$ : $\Delta=4-20=-16$, $z=1\pm2i$ (cf. exemple de la section 4).
+
+\smallskip
+\textbf{Conclusion} : $S=\{1\,;1-2i\,;1+2i\}$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- système avec module et argument implicite]
+Déterminer les complexes $z$ tels que $z+\dfrac1z$ soit réel, avec $z\ne0$.
+
+\smallskip
+\textbf{Corrigé.} Posons $z=a+ib$. $\dfrac1z=\dfrac{a-ib}{a^2+b^2}$, donc
+\[
+  z+\frac1z = \left(a+\frac{a}{a^2+b^2}\right) + i\left(b-\frac{b}{a^2+b^2}\right).
+\]
+Cette somme est réelle $\iff b-\dfrac{b}{a^2+b^2}=0 \iff b\left(1-\dfrac{1}{a^2+b^2}\right)=0 \iff b=0$ ou $a^2+b^2=1$.
+
+\smallskip
+\textbf{Conclusion} : $z\in\mathbb{R}^*$, ou $z$ est de module $1$ (avec $b\ne0$ si l'on veut exclure le cas déjà couvert par $b=0$).
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- lieu géométrique avec inégalité]
+Déterminer l'ensemble des points $M(z)$ tels que $|z-3| \leq 2$.
+
+\smallskip
+\textbf{Corrigé.} Cette inégalité signifie $AM\leq2$ où $A(3)$ : l'ensemble cherché est le \textbf{disque fermé} de centre $A(3\,;0)$ et de rayon $2$.
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Mettre un quotient sous forme algébrique & Multiplier par le conjugué du dénominateur. \\
+Résoudre $az^2+bz+c=0$ avec $\Delta<0$ & Racines $\dfrac{-b\pm i\sqrt{|\Delta|}}{2a}$, conjuguées l'une de l'autre. \\
+\rowcolor{tealpale} Équation bicarrée ($z^4+\cdots$) & Changement de variable $t=z^2$, résoudre en $t$, puis extraire les racines carrées (réelles ou complexes selon signe). \\
+Factoriser un polynôme dont une racine est connue & Poser $P(z)=(z-z_0)Q(z)$, identifier les coefficients de $Q$. \\
+\rowcolor{tealpale} Prouver $z\in\mathbb{R}$ ou $z\in i\mathbb{R}$ & Comparer $z$ à $\bar z$ ($z=\bar z$ ou $z=-\bar z$). \\
+Lieu géométrique du type $|z-a|=|z-b|$ & Médiatrice de $[AB]$ ; $|z-a|=r$ : cercle de centre $A$, rayon $r$. \\
+\rowcolor{tealpale} Calculer une distance ou un milieu & $AB=|z_B-z_A|$ ; milieu $z_I=\frac{z_A+z_B}{2}$. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Écrire $\sqrt{-a}=\sqrt a\cdot\sqrt{-1}$ sans discernement : la notation $\sqrt{\phantom{x}}$ n'est \textbf{pas} définie sur les négatifs dans $\mathbb{C}$ hors convention explicite ; on utilise $i\sqrt a$.
+  \item Oublier que $i^2=-1$ lors d'un développement (erreur de signe la plus fréquente du chapitre).
+  \item Confondre $\operatorname{Im}(z)$ (un \textbf{réel} $b$) avec $ib$ (le terme imaginaire complet).
+  \item Diviser par $z$ sans vérifier $z\ne0$.
+  \item Oublier qu'un polynôme à coefficients réels de degré impair a nécessairement une racine \textbf{réelle}.
+  \item Confondre module $|z|$ et argument (vu au chapitre suivant) : le module ne caractérise pas $z$ à lui seul.
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item Forme algébrique $z=a+ib$ unique ; $i^2=-1$ ; $z\in\mathbb{R}\iff z=\bar z$ ; $z\in i\mathbb{R}\iff z=-\bar z$.
+  \item Conjugué : $\overline{zz'}=\bar z\bar z'$, $z\bar z=|z|^2$ ; module : $|zz'|=|z||z'|$, $|z+z'|\leq|z|+|z'|$.
+  \item Second degré : $\Delta<0\Rightarrow$ racines $\dfrac{-b\pm i\sqrt{|\Delta|}}{2a}$, conjuguées si coefficients réels.
+  \item Affixes : $z_{\overrightarrow{AB}}=z_B-z_A$, $AB=|z_B-z_A|$, milieu $z_I=\frac{z_A+z_B}2$.
+  \item Lieux classiques : $|z-a|=|z-b|$ médiatrice ; $|z-a|=r$ cercle de centre $a$, rayon $r$.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

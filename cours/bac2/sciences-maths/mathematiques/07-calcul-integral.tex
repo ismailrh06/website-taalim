@@ -1,0 +1,568 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Calcul intégral
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Calcul intégral}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Calculer une intégrale à l'aide d'une primitive et démontrer les propriétés fondamentales (linéarité, Chasles, positivité, ordre).
+  \item Interpréter géométriquement l'intégrale d'une fonction positive comme une aire, et l'étendre au cas d'une fonction de signe quelconque.
+  \item Maîtriser complètement la technique d'intégration par parties, y compris les cas nécessitant deux applications successives.
+  \item Calculer la valeur moyenne d'une fonction et l'exploiter dans un contexte physique (vitesse moyenne, etc.).
+  \item Calculer des aires entre courbes et des volumes de solides de révolution, avec tous les cas de figure (fonction de signe variable, deux courbes).
+  \item Reconnaître une somme de Riemann et l'utiliser pour calculer la limite d'une suite définie par une somme.
+  \item Étudier une fonction définie par une intégrale $F(x)=\int_a^x f(t)\,dt$ sans nécessairement expliciter de primitive.
+  \item Étudier une suite définie par une intégrale $u_n=\int_a^bf_n(t)\,dt$ par la méthode de l'encadrement.
+  \item Résoudre les exercices type examen national combinant primitives, IPP et interprétation géométrique.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Intégrale d'une fonction continue}
+
+\begin{definition}
+Soit $f$ continue sur un intervalle $I$, $F$ une primitive de $f$ sur $I$, et $a,b\in I$. L'\textbf{intégrale de $a$ à $b$ de $f$} est le réel
+\[
+  \int_a^b f(x)\,dx = \Bigl[F(x)\Bigr]_a^b = F(b)-F(a).
+\]
+\end{definition}
+
+\begin{propriete}[Indépendance vis-à-vis de la primitive choisie]
+La valeur de $\displaystyle\int_a^b f(x)\,dx$ ne dépend pas de la primitive $F$ choisie.
+\end{propriete}
+
+\begin{demo}
+Si $F$ et $G$ sont deux primitives de $f$ sur $I$, alors $G=F+C$ pour une constante $C$ (théorème du chapitre précédent). Donc $G(b)-G(a) = \bigl(F(b)+C\bigr)-\bigl(F(a)+C\bigr) = F(b)-F(a)$ : le résultat est bien indépendant du choix de $F$.
+\end{demo}
+
+\begin{remarque}[Variable muette]
+$\displaystyle\int_a^b f(x)\,dx = \int_a^b f(t)\,dt$ : la lettre utilisée pour la variable d'intégration n'a pas d'importance, elle « disparaît » après calcul.
+\end{remarque}
+
+\begin{propriete}[Interprétation géométrique]
+Si $f$ est \textbf{continue et positive} sur $[a\,;b]$, alors $\displaystyle\int_a^b f(x)\,dx$ est l'\textbf{aire}, en unités d'aire (u.a.), du domaine délimité par $\mathcal{C}_f$, l'axe des abscisses et les droites $x=a$, $x=b$. L'unité d'aire est l'aire du rectangle construit sur les vecteurs de base du repère.
+\end{propriete}
+
+\begin{exemple}[Premier calcul]
+\[
+  \int_1^2\left(3x^2-2x\right)dx = \Bigl[x^3-x^2\Bigr]_1^2 = (8-4)-(1-1) = 4.
+\]
+\end{exemple}
+
+% ------------------- SECTION 2 -------------------
+\section{Propriétés de l'intégrale}
+
+\begin{propriete}[Propriétés fondamentales]
+Pour $f,g$ continues sur $I$, $a,b,c\in I$, $\lambda\in\mathbb{R}$ :
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item $\displaystyle\int_a^a f(x)\,dx = 0$ ; \quad $\displaystyle\int_b^a f(x)\,dx = -\int_a^b f(x)\,dx$ ;
+  \item \textbf{Linéarité} : $\displaystyle\int_a^b\bigl(\lambda f+g\bigr)(x)\,dx = \lambda\int_a^b f(x)\,dx+\int_a^b g(x)\,dx$ ;
+  \item \textbf{Relation de Chasles} : $\displaystyle\int_a^b f(x)\,dx = \int_a^c f(x)\,dx+\int_c^b f(x)\,dx$ ;
+  \item \textbf{Positivité} : si $a\leq b$ et $f\geq0$ sur $[a\,;b]$, alors $\displaystyle\int_a^b f(x)\,dx\geq0$ ;
+  \item \textbf{Croissance/ordre} : si $a\leq b$ et $f\leq g$ sur $[a\,;b]$, alors $\displaystyle\int_a^b f(x)\,dx\leq\int_a^b g(x)\,dx$ ;
+  \item \textbf{Inégalité de la moyenne} : si $m\leq f(x)\leq M$ sur $[a\,;b]$ ($a\leq b$), alors $m(b-a)\leq\displaystyle\int_a^b f(x)\,dx\leq M(b-a)$.
+\end{itemize}
+\end{propriete}
+
+\begin{demo}
+Toutes ces propriétés se démontrent directement à partir de la définition avec une primitive. Par exemple pour la \textbf{linéarité} : si $F$ est une primitive de $f$ et $G$ une primitive de $g$, alors $\lambda F+G$ est une primitive de $\lambda f+g$ (dérivée d'une somme et d'un produit par une constante), donc
+\[
+  \int_a^b(\lambda f+g) = \bigl[\lambda F+G\bigr]_a^b = \lambda\bigl(F(b)-F(a)\bigr)+\bigl(G(b)-G(a)\bigr) = \lambda\int_a^b f+\int_a^b g.
+\]
+Pour la \textbf{positivité} : $f\geq0$ sur $[a\,;b]$ signifie que $F$ est croissante sur $[a\,;b]$ (car $F'=f\geq0$), donc $F(b)\geq F(a)$, soit $\int_a^bf=F(b)-F(a)\geq0$.
+
+\smallskip
+La \textbf{croissance} se déduit de la positivité appliquée à $g-f\geq0$, et Chasles se vérifie en écrivant $F(b)-F(a) = \bigl(F(c)-F(a)\bigr)+\bigl(F(b)-F(c)\bigr)$.
+\end{demo}
+
+\begin{definition}[Valeur moyenne]
+La \textbf{valeur moyenne} de $f$ continue sur $[a\,;b]$ ($a<b$) est
+\[
+  \mu = \frac{1}{b-a}\int_a^b f(x)\,dx.
+\]
+\end{definition}
+
+\begin{exemple}[Encadrement sans calcul explicite]
+Encadrons $I=\displaystyle\int_0^1\frac{1}{1+x^2}\,dx$ sans la calculer.
+
+\smallskip
+Pour $x\in[0\,;1]$ : $1\leq1+x^2\leq2$, donc $\frac12\leq\frac{1}{1+x^2}\leq1$. Par l'inégalité de la moyenne (avec $b-a=1$) : $\frac12\leq I\leq1$.
+\end{exemple}
+
+\begin{exemple}[Signe et fonction de signe variable]
+Calculons $\displaystyle\int_{-1}^{2}x\,dx$ et interprétons.
+
+\smallskip
+$\displaystyle\int_{-1}^{2}x\,dx = \left[\frac{x^2}{2}\right]_{-1}^{2} = 2-\frac12 = \frac32$. Ce nombre est la \textbf{somme algébrique} des aires : positive sur $[0\,;2]$ (au-dessus de l'axe), négative sur $[-1\,;0]$ (en dessous), le résultat global n'est \textbf{pas} l'aire géométrique totale du domaine coloré (qui vaudrait $\int_{-1}^0(-x)dx+\int_0^2xdx = \frac12+2=\frac52$).
+\end{exemple}
+
+% ------------------- SECTION 3 -------------------
+\section{Fonctions définies par une intégrale}
+
+\begin{propriete}[Fonction intégrale -- primitive s'annulant en $a$]
+Soit $f$ continue sur un intervalle $I$, et $a\in I$. La fonction
+\[
+  F : x \longmapsto \int_a^x f(t)\,dt
+\]
+est \textbf{dérivable} sur $I$, avec $F'=f$ et $F(a)=0$. Autrement dit, $F$ est \textbf{l'unique primitive} de $f$ sur $I$ qui s'annule en $a$.
+\end{propriete}
+
+\begin{demo}
+$f$ est continue sur $I$, donc elle admet une primitive $G$ sur $I$ (théorème d'existence, chapitre précédent). Pour tout $x\in I$ :
+\[
+  F(x) = \int_a^x f(t)\,dt = G(x)-G(a)
+\]
+(par définition de l'intégrale à l'aide d'une primitive). Comme $G$ est dérivable de dérivée $f$ et que $G(a)$ est une constante, $F$ est dérivable et $F'(x)=G'(x)=f(x)$. De plus $F(a)=G(a)-G(a)=0$.
+\end{demo}
+
+\begin{remarque}[L'intérêt de ce théorème]
+Il permet d'étudier une fonction $F$ définie par une intégrale (sens de variation, signe, limites) \textbf{sans jamais expliciter de primitive} : il suffit de connaître le signe de $f=F'$. C'est essentiel lorsque $f$ n'a pas de primitive exprimable avec les fonctions usuelles.
+\end{remarque}
+
+\begin{exemple}[Étudier $F$ sans expliciter de primitive]
+Soit $F(x)=\displaystyle\int_0^xe^{-t^2}\,dt$ pour $x\in\mathbb{R}$. La fonction $t\mapsto e^{-t^2}$ n'admet \textbf{pas} de primitive exprimable à l'aide des fonctions usuelles (polynômes, $\ln$, $\exp$, fonctions trigonométriques) -- pourtant $F$ est parfaitement bien définie et étudiable grâce au théorème précédent.
+
+\smallskip
+$F$ est dérivable sur $\mathbb{R}$ (car $t\mapsto e^{-t^2}$ est continue sur $\mathbb{R}$), et $F'(x)=e^{-x^2}>0$ pour tout $x\in\mathbb{R}$ : $F$ est \textbf{strictement croissante} sur $\mathbb{R}$, avec $F(0)=0$ (car $\int_0^0=0$). Donc $F(x)<0$ pour $x<0$ et $F(x)>0$ pour $x>0$.
+\end{exemple}
+
+\begin{propriete}[Cas composé : $x\mapsto\int_a^{u(x)}f(t)\,dt$]
+Soit $f$ continue sur $I$, $a\in I$, et $u$ dérivable sur un intervalle $J$ avec $u(J)\subset I$. Alors la fonction
+\[
+  H : x \longmapsto \int_a^{u(x)}f(t)\,dt
+\]
+est dérivable sur $J$, et
+\[
+  H'(x) = u'(x)\times f\bigl(u(x)\bigr).
+\]
+\end{propriete}
+
+\begin{demo}
+Posons $F(x)=\int_a^xf(t)\,dt$ (fonction du théorème précédent, $F'=f$). Alors $H=F\circ u$, composée de $u$ (dérivable) et $F$ (dérivable, de dérivée $f$). Par la formule de dérivation d'une composée :
+\[
+  H'(x) = u'(x)\times F'\bigl(u(x)\bigr) = u'(x)\times f\bigl(u(x)\bigr).
+\]
+\end{demo}
+
+\begin{exemple}[Étudier une fonction composée définie par une intégrale]
+Soit $H(x)=\displaystyle\int_0^{x^2}e^{-t^2}\,dt$ pour $x\in\mathbb{R}$. Étudions les variations de $H$.
+
+\smallskip
+Ici $u(x)=x^2$ (dérivable, $u'(x)=2x$) et $f(t)=e^{-t^2}$ (continue sur $\mathbb{R}$). Par la formule précédente :
+\[
+  H'(x) = u'(x)\times f\bigl(u(x)\bigr) = 2x\times e^{-x^4}.
+\]
+Comme $e^{-x^4}>0$ pour tout $x$, le signe de $H'$ est celui de $2x$ : $H$ est décroissante sur $]-\infty\,;0]$, croissante sur $[0\,;+\infty[$, avec $H(0)=\int_0^0=0$ (minimum).
+\end{exemple}
+
+% ------------------- SECTION 4 -------------------
+\section{Intégration par parties}
+
+\begin{propriete}[Formule d'intégration par parties]
+Si $u$ et $v$ sont dérivables sur $[a\,;b]$, de dérivées $u'$ et $v'$ continues :
+\[
+  \int_a^b u(x)v'(x)\,dx = \Bigl[u(x)v(x)\Bigr]_a^b - \int_a^b u'(x)v(x)\,dx.
+\]
+\end{propriete}
+
+\begin{demo}
+$(uv)' = u'v+uv'$, donc $uv$ est une primitive de $u'v+uv'$. En intégrant cette égalité entre $a$ et $b$ :
+\[
+  \Bigl[u(x)v(x)\Bigr]_a^b = \int_a^b u'(x)v(x)\,dx + \int_a^b u(x)v'(x)\,dx,
+\]
+ce qui donne, en isolant le terme voulu, la formule annoncée.
+\end{demo}
+
+\begin{remarque}[Bien choisir $u$ et $v'$]
+On choisit $u$ = la fonction qui se \textbf{simplifie} en dérivant (polynôme, $\ln x$) et $v'$ = celle qu'on sait intégrer facilement ($e^x$, $\cos x$, $\sin x$, polynôme). Cas typiques : $\int xe^xdx$, $\int x\cos xdx$ (poser $u=x$) ; $\int x\ln xdx$, $\int\ln xdx$ (poser $u=\ln x$, $v'=1$).
+\end{remarque}
+
+\begin{exemple}[IPP classique : $xe^x$]
+Calculons $I=\displaystyle\int_0^1xe^x\,dx$. Posons $u(x)=x$ ($u'=1$), $v'(x)=e^x$ ($v=e^x$) :
+\[
+  I = \Bigl[xe^x\Bigr]_0^1-\int_0^1e^x\,dx = e-\Bigl[e^x\Bigr]_0^1 = e-(e-1) = 1.
+\]
+\end{exemple}
+
+\begin{exemple}[IPP avec le logarithme]
+Calculons $J=\displaystyle\int_1^e\ln x\,dx$. Posons $u(x)=\ln x$ ($u'=\frac1x$), $v'(x)=1$ ($v=x$) :
+\[
+  J = \Bigl[x\ln x\Bigr]_1^e-\int_1^e x\cdot\frac1x\,dx = e\ln e-1\ln1-\int_1^e1\,dx = e-0-(e-1) = 1.
+\]
+\end{exemple}
+
+\begin{exemple}[IPP double : $x^2e^x$]
+Calculons $K=\displaystyle\int_0^1x^2e^x\,dx$ (nécessite deux IPP successives).
+
+\smallskip
+\textbf{Première IPP} : $u=x^2$ ($u'=2x$), $v'=e^x$ ($v=e^x$) :
+\[
+  K = \Bigl[x^2e^x\Bigr]_0^1-\int_0^12xe^x\,dx = e - 2\int_0^1xe^x\,dx.
+\]
+\textbf{Deuxième IPP} (reprend l'exemple précédent) : $\displaystyle\int_0^1xe^x\,dx=1$.
+
+\smallskip
+\textbf{Conclusion} : $K = e-2\times1 = e-2$.
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Applications : aires et volumes}
+
+\begin{propriete}[Calcul d'aires]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Si $f\geq0$ sur $[a\,;b]$ : aire $=\displaystyle\int_a^bf(x)\,dx$ (u.a.).
+  \item Si $f\leq0$ sur $[a\,;b]$ : l'aire entre la courbe et l'axe des abscisses vaut $-\displaystyle\int_a^bf(x)\,dx$.
+  \item Si $f$ change de signe : on \textbf{découpe} $[a\,;b]$ selon le signe de $f$ (relation de Chasles) et on somme les \textbf{valeurs absolues} des intégrales sur chaque sous-intervalle.
+  \item \textbf{Aire entre deux courbes} : si $f\geq g$ sur $[a\,;b]$, l'aire du domaine compris entre les deux courbes vaut
+  \[
+    \mathcal{A} = \int_a^b\bigl[f(x)-g(x)\bigr]\,dx \quad\text{(u.a.)}.
+  \]
+\end{itemize}
+\end{propriete}
+
+\begin{propriete}[Volume d'un solide de révolution]
+Le solide engendré par la rotation autour de l'axe $(Ox)$ du domaine sous la courbe de $f$ sur $[a\,;b]$ a pour volume :
+\[
+  V = \pi\int_a^b\bigl[f(x)\bigr]^2\,dx \quad\text{(u.v.)}.
+\]
+\end{propriete}
+
+\begin{exemple}[Aire d'une fonction de signe variable]
+Calculons l'aire du domaine compris entre $\mathcal{C}_f$, l'axe $(Ox)$, et les droites $x=0$, $x=2$, où $f(x)=x-1$.
+
+\smallskip
+$f$ s'annule en $x=1$ : $f\leq0$ sur $[0\,;1]$, $f\geq0$ sur $[1\,;2]$.
+\[
+  \mathcal{A} = -\int_0^1(x-1)\,dx + \int_1^2(x-1)\,dx
+  = -\left[\frac{x^2}2-x\right]_0^1 + \left[\frac{x^2}2-x\right]_1^2
+  = \frac12+\frac12 = 1 \text{ u.a.}
+\]
+\end{exemple}
+
+\begin{exemple}[Aire entre deux courbes]
+Calculons l'aire du domaine compris entre $f(x)=x$ et $g(x)=x^2$ pour $x\in[0\,;1]$.
+
+\smallskip
+Sur $[0\,;1]$ : $x\geq x^2$ (car $x-x^2=x(1-x)\geq0$). Donc
+\[
+  \mathcal{A} = \int_0^1(x-x^2)\,dx = \left[\frac{x^2}2-\frac{x^3}3\right]_0^1 = \frac12-\frac13 = \frac16 \text{ u.a.}
+\]
+\end{exemple}
+
+\begin{exemple}[Volume : cône de révolution]
+Retrouvons le volume du cône engendré par la rotation de $y=\frac rhx$ ($x\in[0\,;h]$) autour de $(Ox)$ :
+\[
+  V = \pi\int_0^h\frac{r^2}{h^2}x^2\,dx = \frac{\pi r^2}{h^2}\left[\frac{x^3}3\right]_0^h = \frac{\pi r^2}{h^2}\cdot\frac{h^3}3 = \frac13\pi r^2h.
+\]
+On retrouve bien la formule connue du volume du cône.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Sommes de Riemann : limites de sommes liées à une intégrale}
+
+\begin{propriete}[Sommes de Riemann -- admis]
+Si $f$ est continue sur $[a\,;b]$, alors
+\[
+  \lim_{n\to+\infty}\frac{b-a}{n}\sum_{k=0}^{n-1}f\left(a+k\,\frac{b-a}{n}\right) = \int_a^bf(x)\,dx.
+\]
+Cas particulier fondamental ($a=0$, $b=1$) :
+\[
+  \lim_{n\to+\infty}\frac1n\sum_{k=0}^{n-1}f\left(\frac kn\right) = \int_0^1f(x)\,dx.
+\]
+De façon équivalente (même limite, indice décalé de $1$) :
+\[
+  \lim_{n\to+\infty}\frac1n\sum_{k=1}^{n}f\left(\frac kn\right) = \int_0^1f(x)\,dx.
+\]
+\end{propriete}
+
+\begin{remarque}[Interprétation]
+$\dfrac{b-a}{n}\displaystyle\sum_{k=0}^{n-1}f\left(a+k\frac{b-a}{n}\right)$ est l'aire d'une réunion de $n$ rectangles de largeur $\frac{b-a}{n}$, approchant l'aire sous la courbe de $f$ : quand $n\to+\infty$, cette approximation \textbf{converge vers l'intégrale}. C'est ce résultat qui justifie, en amont, l'interprétation de l'intégrale comme une aire.
+\end{remarque}
+
+\begin{exemple}[Calculer une limite de somme via une intégrale]
+Calculons $\displaystyle\lim_{n\to+\infty}\frac1n\sum_{k=1}^{n}\sqrt{\frac kn}$.
+
+\smallskip
+On reconnaît une somme de Riemann associée à $f(x)=\sqrt x$ sur $[0\,;1]$ :
+\[
+  \frac1n\sum_{k=1}^n\sqrt{\frac kn} = \frac1n\sum_{k=1}^nf\left(\frac kn\right) \xrightarrow[n\to+\infty]{} \int_0^1\sqrt x\,dx = \left[\frac23x^{3/2}\right]_0^1 = \frac23.
+\]
+\end{exemple}
+
+\begin{exemple}[Somme avec fonction exponentielle]
+Calculons $\displaystyle\lim_{n\to+\infty}\frac1n\sum_{k=1}^{n}e^{k/n}$.
+
+\smallskip
+On reconnaît une somme de Riemann associée à $f(x)=e^x$ sur $[0\,;1]$ :
+\[
+  \frac1n\sum_{k=1}^ne^{k/n} = \frac1n\sum_{k=1}^nf\left(\frac kn\right) \xrightarrow[n\to+\infty]{} \int_0^1e^x\,dx = \Bigl[e^x\Bigr]_0^1 = e-1.
+\]
+\end{exemple}
+
+\subsection{Suites définies par une intégrale}
+
+\begin{remarque}[Méthode de l'encadrement]
+Pour étudier une suite du type $u_n=\displaystyle\int_a^b f_n(t)\,dt$, où $f_n$ dépend de $n$ (paramètre \textbf{dans l'intégrande}, à ne pas confondre avec les fonctions $F$ et $H$ des paragraphes précédents où $n$ ou $x$ intervenaient dans les \textbf{bornes}), on encadre $f_n(t)$ pour $t\in[a\,;b]$, puis on \textbf{intègre l'encadrement} (croissance de l'intégrale) pour encadrer $u_n$, et on conclut par le théorème des gendarmes.
+\end{remarque}
+
+\begin{exemple}[Suite définie par une intégrale]
+Soit $u_n=\displaystyle\int_0^1\frac{x^n}{1+x}\,dx$ pour $n\in\mathbb{N}$. Montrons que $u_n\to0$.
+
+\smallskip
+Pour $x\in[0\,;1]$ : $1\leq1+x\leq2$, donc, en passant à l'inverse puis en multipliant par $x^n\geq0$ :
+\[
+  \frac{x^n}2 \leq \frac{x^n}{1+x} \leq x^n.
+\]
+En intégrant sur $[0\,;1]$ (croissance de l'intégrale) :
+\[
+  \int_0^1\frac{x^n}2\,dx \leq u_n \leq \int_0^1x^n\,dx,
+  \qquad\text{soit}\qquad
+  \frac{1}{2(n+1)} \leq u_n \leq \frac{1}{n+1}.
+\]
+Comme $\dfrac{1}{2(n+1)}\to0$ et $\dfrac{1}{n+1}\to0$ : par le théorème des gendarmes, $u_n\to0$.
+\end{exemple}
+
+% ------------------- SECTION 7 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- intégrale avec fonction composée $\ln$]
+Calculer $\displaystyle\int_1^e\frac{(\ln x)^2}{x}\,dx$.
+
+\smallskip
+\textbf{Corrigé.} On reconnaît $u'u^2$ avec $u=\ln x$ (car $u'=\frac1x$) : une primitive est $\frac{(\ln x)^3}{3}$. Donc
+\[
+  \int_1^e\frac{(\ln x)^2}{x}\,dx = \left[\frac{(\ln x)^3}{3}\right]_1^e = \frac{1}{3}-0 = \frac13.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- aire limitée par une exponentielle]
+Calculer l'aire du domaine délimité par $\mathcal{C}_f$ ($f(x)=e^{-x}$), l'axe $(Ox)$, l'axe $(Oy)$ et la droite $x=\ln2$.
+
+\smallskip
+\textbf{Corrigé.} $f\geq0$ sur $[0\,;\ln2]$, donc
+\[
+  \mathcal{A} = \int_0^{\ln2}e^{-x}\,dx = \Bigl[-e^{-x}\Bigr]_0^{\ln2} = -e^{-\ln2}-(-1) = -\frac12+1 = \frac12 \text{ u.a.}
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- IPP avec borne variable et fonction $F$]
+Soit $F(x)=\displaystyle\int_0^x t\,e^{-t}\,dt$ pour $x\geq0$. Calculer $F(x)$ explicitement, puis étudier $\lim\limits_{x\to+\infty}F(x)$.
+
+\smallskip
+\textbf{Corrigé.} IPP avec $u=t$ ($u'=1$), $v'=e^{-t}$ ($v=-e^{-t}$) :
+\[
+  \int_0^xte^{-t}\,dt = \Bigl[-te^{-t}\Bigr]_0^x+\int_0^xe^{-t}\,dt = -xe^{-x}+\Bigl[-e^{-t}\Bigr]_0^x = -xe^{-x}-e^{-x}+1.
+\]
+Donc $F(x)=1-(x+1)e^{-x}$. Quand $x\to+\infty$ : $(x+1)e^{-x}\to0$ (croissance comparée), donc $F(x)\to1$.
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- volume avec fonction $\ln$]
+Calculer le volume engendré par la rotation autour de $(Ox)$ du domaine sous la courbe de $f(x)=\sqrt{\ln x}$ pour $x\in[1\,;e]$.
+
+\smallskip
+\textbf{Corrigé.}
+\[
+  V = \pi\int_1^e\bigl(\sqrt{\ln x}\bigr)^2\,dx = \pi\int_1^e\ln x\,dx.
+\]
+Or $\displaystyle\int_1^e\ln x\,dx = 1$ (calculé à l'exemple de la section 3). Donc $V=\pi$ (u.v.).
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- comparaison d'intégrales via une inégalité]
+Sachant que $\ln x \leq x-1$ pour tout $x>0$, en déduire un encadrement de $\displaystyle\int_1^2\ln x\,dx$ sans calculer explicitement de primitive du membre de gauche autrement.
+
+\smallskip
+\textbf{Corrigé.} Pour $x\in[1\,;2]$ : $\ln x\leq x-1$. Par croissance de l'intégrale :
+\[
+  \int_1^2\ln x\,dx \leq \int_1^2(x-1)\,dx = \left[\frac{x^2}2-x\right]_1^2 = (2-2)-\left(\frac12-1\right) = \frac12.
+\]
+\emph{Vérification par calcul exact} (IPP comme précédemment) : $\int_1^2\ln x\,dx = \bigl[x\ln x-x\bigr]_1^2 = (2\ln2-2)-(0-1) = 2\ln2-1\approx0{,}386 \leq0{,}5$. $\checkmark$
+\end{exemple}
+
+% ------------------- SECTION 8 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Calculer une intégrale directe & Trouver une primitive $F$, calculer $F(b)-F(a)$. \\
+Produit de deux fonctions de nature différente & Intégration par parties : $u$ se simplifie, $v'$ s'intègre facilement. \\
+\rowcolor{tealpale} Puissance de $x$ multipliée par $e^x$ ou $\cos x$ & IPP répétée (parfois deux fois), en réduisant le degré à chaque étape. \\
+Encadrer une intégrale sans la calculer & Encadrer $f$ sur $[a\,;b]$ puis intégrer les inégalités (croissance de l'intégrale). \\
+\rowcolor{tealpale} Aire sous une courbe qui change de signe & Découper selon le signe de $f$, sommer les \textbf{valeurs absolues}. \\
+Aire entre deux courbes & Étudier le signe de $f-g$, intégrer $|f-g|$ (ou $f-g$ si $f\geq g$ constaté). \\
+\rowcolor{tealpale} Volume de révolution & $V=\pi\int_a^b f(x)^2\,dx$, ne pas oublier le carré. \\
+Étudier $F(x)=\int_a^x g(t)\,dt$ & $F'=g$ (dérivable, primitive de $g$ nulle en $a$) ; variations données par le signe de $g$, même sans primitive explicite. \\
+\rowcolor{tealpale} Étudier $H(x)=\int_a^{u(x)} g(t)\,dt$ & $H'(x)=u'(x)\times g(u(x))$ (composée avec la fonction intégrale). \\
+\rowcolor{tealpale} Limite d'une somme $\frac1n\sum f\left(\frac kn\right)$ & Reconnaître une somme de Riemann, identifier $f$, conclure $\to\int_0^1f(x)\,dx$. \\
+Limite d'une suite $u_n=\int_a^bf_n(t)\,dt$ & Encadrer $f_n(t)$ sur $[a\,;b]$, intégrer l'encadrement, conclure par les gendarmes. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Confondre \textbf{intégrale} (nombre algébrique, peut être négatif) et \textbf{aire} (toujours positive) quand $f$ change de signe.
+  \item Oublier le \textbf{carré} dans la formule du volume de révolution $V=\pi\int f^2$.
+  \item Se tromper dans le choix de $u$ et $v'$ pour l'IPP (résultat : intégrale plus compliquée qu'au départ -- signe qu'il faut inverser le choix).
+  \item Oublier un signe « $-$ » en primitivant $\cos$, $\sin$ ou lors du calcul de $-e^{-x}$.
+  \item Utiliser l'inégalité de la moyenne avec $a>b$ sans adapter les inégalités (elle suppose $a\leq b$).
+  \item Pour l'aire entre deux courbes : oublier de vérifier le signe de $f-g$ sur \textbf{tout} l'intervalle (il peut changer, nécessitant un découpage).
+  \item Pour $F(x)=\int_a^xg(t)dt$ : chercher à tout prix une primitive explicite de $g$ alors que le signe de $g=F'$ suffit pour répondre (variations, signe de $F$).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $\int_a^bf(x)\,dx=F(b)-F(a)$, indépendant de la primitive choisie ; interprétation aire si $f\geq0$.
+  \item Linéarité, Chasles, positivité, croissance, inégalité de la moyenne : les cinq outils démontrés à partir d'une primitive.
+  \item IPP : $\int_a^buv'=[uv]_a^b-\int_a^bu'v$ ; parfois répétée pour les puissances de $x$.
+  \item Aire signe variable : découper + valeurs absolues ; aire entre courbes : $\int(f-g)$ si $f\geq g$ ; volume : $V=\pi\int f^2$.
+  \item Valeur moyenne : $\mu=\frac{1}{b-a}\int_a^bf$.
+  \item Sommes de Riemann : $\frac1n\sum_{k=1}^nf\left(\frac kn\right) \to \int_0^1f(x)\,dx$.
+  \item $F(x)=\int_a^xf(t)\,dt$ est dérivable, $F'=f$, $F(a)=0$ : on l'étudie via le signe de $f$, même sans primitive explicite.
+  \item Cas composé : $H(x)=\int_a^{u(x)}f(t)\,dt$ est dérivable, $H'(x)=u'(x)\,f(u(x))$.
+  \item Suite $u_n=\int_a^bf_n(t)\,dt$ : encadrer $f_n$ sur $[a\,;b]$, intégrer, conclure par les gendarmes.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

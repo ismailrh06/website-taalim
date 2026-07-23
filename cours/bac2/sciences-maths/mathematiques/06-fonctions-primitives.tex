@@ -1,0 +1,420 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+%  QIMMA -- COURS : Fonctions primitives
+%  2ème Bac Sciences Mathématiques (A et B)
+%  Standard exhaustif : définitions formelles + démonstrations
+%  Basé sur templates/qimma-template.tex (charte Qimma)
+% ============================================================
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.3cm,bottom=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ------------------- CHARTE QIMMA -------------------
+\definecolor{qteal}{HTML}{0d9488}
+\definecolor{qtealdark}{HTML}{134e4a}
+\definecolor{qamber}{HTML}{fbbf24}
+\definecolor{qambertext}{HTML}{92400e}
+\definecolor{ink}{HTML}{1f2937}
+\definecolor{inkgray}{HTML}{6b7280}
+\definecolor{tealpale}{HTML}{e6f5f3}
+\colorlet{colDef}{qteal}
+\definecolor{colProp}{HTML}{0f766e}
+\definecolor{colEx}{HTML}{b45309}
+\definecolor{colRem}{HTML}{9d174d}
+\color{ink}
+
+\graphicspath{{../../../../assets/}}
+\newcommand{\logofile}{../../../../assets/qimma-logo.pdf}
+
+% ------------------- METADONNEES -------------------
+\newcommand{\matiere}{Mathématiques}
+\newcommand{\niveau}{2\up{ème} Bac -- Sciences Mathématiques}
+\newcommand{\chapitretitre}{Fonctions primitives}
+
+% ------------------- EN-TETE / PIED DE PAGE -------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyfoot[L]{\raisebox{-0.15cm}{\includegraphics[height=0.35cm]{\logofile}}~\small\sffamily\color{inkgray}Qimma}
+\fancyfoot[C]{\small\sffamily\color{inkgray}\matiere\ -- \niveau}
+\fancyfoot[R]{\small\sffamily\color{qtealdark}\thepage}
+
+% ------------------- TITRES DE SECTION -------------------
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{qtealdark}}
+  {\tikz[baseline=-3.2pt]{\node[circle,fill=qteal,text=white,inner sep=0pt,minimum size=8mm]{\sffamily\bfseries\thesection};}}
+  {10pt}{}
+  [\vspace{-2mm}{\color{qamber}\titlerule[1.6pt]}\vspace{2mm}]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{qtealdark}}
+  {\color{qteal}\ding{212}}{6pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ------------------- BOITES PEDAGOGIQUES -------------------
+\newtcolorbox{fiche}[3][]{
+  enhanced, breakable,
+  colback=white, colframe=#2,
+  boxrule=1pt, arc=2mm,
+  top=7mm, left=4mm, right=4mm, bottom=3mm,
+  drop shadow={black!25, shadow xshift=1mm, shadow yshift=-1mm},
+  attach boxed title to top left={xshift=4mm, yshift=-3mm, yshifttext=-1mm},
+  boxed title style={colback=#2, arc=1.5mm, boxrule=0pt, left=2mm, right=2mm},
+  coltitle=white, fonttitle=\sffamily\bfseries,
+  title={#3}, #1
+}
+\newenvironment{definition}[1][Définition]
+  {\begin{fiche}{colDef}{\ding{110}~~#1}}{\end{fiche}}
+\newenvironment{propriete}[1][Propriété]
+  {\begin{fiche}{colProp}{\ding{72}~~#1}}{\end{fiche}}
+\newenvironment{exemple}[1][Exemple]
+  {\begin{fiche}{colEx}{\ding{217}~~#1}}{\end{fiche}}
+\newenvironment{remarque}[1][Remarque]
+  {\begin{fiche}{colRem}{\ding{43}~~#1}}{\end{fiche}}
+
+% Démonstration (hors boîte, style discret)
+\newenvironment{demo}
+  {\par\smallskip\noindent{\sffamily\bfseries\color{qtealdark}Démonstration.}\ \itshape}
+  {\ \normalfont\hfill$\blacksquare$\par\medskip}
+
+\hypersetup{colorlinks=true, linkcolor=qtealdark, urlcolor=qtealdark}
+
+% ============================================================
+\begin{document}
+
+% ------------------- BANNIERE DE TITRE -------------------
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=4mm,
+  interior style={left color=qtealdark, right color=qteal},
+  top=8mm, bottom=8mm, left=10mm, right=32mm,
+  drop shadow={black!35, shadow xshift=1.5mm, shadow yshift=-1.5mm},
+  before skip=0pt, after skip=9mm,
+  overlay={
+    \node[anchor=north west] at ([xshift=6mm,yshift=-6mm]frame.north west)
+      {\includegraphics[height=1.25cm]{\logofile}};
+    \node[anchor=north east, fill=qamber, text=qambertext, rounded corners=2pt,
+          inner sep=4pt, font=\sffamily\bfseries\small] at ([xshift=-6mm,yshift=-6mm]frame.north east) {COURS};
+  }
+]
+\hspace{1.6cm}\centering
+{\sffamily\bfseries\color{white}\fontsize{23}{27}\selectfont \chapitretitre}\\[3mm]
+{\sffamily\color{white!90}\large \matiere\ \textbullet\ \niveau}
+\end{tcolorbox}
+
+% ------------------- OBJECTIFS -------------------
+\begin{tcolorbox}[
+  enhanced, colback=tealpale, colframe=qteal, boxrule=0.8pt, arc=2mm,
+  left=5mm, right=5mm, top=3mm, bottom=3mm,
+  title={\sffamily\bfseries\color{qtealdark}\ding{51}~~Objectifs du chapitre},
+  coltitle=qtealdark, colbacktitle=tealpale, boxrule=0.8pt,
+  attach title to upper={\par\vspace{1mm}}
+]
+\begin{itemize}[leftmargin=6mm, label=\ding{212}, itemsep=1mm]
+  \item Démontrer que deux primitives d'une même fonction sur un intervalle diffèrent d'une constante.
+  \item Connaître parfaitement les primitives des fonctions usuelles et savoir les redémontrer par dérivation.
+  \item Reconnaître et exploiter toutes les formes composées ($u'u^n$, $\frac{u'}{u}$, $u'e^u$, $\frac{u'}{\sqrt u}$, $u'\cos u$, $u'\sin u$, $\frac{u'}{1+u^2}$).
+  \item Déterminer la primitive vérifiant une condition initiale donnée.
+  \item Combiner ajustement par une constante et décomposition d'une fraction pour trouver une primitive non directement reconnaissable.
+  \item Résoudre les exercices type examen national mêlant primitives et fonctions ln/exp/trigonométriques.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{4mm}
+
+% ------------------- SECTION 1 -------------------
+\section{Notion de primitive}
+
+\begin{definition}
+Soit $f$ une fonction définie sur un intervalle $I$. Une fonction $F$, dérivable sur $I$, est une \textbf{primitive de $f$ sur $I$} lorsque
+\[
+  F'(x) = f(x) \qquad \text{pour tout } x \in I.
+\]
+\end{definition}
+
+\begin{propriete}[Existence]
+Toute fonction \textbf{continue} sur un intervalle $I$ admet des primitives sur $I$ (théorème admis en terminale ; il sera justifié en analyse plus poussée via le calcul intégral).
+\end{propriete}
+
+\begin{propriete}[Structure de l'ensemble des primitives]
+Si $F$ est une primitive de $f$ sur $I$, alors les primitives de $f$ sur $I$ sont exactement les fonctions $x\mapsto F(x)+C$, $C\in\mathbb{R}$.
+\end{propriete}
+
+\begin{demo}
+\emph{Sens direct} : si $G(x)=F(x)+C$, alors $G'(x)=F'(x)=f(x)$ : $G$ est bien une primitive de $f$.
+
+\smallskip
+\emph{Réciproque} : soit $G$ une autre primitive de $f$ sur $I$. Posons $\varphi = G - F$. Alors $\varphi'(x) = G'(x)-F'(x) = f(x)-f(x) = 0$ pour tout $x\in I$. Comme $\varphi'=0$ sur l'\textbf{intervalle} $I$, $\varphi$ est \textbf{constante} sur $I$ (conséquence du théorème des accroissements finis, vu au chapitre sur la dérivation) : il existe $C\in\mathbb{R}$ tel que $\varphi(x)=C$ pour tout $x$, soit $G(x)=F(x)+C$.
+\end{demo}
+
+\begin{propriete}[Condition initiale]
+Pour tout $(x_0,y_0)$ avec $x_0\in I$, il existe une \textbf{unique} primitive $F$ de $f$ sur $I$ telle que $F(x_0)=y_0$.
+\end{propriete}
+
+\begin{demo}
+Soit $F_0$ une primitive quelconque de $f$ sur $I$. Toute primitive s'écrit $F=F_0+C$. La condition $F(x_0)=y_0$ donne $C=y_0-F_0(x_0)$, valeur \textbf{unique} : la primitive cherchée est $F=F_0+\bigl(y_0-F_0(x_0)\bigr)$.
+\end{demo}
+
+\begin{exemple}[Primitive avec condition initiale]
+Déterminons la primitive $F$ de $f(x)=3x^2-4x+1$ sur $\mathbb{R}$ telle que $F(1)=2$.
+
+\smallskip
+Les primitives de $f$ sont $F(x)=x^3-2x^2+x+C$. La condition $F(1)=2$ donne $1-2+1+C=2\iff C=2$.
+
+\smallskip
+\textbf{Conclusion} : $F(x)=x^3-2x^2+x+2$.
+\end{exemple}
+
+\begin{remarque}[La condition « sur un intervalle » est essentielle]
+Une primitive se définit toujours \textbf{sur un intervalle}. Sur $\mathbb{R}^*$ (réunion de deux intervalles, pas un intervalle), la « constante » de l'énoncé peut être \textbf{différente} sur $]-\infty\,;0[$ et sur $]0\,;+\infty[$ : par exemple, les primitives de $\frac1x$ sur $\mathbb{R}^*$ sont $\ln|x|+C_1$ sur $]-\infty\,;0[$ et $\ln|x|+C_2$ sur $]0\,;+\infty[$, avec $C_1$ et $C_2$ \textbf{indépendantes}.
+\end{remarque}
+
+% ------------------- SECTION 2 -------------------
+\section{Primitives des fonctions usuelles}
+
+\begin{propriete}[Tableau des primitives usuelles]
+\begin{center}
+\renewcommand{\arraystretch}{1.55}
+\sffamily\small
+\begin{tabular}{>{\centering\arraybackslash}p{4.5cm} >{\centering\arraybackslash}p{5.2cm} >{\centering\arraybackslash}p{5.2cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Fonction $f$ & \color{white}\bfseries Primitives $F$ ($C\in\mathbb{R}$) & \color{white}\bfseries Sur l'intervalle \\
+\rowcolor{tealpale} $a$ (constante) & $ax+C$ & $\mathbb{R}$ \\
+$x^n$ ($n\in\mathbb{N}$) & $\dfrac{x^{n+1}}{n+1}+C$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $\dfrac{1}{x^n}$ ($n\geq2$) & $\dfrac{-1}{(n-1)x^{n-1}}+C$ & $]0\,;+\infty[$ ou $]-\infty\,;0[$ \\
+$\dfrac{1}{\sqrt x}$ & $2\sqrt x+C$ & $]0\,;+\infty[$ \\
+\rowcolor{tealpale} $\dfrac1x$ & $\ln|x|+C$ & $]0\,;+\infty[$ ou $]-\infty\,;0[$ \\
+$e^x$ & $e^x+C$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $\cos x$ & $\sin x+C$ & $\mathbb{R}$ \\
+$\sin x$ & $-\cos x+C$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $1+\tan^2x=\dfrac{1}{\cos^2x}$ & $\tan x+C$ & $\left]-\frac\pi2\,;\frac\pi2\right[$ \\
+$\dfrac{1}{1+x^2}$ & $\arctan x+C$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $\cos(ax+b)$ ($a\ne0$) & $\dfrac1a\sin(ax+b)+C$ & $\mathbb{R}$ \\
+$\sin(ax+b)$ ($a\ne0$) & $-\dfrac1a\cos(ax+b)+C$ & $\mathbb{R}$ \\
+\rowcolor{tealpale} $e^{ax+b}$ ($a\ne0$) & $\dfrac1ae^{ax+b}+C$ & $\mathbb{R}$ \\
+\end{tabular}
+\end{center}
+\end{propriete}
+
+\begin{remarque}[$\arctan$ hors-programme mais utile]
+La primitive $\arctan x$ de $\frac{1}{1+x^2}$ figure ici pour information (fonction Arctan, notion approfondie en CPGE) ; au niveau bac SM, cette forme apparaît surtout via la composée $\frac{u'}{1+u^2}$ dont la primitive est $\arctan u+C$, rarement exigée mais parfois rencontrée en exercice guidé.
+\end{remarque}
+
+% ------------------- SECTION 3 -------------------
+\section{Primitives des formes composées}
+
+\begin{propriete}[Formes composées à reconnaître]
+Si $u$ est dérivable sur $I$ (avec conditions de signe indiquées) :
+\begin{center}
+\renewcommand{\arraystretch}{1.55}
+\sffamily\small
+\begin{tabular}{>{\centering\arraybackslash}p{4.8cm} >{\centering\arraybackslash}p{5.6cm} >{\centering\arraybackslash}p{4.2cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Forme & \color{white}\bfseries Primitives & \color{white}\bfseries Condition \\
+\rowcolor{tealpale} $u'u^n$ ($n\in\mathbb{N}$) & $\dfrac{u^{n+1}}{n+1}+C$ & -- \\
+$\dfrac{u'}{u^n}$ ($n\geq2$) & $\dfrac{-1}{(n-1)u^{n-1}}+C$ & $u\ne0$ \\
+\rowcolor{tealpale} $\dfrac{u'}{\sqrt u}$ & $2\sqrt u+C$ & $u>0$ \\
+$\dfrac{u'}{u}$ & $\ln|u|+C$ & $u\ne0$ \\
+\rowcolor{tealpale} $u'e^{u}$ & $e^{u}+C$ & -- \\
+$u'\cos u$ & $\sin u+C$ & -- \\
+\rowcolor{tealpale} $u'\sin u$ & $-\cos u+C$ & -- \\
+$\dfrac{u'}{1+u^2}$ & $\arctan u+C$ & -- \\
+\end{tabular}
+\end{center}
+\end{propriete}
+
+\begin{demo}
+Chaque formule se vérifie par dérivation directe. Par exemple pour $\dfrac{u^{n+1}}{n+1}$ : en dérivant comme composée, $\left(\dfrac{u^{n+1}}{n+1}\right)' = \dfrac{(n+1)u'u^n}{n+1} = u'u^n$, ce qui confirme la formule. Même démarche pour les autres lignes.
+\end{demo}
+
+\begin{exemple}[Reconnaître la forme $u'u^n$]
+Déterminons les primitives de $f(x)=x(x^2+1)^3$ sur $\mathbb{R}$.
+
+\smallskip
+Posons $u(x)=x^2+1$, $u'(x)=2x$. On écrit $f(x)=\frac12\times2x(x^2+1)^3=\frac12u'u^3$. D'où
+\[
+  F(x) = \frac12\cdot\frac{(x^2+1)^4}{4}+C = \frac{(x^2+1)^4}{8}+C.
+\]
+\emph{Vérification} : $F'(x)=\dfrac{4\times2x(x^2+1)^3}{8}=x(x^2+1)^3=f(x)$. $\checkmark$
+\end{exemple}
+
+\begin{exemple}[Reconnaître la forme $u'/u$]
+Déterminons les primitives de $g(x)=\dfrac{2x+1}{x^2+x+3}$ sur $\mathbb{R}$.
+
+\smallskip
+Le trinôme $u(x)=x^2+x+3$ a pour discriminant $\Delta=1-12<0$ : toujours strictement positif. Comme $u'(x)=2x+1$, on reconnaît exactement $\frac{u'}{u}$ :
+\[
+  G(x)=\ln\left(x^2+x+3\right)+C.
+\]
+\end{exemple}
+
+\begin{exemple}[Coefficient ajusté]
+Déterminons les primitives de $f(x)=\dfrac{x}{x^2+1}$ sur $\mathbb{R}$.
+
+\smallskip
+On écrit $f=\frac12\cdot\frac{2x}{x^2+1}=\frac12\cdot\frac{u'}{u}$ avec $u=x^2+1$. D'où $F(x)=\frac12\ln(x^2+1)+C$.
+\end{exemple}
+
+\begin{remarque}[La règle d'or de l'ajustement]
+On n'ajuste \textbf{jamais} par une fonction de $x$, uniquement par une \textbf{constante multiplicative}. Si le coefficient devant $u'$ n'est pas exactement $1$, on factorise la constante manquante en dehors de l'intégrale/primitive.
+\end{remarque}
+
+% ------------------- SECTION 4 -------------------
+\section{Techniques combinées : décomposition et cas non directs}
+
+\begin{propriete}[Décomposition d'une fraction rationnelle]
+Quand une fraction ne se ramène pas directement à une forme du tableau, on peut la \textbf{décomposer} en somme de termes plus simples (division euclidienne, ou décomposition en éléments simples pour un dénominateur factorisé).
+\end{propriete}
+
+\begin{exemple}[Division puis primitive]
+Déterminons les primitives de $f(x)=\dfrac{x^2}{x+1}$ sur $]-1\,;+\infty[$.
+
+\smallskip
+Par division euclidienne : $x^2 = (x+1)(x-1)+1$, donc $f(x)=x-1+\dfrac{1}{x+1}$.
+
+\smallskip
+\[
+  F(x) = \frac{x^2}{2}-x+\ln(x+1)+C \qquad\text{(sur }]-1\,;+\infty[\text{, où }x+1>0\text{)}.
+\]
+\end{exemple}
+
+\begin{exemple}[Décomposition en éléments simples]
+Déterminons les primitives de $f(x)=\dfrac{1}{x(x+1)}$ sur $]0\,;+\infty[$.
+
+\smallskip
+On cherche $a,b$ tels que $\dfrac{1}{x(x+1)}=\dfrac ax+\dfrac{b}{x+1}$. En réduisant au même dénominateur : $1=a(x+1)+bx$. Pour $x=0$ : $a=1$. Pour $x=-1$ : $b=-1$. Donc $f(x)=\dfrac1x-\dfrac1{x+1}$.
+
+\smallskip
+\[
+  F(x) = \ln x - \ln(x+1)+C = \ln\frac{x}{x+1}+C.
+\]
+\end{exemple}
+
+\begin{exemple}[Linéarisation trigonométrique]
+Déterminons les primitives de $f(x)=\cos^2 x$ sur $\mathbb{R}$.
+
+\smallskip
+On linéarise avec $\cos^2x=\dfrac{1+\cos(2x)}{2}$ :
+\[
+  F(x) = \frac{x}{2}+\frac{\sin(2x)}{4}+C.
+\]
+\end{exemple}
+
+% ------------------- SECTION 5 -------------------
+\section{Exercices corrigés -- niveau examen national SM}
+
+\begin{exemple}[Exercice 1 -- primitive avec racine et condition initiale]
+Déterminer la primitive $F$ de $f(x)=\dfrac{x}{\sqrt{x^2+1}}$ sur $\mathbb{R}$ vérifiant $F(0)=3$.
+
+\smallskip
+\textbf{Corrigé.} Posons $u=x^2+1>0$, $u'=2x$. $f=\frac12\cdot\frac{u'}{\sqrt u}$, dont une primitive est $\frac12\times2\sqrt u=\sqrt u$. Donc les primitives de $f$ sont $F(x)=\sqrt{x^2+1}+C$.
+
+\smallskip
+$F(0)=\sqrt1+C=1+C=3\iff C=2$. \textbf{Conclusion} : $F(x)=\sqrt{x^2+1}+2$.
+\end{exemple}
+
+\begin{exemple}[Exercice 2 -- primitive avec exponentielle composée]
+Déterminer les primitives de $f(x)=(2x-1)e^{x^2-x}$ sur $\mathbb{R}$.
+
+\smallskip
+\textbf{Corrigé.} Posons $u=x^2-x$, $u'=2x-1$ : on reconnaît exactement $u'e^u$. Donc $F(x)=e^{x^2-x}+C$.
+\end{exemple}
+
+\begin{exemple}[Exercice 3 -- fonction trigonométrique composée]
+Déterminer les primitives de $f(x)=\sin x\cos^3x$ sur $\mathbb{R}$.
+
+\smallskip
+\textbf{Corrigé.} Posons $u=\cos x$, $u'=-\sin x$. On écrit $f=-(-\sin x)\cos^3x=-u'u^3$. Donc une primitive de $u'u^3$ est $\frac{u^4}{4}$, d'où
+\[
+  F(x) = -\frac{\cos^4x}{4}+C.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 4 -- fraction avec numérateur de degré supérieur]
+Déterminer les primitives de $f(x)=\dfrac{x^3}{x^2+1}$ sur $\mathbb{R}$.
+
+\smallskip
+\textbf{Corrigé.} Division : $x^3 = x(x^2+1)-x$, donc $f(x)=x-\dfrac{x}{x^2+1}$.
+\[
+  F(x) = \frac{x^2}{2}-\frac12\ln(x^2+1)+C.
+\]
+\end{exemple}
+
+\begin{exemple}[Exercice 5 -- combinaison $\ln$ et rationnelle]
+Déterminer la primitive $G$ de $g(x)=\dfrac{\ln x}{x}$ sur $]0\,;+\infty[$ vérifiant $G(1)=0$.
+
+\smallskip
+\textbf{Corrigé.} On reconnaît $g=u'u$ avec $u=\ln x$ (car $u'=\frac1x$). Une primitive de $u'u$ est $\dfrac{u^2}{2}$, donc $G(x)=\dfrac{(\ln x)^2}{2}+C$.
+
+\smallskip
+$G(1)=\dfrac{0}{2}+C=C=0$. \textbf{Conclusion} : $G(x)=\dfrac{(\ln x)^2}{2}$.
+\end{exemple}
+
+% ------------------- SECTION 6 -------------------
+\section{Méthodes et pièges : la boîte à outils de l'examen}
+
+\subsection{Ce qu'on te demande, ce que tu fais}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\sffamily\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{7.2cm} >{\raggedright\arraybackslash}p{8cm}}
+\rowcolor{qtealdark} \color{white}\bfseries Ce qu'on te demande & \color{white}\bfseries Ton réflexe \\
+\rowcolor{tealpale} Reconnaître une forme composée & Identifier $u$, calculer $u'$, comparer au numérateur/facteur. \\
+Le coefficient devant $u'$ n'est pas $1$ & Factoriser/ajuster par une \textbf{constante} uniquement, jamais par du $x$. \\
+\rowcolor{tealpale} Fraction rationnelle non reconnaissable & Division euclidienne si degré num $\geq$ degré dénom, sinon décomposition en éléments simples. \\
+Fonction trigonométrique type $\sin x\cos^nx$ & Poser $u=\cos x$ (ou $\sin x$), retrouver $u'u^n$. \\
+\rowcolor{tealpale} Primitive avec condition initiale & Trouver la famille de primitives, puis résoudre $F(x_0)=y_0$ pour $C$. \\
+Vérifier une primitive trouvée & Toujours redériver $F$ et comparer à $f$. \\
+\end{tabular}
+\end{center}
+
+\subsection{Les pièges qui coûtent des points}
+
+\begin{remarque}[Erreurs relevées chaque année par les correcteurs]
+\begin{itemize}[leftmargin=6mm, itemsep=0.5mm]
+  \item Oublier la valeur absolue dans $\ln|u|+C$ (nécessaire dès que $u$ peut être négatif sur l'intervalle considéré).
+  \item Ajuster un coefficient par une expression dépendant de $x$ au lieu d'une constante : c'est \textbf{interdit}, la primitive obtenue serait fausse.
+  \item Oublier la constante $+C$ dans la réponse finale (sauf si une condition initiale la détermine).
+  \item Confondre primitive et dérivée : dériver au lieu d'intégrer, ou inversement, lors de la vérification.
+  \item Ne pas préciser l'intervalle de validité de la primitive (essentiel dès qu'il y a un $\ln$ ou une racine, où le domaine est restreint).
+  \item Oublier de vérifier le signe de $u$ avant d'utiliser $\frac{u'}{\sqrt u}\to 2\sqrt u$ ($u$ doit être $>0$).
+\end{itemize}
+\end{remarque}
+
+% ------------------- RESUME -------------------
+\vspace{4mm}
+\begin{tcolorbox}[
+  enhanced, boxrule=0pt, arc=2mm,
+  interior style={left color=qtealdark, right color=qteal},
+  left=6mm, right=6mm, top=4mm, bottom=4mm,
+  fontupper=\color{white}\sffamily,
+  title={\sffamily\bfseries\color{white}\ding{72}~~À retenir},
+  colbacktitle=qtealdark, coltitle=white, boxrule=0pt
+]
+\begin{itemize}[leftmargin=6mm, label={\color{qamber}\ding{212}}, itemsep=1mm]
+  \item $F$ primitive de $f$ sur $I$ $\iff F'=f$ sur $I$ ; toute fonction continue admet des primitives ; deux primitives diffèrent d'une constante (démontré via TAF).
+  \item Condition initiale $F(x_0)=y_0$ fixe la constante de façon unique.
+  \item Formes clés : $u'u^n\to\frac{u^{n+1}}{n+1}$ ; $\frac{u'}{u}\to\ln|u|$ ; $u'e^u\to e^u$ ; $\frac{u'}{\sqrt u}\to2\sqrt u$ ; $u'\cos u\to\sin u$ ; $u'\sin u\to-\cos u$.
+  \item Méthode : identifier $u$, calculer $u'$, ajuster par une \textbf{constante} uniquement, puis vérifier en dérivant.
+  \item Fraction non reconnaissable : division euclidienne (degré num $\geq$ dénom) ou décomposition en éléments simples.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}
