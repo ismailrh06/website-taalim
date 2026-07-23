@@ -223,6 +223,7 @@
   },
   "course": {
     "breadcrumb": "الدروس",
+    "badge": "درس",
     "objectives": "أهداف التعلّم",
     "toc": "المحتويات",
     "readingMin": "{min} دقيقة قراءة",

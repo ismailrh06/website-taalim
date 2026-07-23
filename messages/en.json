@@ -223,6 +223,7 @@
   },
   "course": {
     "breadcrumb": "Courses",
+    "badge": "Course",
     "objectives": "Learning objectives",
     "toc": "Contents",
     "readingMin": "{min} min read",
