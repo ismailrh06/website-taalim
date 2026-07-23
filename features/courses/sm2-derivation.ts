@@ -12,6 +12,7 @@ export const COURS_DERIVATION_SM: Course = {
   streamIds: ["2bac-sma", "2bac-smb"],
   chapter: "Dérivation et étude des fonctions",
   title: "Dérivation et étude des fonctions",
+  pdfUrl: "/cours/pdf/02-derivation-et-etude-des-fonctions.pdf",
   summary:
     "Dérivabilité en un point, toutes les formules de dérivation (composées, réciproque, puissances rationnelles), théorèmes de Rolle et des accroissements finis démontrés, extremums, concavité, branches infinies et plan d'étude complet — avec les applications aux suites récurrentes et aux inégalités qui tombent chaque année au national.",
   readingMin: 55,

@@ -12,6 +12,7 @@ export const COURS_LOGARITHME_SM: Course = {
   streamIds: ["2bac-sma", "2bac-smb"],
   chapter: "Fonction logarithme népérien",
   title: "Fonction logarithme népérien",
+  pdfUrl: "/cours/pdf/04-fonction-logarithme-neperien.pdf",
   summary:
     "Construction de ln comme primitive de 1/x, relation fonctionnelle démontrée, croissances comparées, tous les types d'équations et d'inéquations logarithmiques (changement de variable, systèmes), dérivée de ln u et logarithme décimal — avec exercices type examen national.",
   readingMin: 45,

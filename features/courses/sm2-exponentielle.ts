@@ -12,6 +12,7 @@ export const COURS_EXPONENTIELLE_SM: Course = {
   streamIds: ["2bac-sma", "2bac-smb"],
   chapter: "Fonction exponentielle",
   title: "Fonction exponentielle",
+  pdfUrl: "/cours/pdf/05-fonction-exponentielle.pdf",
   summary:
     "exp construite comme réciproque de ln, propriétés algébriques démontrées, (eˣ)′ = eˣ via la dérivée de la réciproque, croissances comparées, équations et inéquations exponentielles (changement de variable), exponentielle de base a et modélisation (radioactivité) — avec exercices type examen national.",
   readingMin: 45,

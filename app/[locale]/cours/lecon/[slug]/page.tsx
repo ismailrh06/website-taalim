@@ -91,6 +91,21 @@ export default async function LessonPage({
         <p dir="auto" className="mt-3 max-w-3xl text-slate-600">
           {course.summary}
         </p>
+        {course.pdfUrl && (
+          <a
+            href={course.pdfUrl}
+            download
+            className="mt-5 inline-flex items-center gap-3 rounded-2xl border border-brand-200 bg-gradient-to-r from-brand-700 to-brand-600 px-5 py-3 text-white shadow-sm transition-opacity hover:opacity-90"
+          >
+            <span className="rounded-lg bg-white/15 px-2 py-1 text-xs font-bold uppercase tracking-wide">
+              PDF
+            </span>
+            <span className="text-start">
+              <span className="block text-sm font-semibold">{t("pdfCta")}</span>
+              <span className="block text-xs text-brand-100">{t("pdfHint")}</span>
+            </span>
+          </a>
+        )}
       </header>
 
       <div className="grid gap-10 lg:grid-cols-[220px_1fr]">

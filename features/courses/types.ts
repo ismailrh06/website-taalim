@@ -48,4 +48,5 @@ export interface Course {
   objectives: string[]; // objectifs d'apprentissage
   sections: Section[];
   relatedExerciseIds?: string[]; // exercices d'application
+  pdfUrl?: string; // version imprimable (mise en page LaTeX Qimma) dans public/
 }

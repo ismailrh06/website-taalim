@@ -15,6 +15,7 @@ export const COURS_SUITES_NUMERIQUES: Course = {
   summary:
     "Comprendre, manipuler et étudier les suites : génération, suites arithmétiques et géométriques, sens de variation, bornes, limites et convergence. Le chapitre expliqué pas à pas, avec méthodes, exemples résolus et pièges à éviter.",
   readingMin: 35,
+  pdfUrl: "/cours/pdf/03-suites-numeriques.pdf",
   objectives: [
     "Reconnaître une suite et la définir de façon explicite ou par récurrence.",
     "Identifier et exploiter une suite arithmétique ou géométrique (terme général, somme).",

@@ -227,6 +227,8 @@
     "toc": "Sommaire",
     "readingMin": "{min} min de lecture",
     "answer": "Réponse :",
+    "pdfCta": "Télécharger le cours en PDF",
+    "pdfHint": "Mise en page soignée, idéale pour imprimer et réviser",
     "relatedTitle": "Passe à la pratique",
     "relatedDesc": "Applique ce cours sur un exercice guidé, avec indices progressifs et tuteur socratique.",
     "relatedCta": "S'entraîner sur ce chapitre"

@@ -13,6 +13,7 @@ export const COURS_LIMITES_CONTINUITE_SM: Course = {
   streamIds: ["2bac-sma", "2bac-smb"],
   chapter: "Limites et continuité",
   title: "Limites et continuité",
+  pdfUrl: "/cours/pdf/01-limites-et-continuite.pdf",
   summary:
     "Le chapitre fondateur de l'analyse en Sciences Maths : définition formelle de la limite (en ε), toutes les méthodes de calcul, continuité et prolongement, théorème des valeurs intermédiaires avec la dichotomie, fonction réciproque et racine n-ième. Avec démonstrations, exercices type examen national et boîte à outils complète.",
   readingMin: 50,
